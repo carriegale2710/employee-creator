@@ -4,7 +4,6 @@
 
 [![CI](https://github.com/carriegale2710/employee-creator/actions/workflows/main.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/main.yml)
 
-
 ## Demo & Snippets
 
 - Include hosted link
@@ -14,11 +13,11 @@
 
 ## Requirements / Purpose
 
-### Purpose of project:
+### Purpose of project
 
 Demonstrate understanding of writing RESTful APIs.
 
-### Techstack and why:
+### Techstack and why
 
 1. Backend:
    - Java: using OOP is ideal for defining Employee classes with interfaces - can be extended upon.
@@ -27,7 +26,7 @@ Demonstrate understanding of writing RESTful APIs.
    - React: SPA for responsive layout
    - Typescript: validating forms for user input before being sent to DB saves time in both DX and UX.
 
-### MVP:
+### MVP
 
 - [ ] We need a web application to manage employees:
   - [ ] create
@@ -48,7 +47,7 @@ Also code should be:
 
 ## Hints
 
-### React hints:
+### React hints
 
 - [ ] React hooks are recommended.
 - [ ] You can include any other open source NPM library.
@@ -57,17 +56,20 @@ Also code should be:
 - [ ] Add some basic validations on the form like required and max length validations.
 - [ ] The site should be responsive.
 
-### RESTful API hints:
+### RESTful API hints
 
 - [ ] The list can be a local database, CSV, TXT file or even in memory
 - [ ] Implementing an API logging strategy.
 - [ ] Implementing error handling strategy.
+
 - [ ] At least 3 endpoints are required:
   - [ ] To create an employee
   - [ ] To get a list of existing employees
   - [ ] To delete an employee
 
 ## Design Snippets
+
+### Basic UI Example
 
 ![Employee List Page](assets/employee-list.PNG)
 ![Employee Edit / Create Form 1](assets/form-part-1.PNG)
@@ -134,8 +136,14 @@ spring.jpa.generate-ddl=true
 
 ## Design Goals / Approach
 
-- Design goals
-- why did you implement this the way you did?
+- Design goals:
+
+  - [ ] Understandable and maintainable by other developers.
+  - [ ] Robust and handle error situations.
+
+- Why did you implement this the way you did?
+  - Use a top-down approach for backend using TDD framework
+    - Why? : write up basic tests before coding to understand functionality, entity shapes & edge cases.
 
 ---
 
@@ -155,7 +163,7 @@ spring.jpa.generate-ddl=true
 
 ## Future Goals
 
-- What are the immediate features you'd add given more time
+- What are the immediate features you'd add given more time / ideas parking lot:
 
 ---
 
@@ -163,11 +171,31 @@ spring.jpa.generate-ddl=true
 
 - Write a paragraph labelled with the date every day you work on the project to discuss what you've done for the say. Be specific about the changes that have happened for that day.
 
-### 13/02/2022 - {Theme of changes if applicable}
+### 05/07/2025 - Backend Project Setup
 
-- Extended the expiry time of JWT tokens on the backend
-- Added users to cohort response payload
-- Centralized API base URL on frontend using the proxy `package.json` property
+- [ ] Install SpringBoot and dependencies
+
+- Dependencies
+
+  - [ ] Spring Web,
+  - [ ] Validation I/O
+  - [ ] Spring Testing
+  - [ ] Spring Data JPA
+  - [ ] MySQL Driver
+  - [ ] Spring Devtools
+
+- application.properties starter:
+
+```
+spring.datasource.url=jdbc:mysql://localhost:3306/db_name
+spring.datasource.username=root
+spring.datasource.password=MyPass
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+spring.jpa.generate-ddl=true
+```
+
+- [ ]
 
 ---
 
@@ -185,5 +213,4 @@ spring.jpa.generate-ddl=true
 
 ## Further details, related projects, reimplementations
 
-- Is this project a reimplementation for something you've done in the past? if so explain it and link it here.
 - If it's an API, is there a client app that works with this project? link it
