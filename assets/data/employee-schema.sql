@@ -14,7 +14,7 @@ CREATE TABLE employees (
 --   phone VARCHAR(20),
 --   date_of_birth DATE,
 
---   job_title VARCHAR(100),
+  job_title VARCHAR(100),
 --   department VARCHAR(50),
 --   start_date DATE NOT NULL,
 --   employment_type VARCHAR(20),              -- e.g. 'Full-time', 'Part-time'
