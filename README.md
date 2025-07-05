@@ -85,13 +85,9 @@ Also code should be:
 
 ### Basic UI Example
 
-![Employee List Page](assets/employee-list.PNG)
-![Employee Edit / Create Form 1](assets/form-part-1.PNG)
-![Employee Edit / Create Form 2](assets/form-part-2.PNG)
-
-### Example Backend Spring App
-
-![spring-app-example](assets/spring-example.png)
+![Employee List Page](assets/UI/employee-list.PNG)
+![Employee Edit / Create Form 1](assets/UI/form-part-1.PNG)
+![Employee Edit / Create Form 2](assets/UI/form-part-2.PNG)
 
 ### Technology / Documentation Recommendations
 
@@ -120,7 +116,7 @@ Also code should be:
   - [x] MySQL Driver
   - [x] Spring Devtools
 
-- application.properties starter:
+- [x] application.properties starter:
 
 ```
 spring.datasource.url=jdbc:mysql://localhost:3306/db_name
@@ -160,14 +156,17 @@ API Semantics
 
 ## Design Goals / Approach
 
-- Design goals:
+1. Design goals:
 
-  - Understandable and maintainable by other developers.
-  - Robust and handle error situations.
+- Understandable and maintainable by other developers.
+- Robust and handle error situations.
 
-- Why did you implement this the way you did?
-  - Use a top-down approach for backend using TDD framework
-    - Why? : write up basic tests before coding to understand functionality, entity shapes & edge cases.
+- layers:
+  ![service-design](assets/refs/layer-example.png)
+
+- Use a top-down approach for backend using TDD framework -> write up basic tests before coding to understand functionality, entity shapes & edge cases.
+
+2. Why did you implement this the way you did?
 
 ---
 
@@ -197,8 +196,9 @@ API Semantics
 
 ### 05/07/2025 - Backend Project Setup
 
-- Install SpringBoot and dependencies
+- Installed SpringBoot and dependencies
 - Setup application.properties file for mySQL database seeder
+- Decided on SQL schema for employee database
 
 ## What did you struggle with?
 

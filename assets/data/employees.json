@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "first_name": "Timmy",
+    "last_name": "Turner",
+    "email": "timmehhh@example.com",
+    "job_title": "Junior Wish Coordinator"
+  },
+  {
+    "id": 2,
+    "first_name": "Cosmo",
+    "last_name": "Wanda",
+    "email": "cosmo@example.com",
+    "job_title": "Chaos Engineer"
+  },
+  {
+    "id": 3,
+    "first_name": "Wanda",
+    "last_name": "Fairywinkle",
+    "email": "wanda@example.com",
+    "job_title": "Senior Wish Strategist"
+  },
+  {
+    "id": 4,
+    "first_name": "Vicky",
+    "last_name": "The Babysitter",
+    "email": "ihatekids@example.com",
+    "job_title": "Child Containment Specialist"
+  },
+  {
+    "id": 5,
+    "first_name": "Mr.",
+    "last_name": "Crocker",
+    "email": "fairygodparents@example.com",
+    "job_title": "Conspiracy Theorist-in-Chief"
+  },
+  {
+    "id": 6,
+    "first_name": "Jorgen",
+    "last_name": "Von Strangle",
+    "email": "da_rules@example.com",
+    "job_title": "Head of Fairy Regulation"
+  },
+  {
+    "id": 7,
+    "first_name": "Chester",
+    "last_name": "McBadbat",
+    "email": "chester_b@example.com",
+    "job_title": "Mascot Relations Intern"
+  },
+  {
+    "id": 8,
+    "first_name": "AJ",
+    "last_name": "SomethingSmart",
+    "email": "aj.brainiac@example.com",
+    "job_title": "IT Infrastructure Lead"
+  },
+  {
+    "id": 9,
+    "first_name": "Tootie",
+    "last_name": "Turner",
+    "email": "tootie_fan@example.com",
+    "job_title": "Obsessive Research Analyst"
+  },
+  {
+    "id": 10,
+    "first_name": "Poof",
+    "last_name": "Cosma",
+    "email": "poof@fairyland.example",
+    "job_title": "Magical Intern"
+  }
+]
