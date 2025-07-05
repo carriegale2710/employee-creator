@@ -20,22 +20,25 @@ Demonstrate understanding of writing RESTful APIs.
 ### Techstack and why
 
 1. Backend:
+
    - Java: using OOP is ideal for defining Employee classes with interfaces - can be extended upon.
    - Spring: Easier to manage dependency injection and database updates for RESTful APIs.
+
 2. Frontend:
    - React: SPA for responsive layout
    - Typescript: validating forms for user input before being sent to DB saves time in both DX and UX.
+   - SCSS/Tailwind: For modular, reusable styles and themes based on design systems.
 
 ### MVP - Project Specification
 
 [Project Brief](https://github.com/nology-tech/aus-post-course-guide/tree/main/projects/employee-creator)
 
-- [ ] We need a web application to manage employees:
+- We need a web application to manage employees:
   - [ ] create
   - [ ] list
   - [ ] modify
   - [ ] delete
-- [ ] The schema for the employee is left to the criteria of the candidate.
+- The schema for the employee is left to the criteria of the candidate.
 
 Also code should be:
 
@@ -72,14 +75,14 @@ Also code should be:
 ### RESTful API hints
 
 - The list can be a local database
-  - [ ] MySQL is reccomended
+  - [x] MySQL is reccomended
 - Implementing an API logging strategy.
   - [ ] Log2j **highly** reccomended
 - [ ] Implementing error handling strategy.
 - At least 3 endpoints are required:
-  - [ ] To create an employee
-  - [ ] To get a list of existing employees
-  - [ ] To delete an employee
+  - [ ] To create an employee `/create`
+  - [ ] To get a list of existing employees `/list`
+  - [ ] To delete an employee `delete?id={id}`
 
 ## Design Snippets
 
@@ -175,6 +178,41 @@ API Semantics
 - What features does the project have?
 - list them...
 
+### MVP
+
+1. Create an employee
+
+- POST
+- input: formData -> CreateEmployeeDTO
+
+2. Delete employee from DB
+
+- DELETE (or PUT if soft delete)
+- input : employee id
+
+3. Edit employee details
+
+- PUT
+- /id/edit
+- formData -> CreateEmployeeDTO
+
+4. Employee List
+
+- GET (for all)
+- list/page/search
+
+### BONUS
+
+5. Find employee by id
+
+- GET
+- /id
+
+6. Search Bar (find by name match)
+
+- GET
+- /name
+
 ---
 
 ## Known issues
@@ -197,8 +235,10 @@ API Semantics
 ### 05/07/2025 - Backend Project Setup
 
 - Installed SpringBoot and dependencies
-- Setup application.properties file for mySQL database seeder
+- Setup application.properties file for mySQL
 - Decided on SQL schema for employee database
+- Defining data types for employees table in `assets/data/README.md`
+- Linking to SQL and testing table database syncing and migrations
 
 ## What did you struggle with?
 
@@ -215,3 +255,68 @@ API Semantics
 ## Further details, related projects, reimplementations
 
 - If it's an API, is there a client app that works with this project? link it
+
+## Employees Database
+
+### CreateEmployee DTO
+
+This is the type of data that will be sent from the client side
+
+```json
+{
+  "first_name": "Timmy",
+  "last_name": "Turner",
+  "email": "timmehhh@example.com:",
+  "job_title": "Junior Wish Coordinator"
+}
+```
+
+A unique Id should be generated in backend
+
+### Employee Class
+
+- id : int (must be unique)
+- first_name : String
+- last_name : String
+- email : string (must be unique)
+- job_title : string
+
+### JSON Dummy Data
+
+```json
+[
+  {
+    "id": 1,
+    "first_name": "Timmy",
+    "last_name": "Turner",
+    "email": "timmehhh@example.com",
+    "job_title": "Junior Wish Coordinator"
+  },
+  {
+    "id": 2,
+    "first_name": "Cosmo",
+    "last_name": "Wanda",
+    "email": "cosmo@example.com",
+    "job_title": "Chaos Engineer"
+  },
+  {
+    "id": 3,
+    "first_name": "Wanda",
+    "last_name": "Fairywinkle",
+    "email": "wanda@example.com",
+    "job_title": "Senior Wish Strategist"
+  }
+]
+```
+
+### SQL SCHEMA CREATION
+
+```sql
+CREATE TABLE employees (
+  id SERIAL PRIMARY KEY,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  email VARCHAR(100) UNIQUE NOT NULL,
+  job_title VARCHAR(100),
+);
+```

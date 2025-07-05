@@ -1,8 +1,8 @@
 # Employee Creator App
 
-## Employees
+## Employees Database Design
 
-### Employee DTO
+### CreateEmployee DTO
 
 This is the type of data that will be sent from the client side
 
@@ -16,6 +16,14 @@ This is the type of data that will be sent from the client side
 ```
 
 A unique Id should be generated in backend
+
+### Employee Class
+
+- id : int (must be unique)
+- first_name : String
+- last_name : String
+- email : string (must be unique)
+- job_title : string
 
 ### JSON Dummy Data
 
@@ -55,18 +63,4 @@ CREATE TABLE employees (
   email VARCHAR(100) UNIQUE NOT NULL,
   job_title VARCHAR(100),
 );
-```
-
-### DATA TYPES
-
-- id : int (must be unique)
-- first_name : String
-- last_name : String
-- email : string (must be unique)
-- job_title : string
-
-### INTERFACE
-
-```java
-
 ```
