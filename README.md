@@ -229,8 +229,9 @@ Why did you implement this the way you did?
 
 See [User Flows Mermaid Diagram](https://www.mermaidchart.com/app/projects/dc3bdcc4-0838-4954-b61e-39ed0000a222/diagrams/7ff245ec-49e3-47a7-af4d-bf5ce3f4158b/version/v0.1/edit)
 
-### Service Layers: (update later)
+### App Layers: (update later)
 
+![layers](assets/data/app-service-layers.png)
 ![service-design](assets/refs/layer-example.png)
 
 ## Schemas
