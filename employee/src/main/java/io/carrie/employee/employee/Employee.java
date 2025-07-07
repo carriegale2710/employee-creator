@@ -16,18 +16,12 @@ public class Employee {
     private Integer id;
 
     @Column
-    private String first_name;
-
-    @Column
-    private String last_name;
-
-    @Column
-    private String email;
-
-    @Column
-    private String job_title;
+    private String firstName;
 
     // @Column
-    // private LocalDate dob;
+    // private String lastName;
+
+    // @Column
+    // private String email;
 
 }
