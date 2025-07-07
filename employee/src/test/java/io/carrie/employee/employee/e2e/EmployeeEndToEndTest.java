@@ -1,4 +1,4 @@
-package io.carrie.employee.employee;
+package io.carrie.employee.employee.e2e;
 
 import java.util.ArrayList;
 
@@ -10,7 +10,10 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.*;
 
+import io.carrie.employee.employee.Employee;
+import io.carrie.employee.employee.EmployeeRepository;
 import io.restassured.RestAssured;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -53,27 +56,38 @@ public class EmployeeEndToEndTest {
         employee1.setFirstName("Timmy");
         employee1.setLastName("Turner");
         employee1.setEmail("timmehhh@example.com");
+        this.employeeRepository.save(employee1);
+        this.employeeList.add(employee1);
 
         Employee employee2 = new Employee();
         employee2.setFirstName("Wanda");
         employee2.setLastName("Cosmo");
         employee2.setEmail("wanda.cosmo@example.com");
+        this.employeeRepository.save(employee2);
+        this.employeeList.add(employee2);
 
     }
 
-    // test for GET /employees
+    // test for /employees
     // arrange
     // act
     // assert
 
     @Test
     public void getAllEmployees_EmployeesInDB_ReturnsSuccess() {
-        // arrange
-        // act
         given()
                 .when().get("/employees")
-                .then().statusCode(HttpStatus.OK.value());
-        // assert
-
+                .then().statusCode(HttpStatus.OK.value())
+                .body("$", hasSize(2)); // should return 2 records in list
     }
+
+    @Test
+    public void getAllEmployees_NoEmployeesInDB_ReturnsSuccessAndEmptyArray() {
+        this.employeeRepository.deleteAll();
+        given()
+                .when().get("/books")
+                .then().statusCode(HttpStatus.OK.value())
+                .body("$", hasSize(0));
+    }
+
 }

@@ -4,6 +4,8 @@
 
 [![CI](https://github.com/carriegale2710/employee-creator/actions/workflows/main.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/main.yml)
 
+![Backend Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/test.yml/badge.svg)
+
 ## Introduction
 
 ### What it is:
@@ -279,7 +281,7 @@ CREATE TABLE employees (
 
 - Write a paragraph labelled with the date every day you work on the project to discuss what you've done for the say. Be specific about the changes that have happened for that day.
 
-### 05/07/2025 - Backend Project Setup
+### 05/07/2025 - Backend API Project Setup
 
 - Installed SpringBoot and dependencies
 - Setup application.properties file for mySQL
@@ -287,14 +289,24 @@ CREATE TABLE employees (
 - Defining data types for employees table in `assets/data/README.md`
 - Linking to SQL and testing table database syncing
 
-### 06/07/2025 - 07/07/2025 Testing setup
+### 06/07/2025 - 07/07/2025 Backend API Testing setup
+
+General
+
+- Mapping out endpoints and status codes expected for http requests
+- Created Mermaid charts for app layers and core user flows
+- Introduction, build steps, testing stack research
+- Research on TDD framework
+- Cleaning up assets and documentation org//
+
+Backend API
 
 - Created simple HomeController and tested app runs in localhost:8080 browser
 - Create Employee entity with getters and setters
 - Creates basic employee controller, service, repository classes.
 - Write code for basic get method
 
-E2E Test
+Backend E2E Test
 
 - Installs `spring-boot-starter-test dependency` which includes JUnit, Mockito, and other useful testing libraries.
 - Installs dependency for H2 database for testing with separate db - avoid breaking from actual DB.
@@ -303,13 +315,22 @@ E2E Test
 - Write simple sanity check test that fails if app cannot start
   - Creates basic test for getAll() -> getAllEmployees_EmployeesInDB_ReturnsSuccess()
 
-### In progress
+### 07/07/2025 - Writing tests
 
-- write up basic tests
+### In progress
 
 ### Sprint
 
+- write up basic integration tests
+
 ### Backlog
+
+- unit tests
+- create method
+- delete method
+- react front-end
+- deployment test
+- test badges update - Github actions
 
 ---
 
