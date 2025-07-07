@@ -81,13 +81,18 @@ npm run dev
 
 ## Testing
 
-https://mvnrepository.com/artifact/com.h2database/h2/2.3.232
-
 | Type       | Tools Used      | Status |
 | ---------- | --------------- | ------ |
 | Unit Tests | JUnit + Mockito | ✅     |
 | API Tests  | REST Assured    | ✅     |
 | Frontend   | Vitest / Manual | ⏳     |
+
+### Libraries
+
+H2 Mock Database: https://mvnrepository.com/artifact/com.h2database/h2/2.3.232
+Rest Assured: https://github.com/rest-assured/rest-assured/wiki/gettingstarted
+
+### Run tests
 
 ```
 ./mvnw test      # backend
@@ -148,7 +153,7 @@ Why did you implement this the way you did?
 | F2  | Create Employee | Submit a form to add a new employee    |
 | F3  | Delete Employee | Remove an employee from the system     |
 
-### API Endpoints
+#### API Endpoints
 
 | ID  | Method   | Endpoint         | Input             | Output Data   | Success Response |
 | --- | -------- | ---------------- | ----------------- | ------------- | ---------------- |
@@ -156,7 +161,7 @@ Why did you implement this the way you did?
 | 2   | `POST`   | `/employees`     | CreateEmployeeDTO | employee data | `201 Created`    |
 | 3   | `DELETE` | `/employees/:id` | employee id       | no content    | `204 No Content` |
 
-### User Stories
+#### User Stories
 
 | ID  | Feature           | User Wants To...   | So They Can...    | User should be able to...                                                  |
 | --- | ----------------- | ------------------ | ----------------- | -------------------------------------------------------------------------- |
@@ -164,7 +169,7 @@ Why did you implement this the way you did?
 | 2   | `Create Employee` | Add a new employee | Register new hire | Click button that opens a form to add a new employee as a new record in DB |
 | 3   | `Delete Employee` | Delete employee    | Remove old record | Click a button to delete a record of an existing employee in DB            |
 
-### User Flows
+#### User Flows
 
 \*Red borders are core MVP features
 ![userflows](assets/userflows/UserFlows%20_%20Mermaid%20Chart-2025-07-07-104854.png)
@@ -176,7 +181,7 @@ See [User Flows Mermaid Diagram](https://www.mermaidchart.com/app/projects/dc3bd
 ![layers](assets/data/app-service-layers.png)
 ![service-design](assets/refs/layer-example.png)
 
-## Schemas
+### Schemas
 
 ### Employee Schema
 
@@ -240,7 +245,6 @@ Note: 🔒 "department" must be one of:
 {
   "firstName": "Timmy",
   "lastName": "Turner",
-  "email": "timmehhh@example.com",
   "department": "ENGINEERING",
   "startDate": "2023-01-10"
 }
@@ -286,10 +290,12 @@ CREATE TABLE employees (
 ### 06/07/2025 - 07/07/2025 Testing setup
 
 - Created simple HomeController and tested app runs in localhost:8080 browser
+- Installs `spring-boot-starter-test dependency` which includes JUnit, Mockito, and other useful testing libraries.
+- Installs dependency for H2 database for testing with separate db - avoid breaking from actual DB.
 
 ### In progress
 
-- Installs `spring-boot-starter-test dependency` which includes JUnit, Mockito, and other useful testing libraries.
+- ## Installs Rest Assured Library for writing automated test that send requests during testing.
 
 ### Sprint
 

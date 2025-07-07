@@ -1,6 +1,6 @@
 {
-  "first_name": "Timmy",
-  "last_name": "Turner",
-  "email": "timmehhh@example.com:",
-  "job_title": "Junior Wish Coordinator"
+  "firstName": "Timmy",
+  "lastName": "Turner",
+  "department": "ENGINEERING",
+  "startDate": "2023-01-10"
 }

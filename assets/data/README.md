@@ -1,66 +1,91 @@
-# Employee Creator App
+### Schemas
 
-## Employees Database Design
+### Employee Schema
 
-### CreateEmployee DTO
+Data types for properties of Employee class.
 
-This is the type of data that will be sent from the client side
+- id : unique number (generated in backend)
+- first_name : string
+- last_name : string
+- email : unique string (generated in backend)
+- department : enum (dropdown in UI)
+- startDate : Date (datepicker UI, validation needed)
 
-```json
-{
-  "first_name": "Timmy",
-  "last_name": "Turner",
-  "email": "timmehhh@example.com:",
-  "job_title": "Junior Wish Coordinator"
-}
-```
+### Employee List - Sample Data (GET Request)
 
-A unique Id should be generated in backend
-
-### Employee Class
-
-- id : int (must be unique)
-- first_name : String
-- last_name : String
-- email : string (must be unique)
-- job_title : string
-
-### JSON Dummy Data
+This is what the Employee List Data should look like when fetched from API.
 
 ```json
 [
   {
     "id": 1,
-    "first_name": "Timmy",
-    "last_name": "Turner",
+    "firstName": "Timmy",
+    "lastName": "Turner",
     "email": "timmehhh@example.com",
-    "job_title": "Junior Wish Coordinator"
+    "department": "ENGINEERING",
+    "startDate": "2023-01-10"
   },
   {
     "id": 2,
-    "first_name": "Cosmo",
-    "last_name": "Wanda",
+    "firstName": "Cosmo",
+    "lastName": "Cosma",
     "email": "cosmo@example.com",
-    "job_title": "Chaos Engineer"
+    "department": "HUMAN_RESOURCES",
+    "startDate": "2020-08-15"
   },
   {
     "id": 3,
-    "first_name": "Wanda",
-    "last_name": "Fairywinkle",
+    "firstName": "Wanda",
+    "lastName": "Fairywinkle",
     "email": "wanda@example.com",
-    "job_title": "Senior Wish Strategist"
+    "department": "SALES",
+    "startDate": "2019-04-22"
   }
 ]
 ```
 
-### SQL SCHEMA CREATION
+### CreateEmployeeDTO Schema
+
+This is the type of data that will be sent from the client side. Note: A unique Id & email should be generated in backend
+
+- first_name : string
+- last_name : string
+- department : enum (dropdown in UI)
+- startDate : Date (datepicker UI, validation needed)
+
+Note: 🔒 "department" must be one of:
+"ENGINEERING", "SALES", "HUMAN_RESOURCES", "MARKETING", "FINANCE"
+
+### Sample Data for POST Request
+
+```json
+{
+  "firstName": "Timmy",
+  "lastName": "Turner",
+  "department": "ENGINEERING",
+  "startDate": "2023-01-10"
+}
+```
+
+### SQL Schema - Database
 
 ```sql
+-- Define enum type
+CREATE TYPE department AS ENUM (
+  'ENGINEERING',
+  'SALES',
+  'HUMAN_RESOURCES',
+  'MARKETING',
+  'FINANCE'
+);
+
+-- Table using enum
 CREATE TABLE employees (
   id SERIAL PRIMARY KEY,
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL,
   email VARCHAR(100) UNIQUE NOT NULL,
-  job_title VARCHAR(100),
+  department department NOT NULL,
+  start_date DATE NOT NULL
 );
 ```

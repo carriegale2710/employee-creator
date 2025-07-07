@@ -77,6 +77,25 @@
 			<version>2.3.232</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- https://github.com/rest-assured/rest-assured/wiki/gettingstarted -->
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>5.5.5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>json-path</artifactId>
+			<version>5.5.5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>json-schema-validator</artifactId>
+			<version>5.5.5</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
