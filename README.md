@@ -290,23 +290,26 @@ CREATE TABLE employees (
 ### 06/07/2025 - 07/07/2025 Testing setup
 
 - Created simple HomeController and tested app runs in localhost:8080 browser
+- Create Employee entity with getters and setters
+- Creates basic employee controller, service, repository classes.
+- Write code for basic get method
+
+E2E Test
+
 - Installs `spring-boot-starter-test dependency` which includes JUnit, Mockito, and other useful testing libraries.
 - Installs dependency for H2 database for testing with separate db - avoid breaking from actual DB.
+- Installs Rest Assured Library for writing automated test that send requests during testing.
+- Adds records for e2e test setup using H2 database for mocking with dummy data
+- Write simple sanity check test that fails if app cannot start
+  - Creates basic test for getAll() -> getAllEmployees_EmployeesInDB_ReturnsSuccess()
 
 ### In progress
 
-- ## Installs Rest Assured Library for writing automated test that send requests during testing.
+- write up basic tests
 
 ### Sprint
 
-- Write simple sanity check test that fails if app cannot start
-- write up basic tests
-
 ### Backlog
-
-- Create Employee entity with getters and setters
-- Write code for basic get method
-- upload dummy data
 
 ---
 
