@@ -1,23 +1,48 @@
 # Employee Creator
 
-{add test badges here, all projects you build from here on out will have tests, therefore you should have github workflow badges at the top of your repositories: [Github Workflow Badges](https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/adding-a-workflow-status-badge)}
+{add test badges here for test workflows: [Github Workflow Badges](https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/adding-a-workflow-status-badge)}
 
 [![CI](https://github.com/carriegale2710/employee-creator/actions/workflows/main.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/main.yml)
 
+## Introduction
+
+### What it is:
+
+Employee Creator is a full-stack CRUD web app built with Java Spring Boot and React TypeScript. It allows users to manage employee records (add, view, edit, delete). The project demonstrates frontend/backend integration, RESTful API design, form validation, testing, and deployment.
+
+### Why I built it:
+
+This project was created to practice building production-ready applications with testing, responsive UI, and scalable architecture. It also mirrors typical enterprise apps used in HR systems.
+
 ## Demo & Snippets
 
-- Include hosted link
-- Include images of app if CLI or Client App
+- [ ] Include hosted link: TBA
+- [ ] Include images of app if CLI or Client App
+
+//TODO - (replace with own finished front-end UI upon completion)
+
+### Feature 1: Employee List
+
+(TBA)
+
+### Feature 2: New Employee Form
+
+(TBA)
 
 ---
 
-## Requirements / Purpose
+## Techstack and why
 
-### Purpose of project
+| Layer      | Technology                   | Why I chose it                      |
+| ---------- | ---------------------------- | ----------------------------------- |
+| Backend    | Java, Spring Boot, JPA       | Production-grade APIs, type safety  |
+| DB         | MySQL, JPA                   | SQL schema control, ORM integration |
+| Frontend   | React, TypeScript, Vite      | SPA structure, compile-time safety  |
+| Styling    | Tailwind CSS / SCSS          | Component-level styling, responsive |
+| Testing    | JUnit, Mockito, REST Assured | API + unit testing                  |
+| Deployment | Heroku (TBD)                 | Easy CI/CD                          |
 
-Demonstrate understanding of writing RESTful APIs.
-
-### Techstack and why
+### Other notes:
 
 1. Backend:
 
@@ -29,7 +54,387 @@ Demonstrate understanding of writing RESTful APIs.
    - Typescript: validating forms for user input before being sent to DB saves time in both DX and UX.
    - SCSS/Tailwind: For modular, reusable styles and themes based on design systems.
 
-### MVP - Project Specification
+---
+
+## Build Steps
+
+- how to build / run project
+- use proper code snippets if there are any commands to run
+
+```
+# Clone the repo
+git clone https://github.com/your-username/employee-creator.git
+cd employee-creator
+
+# Backend setup
+cd backend
+./mvnw spring-boot:run
+
+# Frontend setup
+cd frontend
+npm install
+npm run dev
+
+```
+
+---
+
+## Testing
+
+| Type       | Tools Used      | Status |
+| ---------- | --------------- | ------ |
+| Unit Tests | JUnit + Mockito | ✅     |
+| API Tests  | REST Assured    | ✅     |
+| Frontend   | Vitest / Manual | ⏳     |
+
+```
+./mvnw test      # backend
+npm run test     # frontend (if added)
+
+```
+
+---
+
+## Design Goals / Approach
+
+### Overview:
+
+- Build a full-stack app:
+  - Backend: Spring Boot REST API (CRUD for employees)
+  - Frontend: React + TypeScript
+- Must be production-ready, testable, and deployed
+- Include:
+
+  - Basic validations
+  - Responsive layout
+  - Hosting (Heroku, AWS, etc.)
+
+### QA Checklist
+
+| Area     | Goals                                                                                                                                                                                                                                                                                           |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Backend: | - App compiles and runs (Spring Boot)<br>- API has 3 working CRUD endpoints (GET, POST, DELETE)<br>- Unit/e2e tests run and pass ( J-Unit, Mockito)<br>- Error handling exists<br>- Logging strategy in place ( )                                                                               |
+| Frontend | - Tech-stack: React + Typescript<br>- React app compiles and runs (Vite)<br>- Create and view employee working<br>- Validation added (forms)<br>- Testing (opt) (Vitest)<br>- Form + list are styled and responsive (SCSS/Tailwind)                                                             |
+| Delivery | - README includes setup steps to compile and run the API and the Web app in localhost.<br>- Hosting link works (Heroku, AWS, Azure, etc.)<br>- Code is clean and documented.<br>- Production ready.<br>- Understandable and maintainable by other developers.<br>- Bug free, compiles and work. |
+
+### Implementation
+
+Why did you implement this the way you did?
+
+- Used enum for department to enforce consistency.
+- Used top-down TDD to define backend before connecting to frontend.
+  - Write up basic tests before coding to understand functionality, entity shapes & edge cases.
+- Used Tailwind for quick responsive UI with minimal setup.
+
+---
+
+## Features
+
+- What features does the project have? list them...
+
+| ID  | Feature         | Description                            |
+| --- | --------------- | -------------------------------------- |
+| F1  | List Employees  | View a paginated list of all employees |
+| F2  | Create Employee | Submit a form to add a new employee    |
+| F3  | Delete Employee | Remove an employee from the system     |
+
+### API Endpoints
+
+| ID  | Method   | Endpoint         | Input             | Output Data   | Success Response |
+| --- | -------- | ---------------- | ----------------- | ------------- | ---------------- |
+| 1   | `GET`    | `/employees`     | none              | DB List       | `200 OK`         |
+| 2   | `POST`   | `/employees`     | CreateEmployeeDTO | employee data | `201 Created`    |
+| 3   | `DELETE` | `/employees/:id` | employee id       | no content    | `204 No Content` |
+
+---
+
+## Change logs
+
+- Write a paragraph labelled with the date every day you work on the project to discuss what you've done for the say. Be specific about the changes that have happened for that day.
+
+### 05/07/2025 - Backend Project Setup
+
+- Installed SpringBoot and dependencies
+- Setup application.properties file for mySQL
+- Decided on SQL schema for employee database
+- Defining data types for employees table in `assets/data/README.md`
+- Linking to SQL and testing table database syncing
+
+### 06/07/2025 - 07/07/2025 Testing setup
+
+- Created simple HomeController and tested app runs in localhost:8080 browser
+
+### In progress
+
+- Installs dependencies for mocking + testing setup: Mockito, JSON Schema, REST Assured.
+
+### Sprint
+
+- Write simple sanity check test that fails if app cannot start
+- write up basic tests
+
+### Backlog
+
+- Create Employee entity with getters and setters
+- Write code for basic get method
+- upload dummy data
+
+---
+
+## Known issues
+
+- Remaining bugs, things that have been left unfixed
+- Features that are buggy / flimsy
+
+---
+
+## Future Goals
+
+- What are the immediate features you'd add given more time / ideas parking lot:
+- Find employee by id
+- Search Bar (find by name match)
+
+## Learning Curves - What did you struggle with?
+
+- What? Why? How?
+
+---
+
+## Licensing Details
+
+- What type of license are you releasing this under?
+
+---
+
+## Related projects, reimplementations
+
+- link client app README here later
+
+---
+
+## Further details/Appendix
+
+### User Stories
+
+| ID  | Feature           | User Wants To...   | So They Can...    | User should be able to...                                                  |
+| --- | ----------------- | ------------------ | ----------------- | -------------------------------------------------------------------------- |
+| 1   | `List Employees`  | See all employees  | Review records    | Click link to view a paginated list of all employee records                |
+| 2   | `Create Employee` | Add a new employee | Register new hire | Click button that opens a form to add a new employee as a new record in DB |
+| 3   | `Delete Employee` | Delete employee    | Remove old record | Click a button to delete a record of an existing employee in DB            |
+
+### User Flows
+
+\*Red borders are core MVP features
+![userflows](assets/userflows/UserFlows%20_%20Mermaid%20Chart-2025-07-07-104854.png)
+
+See [User Flows Mermaid Diagram](https://www.mermaidchart.com/app/projects/dc3bdcc4-0838-4954-b61e-39ed0000a222/diagrams/7ff245ec-49e3-47a7-af4d-bf5ce3f4158b/version/v0.1/edit)
+
+```mermaid
+---
+config:
+  layout: elk
+  theme: neutral
+  look: neo
+---
+flowchart TD
+ subgraph s2["ADD EMPLOYEE"]
+        C1@{ label: "User clicks 'Add Employee'" }
+        C2["Show create form"]
+        C3["User submits form"]
+        C4["POST /employees"]
+        C5["Return new employee data"]
+        C6["Show success / update list"]
+  end
+ subgraph s4["DELETE EMPLOYEE"]
+        E1@{ label: "User clicks 'Delete'" }
+        E2["Show confirmation popup"]
+        E3["User confirms"]
+        E4["DELETE /employees/:id"]
+        E5["Return 204 No Content"]
+        E6["Remove from UI and show success"]
+  end
+ subgraph s1["VIEW EMPLOYEE LIST"]
+        A1@{ label: "User clicks 'Employees' nav link" }
+        A2["GET /employees"]
+        A3["Return paginated employee list"]
+        A4["Render employee list in UI"]
+  end
+ subgraph s5["VIEW EMPLOYEE RECORD"]
+        B1["User clicks employee from list"]
+        B2["GET /employees/:id"]
+        B3["Return employee details"]
+        B4["Render employee profile view"]
+  end
+ subgraph s3["EDIT EMPLOYEE"]
+        D1@{ label: "User clicks 'Edit' on profile" }
+        D2["Show pre-filled form"]
+        D3["User submits form"]
+        D4["PUT /employees/:id"]
+        D5["Return updated employee data"]
+        D6["Show updated profile / list"]
+  end
+    A1 --> A2
+    A2 --> A3
+    A3 --> A4
+    B1 --> B2
+    B2 --> B3
+    B3 --> B4
+    C1 --> C2
+    C2 --> C3
+    C3 --> C4
+    C4 --> C5
+    C5 --> C6
+    D1 --> D2
+    D2 --> D3
+    D3 --> D4
+    D4 --> D5
+    D5 --> D6
+    E1 --> E2
+    E2 --> E3
+    E3 --> E4
+    E4 --> E5
+    E5 --> E6
+    A1@{ shape: rect}
+    C1@{ shape: rect}
+    D1@{ shape: rect}
+    E1@{ shape: rect}
+     A1:::Pine
+     A2:::api
+     A3:::api
+     A4:::Pine
+     C1:::Pine
+     C4:::api
+     C5:::api
+     C6:::Pine
+     D1:::Pine
+     D4:::api
+     D5:::api
+     D6:::Pine
+     E1:::Pine
+     E4:::api
+     E5:::api
+     E6:::Pine
+     B1:::Pine
+     B2:::api
+     B3:::api
+     B4:::Pine
+    classDef api fill:#fdf6e3,stroke:#b58900,stroke-width:1px
+    classDef Pine stroke-width:1px, stroke-dasharray:none, stroke:#254336, fill:#27654A, color:#FFFFFF
+    style s4 stroke:#D50000
+    style s2 stroke:#D50000
+    style s1 stroke:#D50000
+
+```
+
+### Service Layers: (update later)
+
+![service-design](assets/refs/layer-example.png)
+
+## Schemas
+
+### Employee Schema
+
+Data types for properties of Employee class.
+
+- id : unique number (generated in backend)
+- first_name : string
+- last_name : string
+- email : unique string (generated in backend)
+- department : enum (dropdown in UI)
+- startDate : Date (datepicker UI, validation needed)
+
+### Employee List - Sample Data (GET Request)
+
+This is what the Employee List Data should look like when fetched from API.
+
+```json
+[
+  {
+    "id": 1,
+    "firstName": "Timmy",
+    "lastName": "Turner",
+    "email": "timmehhh@example.com",
+    "department": "ENGINEERING",
+    "startDate": "2023-01-10"
+  },
+  {
+    "id": 2,
+    "firstName": "Cosmo",
+    "lastName": "Cosma",
+    "email": "cosmo@example.com",
+    "department": "HUMAN_RESOURCES",
+    "startDate": "2020-08-15"
+  },
+  {
+    "id": 3,
+    "firstName": "Wanda",
+    "lastName": "Fairywinkle",
+    "email": "wanda@example.com",
+    "department": "SALES",
+    "startDate": "2019-04-22"
+  }
+]
+```
+
+### CreateEmployeeDTO Schema
+
+This is the type of data that will be sent from the client side. Note: A unique Id & email should be generated in backend
+
+- first_name : string
+- last_name : string
+- department : enum (dropdown in UI)
+- startDate : Date (datepicker UI, validation needed)
+
+Note: 🔒 "department" must be one of:
+"ENGINEERING", "SALES", "HUMAN_RESOURCES", "MARKETING", "FINANCE"
+
+### Sample Data for POST Request
+
+```json
+{
+  "firstName": "Timmy",
+  "lastName": "Turner",
+  "email": "timmehhh@example.com",
+  "department": "ENGINEERING",
+  "startDate": "2023-01-10"
+}
+```
+
+### SQL Schema - Database
+
+```sql
+-- Define enum type
+CREATE TYPE department AS ENUM (
+  'ENGINEERING',
+  'SALES',
+  'HUMAN_RESOURCES',
+  'MARKETING',
+  'FINANCE'
+);
+
+-- Table using enum
+CREATE TABLE employees (
+  id SERIAL PRIMARY KEY,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  email VARCHAR(100) UNIQUE NOT NULL,
+  department department NOT NULL,
+  start_date DATE NOT NULL
+);
+```
+
+## Project Brief
+
+### Purpose
+
+Demonstrates an understanding of:
+
+- writing RESTful APIs with basic CRUD endpoints
+- building front-end UIs with React
+- integration of backend + frontend code
+- deployment of full-stack web applications
+
+### MVP Requirements
 
 [Project Brief](https://github.com/nology-tech/aus-post-course-guide/tree/main/projects/employee-creator)
 
@@ -50,9 +455,9 @@ Also code should be:
 - [ ] Hosting (Heroku, AWS, Azure, etc.) is required.
 - [ ] If your code includes unit tests you may use a unit test framework of your choice.
 
-## Hints
+### Hints
 
-### React hints
+#### React hints
 
 - React Redux is recommended.
   - You may want to use a Redux middlewear like thunks or epics to handle async actions
@@ -72,7 +477,7 @@ Also code should be:
   - [ ] media queries
   - [ ] flexbox
 
-### RESTful API hints
+#### RESTful API hints
 
 - The list can be a local database
   - [x] MySQL is reccomended
@@ -84,9 +489,7 @@ Also code should be:
   - [ ] To get a list of existing employees `/list`
   - [ ] To delete an employee `delete?id={id}`
 
-## Design Snippets
-
-### Basic UI Example
+### Design Snippets (examples from brief)
 
 ![Employee List Page](assets/UI/employee-list.PNG)
 ![Employee Edit / Create Form 1](assets/UI/form-part-1.PNG)
@@ -119,17 +522,6 @@ Also code should be:
   - [x] MySQL Driver
   - [x] Spring Devtools
 
-- [x] application.properties starter:
-
-```
-spring.datasource.url=jdbc:mysql://localhost:3306/db_name
-spring.datasource.username=root
-spring.datasource.password=MyPass
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
-spring.jpa.generate-ddl=true
-```
-
 Testing
 
 - https://spring.io/guides/gs/testing-web/
@@ -149,174 +541,3 @@ API Semantics
 - https://restfulapi.net/resource-naming/
 
 ---
-
-## Build Steps
-
-- how to build / run project
-- use proper code snippets if there are any commands to run
-
----
-
-## Design Goals / Approach
-
-1. Design goals:
-
-- Understandable and maintainable by other developers.
-- Robust and handle error situations.
-
-- layers:
-  ![service-design](assets/refs/layer-example.png)
-
-- Use a top-down approach for backend using TDD framework -> write up basic tests before coding to understand functionality, entity shapes & edge cases.
-
-2. Why did you implement this the way you did?
-
----
-
-## Features
-
-- What features does the project have?
-- list them...
-
-### MVP
-
-1. Create an employee
-
-- POST
-- input: formData -> CreateEmployeeDTO
-
-2. Delete employee from DB
-
-- DELETE (or PUT if soft delete)
-- input : employee id
-
-3. Edit employee details
-
-- PUT
-- /id/edit
-- formData -> CreateEmployeeDTO
-
-4. Employee List
-
-- GET (for all)
-- list/page/search
-
-### BONUS
-
-5. Find employee by id
-
-- GET
-- /id
-
-6. Search Bar (find by name match)
-
-- GET
-- /name
-
----
-
-## Known issues
-
-- Remaining bugs, things that have been left unfixed
-- Features that are buggy / flimsy
-
----
-
-## Future Goals
-
-- What are the immediate features you'd add given more time / ideas parking lot:
-
----
-
-## Change logs
-
-- Write a paragraph labelled with the date every day you work on the project to discuss what you've done for the say. Be specific about the changes that have happened for that day.
-
-### 05/07/2025 - Backend Project Setup
-
-- Installed SpringBoot and dependencies
-- Setup application.properties file for mySQL
-- Decided on SQL schema for employee database
-- Defining data types for employees table in `assets/data/README.md`
-- Linking to SQL and testing table database syncing and migrations
-
-## What did you struggle with?
-
-- What? Why? How?
-
----
-
-## Licensing Details
-
-- What type of license are you releasing this under?
-
----
-
-## Further details, related projects, reimplementations
-
-- If it's an API, is there a client app that works with this project? link it
-
-## Employees Database
-
-### CreateEmployee DTO
-
-This is the type of data that will be sent from the client side
-
-```json
-{
-  "first_name": "Timmy",
-  "last_name": "Turner",
-  "email": "timmehhh@example.com:",
-  "job_title": "Junior Wish Coordinator"
-}
-```
-
-A unique Id should be generated in backend
-
-### Employee Class
-
-- id : int (must be unique)
-- first_name : String
-- last_name : String
-- email : string (must be unique)
-- job_title : string
-
-### JSON Dummy Data
-
-```json
-[
-  {
-    "id": 1,
-    "first_name": "Timmy",
-    "last_name": "Turner",
-    "email": "timmehhh@example.com",
-    "job_title": "Junior Wish Coordinator"
-  },
-  {
-    "id": 2,
-    "first_name": "Cosmo",
-    "last_name": "Wanda",
-    "email": "cosmo@example.com",
-    "job_title": "Chaos Engineer"
-  },
-  {
-    "id": 3,
-    "first_name": "Wanda",
-    "last_name": "Fairywinkle",
-    "email": "wanda@example.com",
-    "job_title": "Senior Wish Strategist"
-  }
-]
-```
-
-### SQL SCHEMA CREATION
-
-```sql
-CREATE TABLE employees (
-  id SERIAL PRIMARY KEY,
-  first_name VARCHAR(50) NOT NULL,
-  last_name VARCHAR(50) NOT NULL,
-  email VARCHAR(100) UNIQUE NOT NULL,
-  job_title VARCHAR(100),
-);
-```
