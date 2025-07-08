@@ -1,6 +1,7 @@
 package io.carrie.employee.employee;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,13 +11,11 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 
-import io.carrie.employee.employee.Employee;
-import io.carrie.employee.employee.EmployeeRepository;
 import io.restassured.RestAssured;
-
+import io.restassured.http.ContentType;
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static org.hamcrest.Matchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -67,9 +66,7 @@ public class EmployeeEndToEndTest {
     // act
     // assert
 
-    // SECTION - getAll()
-    // should return correct all records
-    // should not throw error if no records yet
+    // SECTION - GET "/employees"
 
     @Test
     public void getAllEmployees_EmployeesInDB_ReturnsSuccess() {
@@ -89,12 +86,7 @@ public class EmployeeEndToEndTest {
                 .body("$", hasSize(0));
     }
 
-    // SECTION - getById()
-
-    // case 1: employee id found
-    //// returns 200 OK
-    //// returns data with correct id
-    // (edge) if data is private info, needs authorisation for access
+    // SECTION - GET "/employees/{id}"
 
     @Test
     public void getEmployeeById_EmployeeInDB_ReturnsSuccess() {
@@ -117,8 +109,7 @@ public class EmployeeEndToEndTest {
                 .body(matchesJsonSchemaInClasspath("schemas/employee-schema.json"));
     }
 
-    // case 2: employee id NOT found
-    // returns 404 not found error
+    // TODO - (edge) employee id found but data is private/needs login authorisation
 
     @Test
     public void getEmployeeById_EmployeeNotInDB_NotFound() {
@@ -127,9 +118,6 @@ public class EmployeeEndToEndTest {
                 .then().statusCode(HttpStatus.NOT_FOUND.value());
     }
 
-    // case 3: id is not valid
-    // returns bad request error
-
     @Test
     public void getEmployeeById_IdNotValid_BadRequest() {
         given()
@@ -137,23 +125,123 @@ public class EmployeeEndToEndTest {
                 .then().statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
-    // SECTION - deleteById
+    // SECTION - DELETE "/employees/{id}"
 
-    // case 1 - id found in DB
-    // data is valid and correct
-    // data is invalid or corrupt
+    @Test
+    public void deleteEmployeeById_EmployeeInDb_ReturnsSuccessNoContent() {
+        Integer existingId = employeeList.get(0).getId();
+        given()
+                .when().delete("employees/" + existingId)
+                .then().statusCode(HttpStatus.NO_CONTENT.value())
+                .body("$", hasSize(0));
+        // todo - id must be double-checked with data
+        // todo - check record was actually deleted from repo
+    }
 
-    // case 2 - id not found in DB
+    @Test
+    public void deleteEmployeeById_EmployeeNotInDB_NotFound() {
+        given()
+                .when().delete("/employees/999")
+                .then().statusCode(HttpStatus.NOT_FOUND.value());
+    }
 
-    // SECTION - create
+    @Test
+    public void deleteEmployeeById_IdNotValid_BadRequest() {
+        given()
+                .when().delete("/employees/sfee23")
+                .then().statusCode(HttpStatus.BAD_REQUEST.value());
+    }
 
-    // case 1 - successfully added new employee to DB
-    // returns 201 CREATED
-    // returns new employee data saved in DB
+    // SECTION - POST "/employees"
 
-    // 2.1 - DTO data is invalid or missing (BAD REQUEST)
-    // 2.2 - duplicate data already exists in DB
-    // 2.3 - email or phone number is already used
-    // 2.4 - department does not exist in DB
+    @Test
+    public void createEmployee_ValidData_Created() {
 
+        HashMap<String, String> data = new HashMap<>();
+        data.put("firstName", "Cosmo");
+        data.put("lastName", "Cosma");
+        data.put("email", "cosmo@example.com");
+
+        given()
+                .contentType(ContentType.JSON).body(data)
+                .when().post("/employees")
+                .then().statusCode(HttpStatus.CREATED.value())
+                .body("firstName", equalTo("Cosmo")); // returns correct data
+        // todo - check data was successfully added as new employee in DB
+
+    }
+
+    @Test
+    public void createEmployee_MissingData_BadRequest() {
+        HashMap<String, String> data = new HashMap<>();
+        data.put("firstName", "Cosmo");
+
+        given()
+                .contentType(ContentType.JSON).body(data)
+                .when().post("/employees")
+                .then().statusCode(HttpStatus.BAD_REQUEST.value());
+
+    }
+
+    @Test
+    public void createEmployee_InvalidName_BadRequest() {
+
+        HashMap<String, String> data = new HashMap<>();
+
+        data.put("firstName", "Cosmo");
+        data.put("lastName", "Cosma3q43"); // invalid name
+        data.put("email", "cosmo@example.com");
+
+        given()
+                .contentType(ContentType.JSON).body(data)
+                .when().post("/employees")
+                .then().statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    public void createEmployee_InvalidEmail_BadRequest() {
+
+        HashMap<String, String> data = new HashMap<>();
+
+        data.put("firstName", "Cosmo");
+        data.put("lastName", "Cosma");
+        data.put("email", "cosmoexample.com"); // invalid email
+
+        given()
+                .contentType(ContentType.JSON).body(data)
+                .when().post("/employees")
+                .then().statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    public void createEmployee_DuplicateData_BadRequest() {
+
+        HashMap<String, String> data = new HashMap<>();
+        data.put("firstName", "Timmy");
+        data.put("lastName", "Turner");
+        data.put("email", "timmehhh@example.com");
+
+        given()
+                .contentType(ContentType.JSON).body(data)
+                .when().post("/employees")
+                .then().statusCode(HttpStatus.BAD_REQUEST.value());
+        // todo NOTE - this is caught by API but under 500 server error not 400!
+    }
+
+    @Test
+    public void createEmployee_DuplicateEmail_BadRequest() {
+
+        HashMap<String, String> data = new HashMap<>();
+        data.put("firstName", "Icky");
+        data.put("lastName", "Vicky");
+        data.put("email", "timmehhh@example.com"); // only email matters
+
+        given()
+                .contentType(ContentType.JSON).body(data)
+                .when().post("/employees")
+                .then().statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    // SECTION - PUT "/employees/{id}"
+    // (on hold - for future editing features)
 }
