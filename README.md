@@ -162,7 +162,8 @@ Once running, your API will be available at:
 http://localhost:8080
 ```
 
-Opening this in your browser should return "Hello, world"
+Opening this in your browser should return "Hello, world".
+Use [Postman](https://www.postman.com/downloads/) or a browser (for GET requests) to test.
 
 - **GET all employees:**
   `http://localhost:8080/api/employees`
@@ -180,12 +181,9 @@ Opening this in your browser should return "Hello, world"
     {
       "firstName": "Timmy",
       "lastName": "Turner",
-      "email": "timmy@fairy.com",
-      "jobTitle": "Intern"
+      "email": "timmy@fairy.com"
     }
     ```
-
-- Use [Postman](https://www.postman.com/downloads/) or a browser (for GET requests) to test.
 
 ---
 
@@ -408,6 +406,7 @@ Features that are buggy / flimsy
 ## Learning Curves - What did you struggle with?
 
 - What? Why? How?
+- Setting up Github Actions was a bit tricky in terms of config. Too many commits to test it.
 
 ---
 
