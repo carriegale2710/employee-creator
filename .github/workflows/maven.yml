@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./employee  # Your Spring app folder
+        working-directory: ./employee # Your Spring app folder
 
     steps:
       - uses: actions/checkout@v4
@@ -32,11 +32,10 @@ jobs:
           cache: maven
 
       - name: 🛠️ Build with Maven
-        run: cd employee && mvn -B package --file pom.xml
+        run: mvn -B package --file pom.xml
 
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
       - name: 📦 Update dependency graph
         uses: advanced-security/maven-dependency-submission-action@v4
         with:
           directory: ./employee
-
