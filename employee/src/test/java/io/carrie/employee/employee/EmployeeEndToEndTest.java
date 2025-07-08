@@ -112,7 +112,8 @@ public class EmployeeEndToEndTest {
                 .body("id", equalTo(existingId))
                 .body("firstName", equalTo("Wanda"))
                 .body("lastName", equalTo("Cosmo"))
-                .body("email", equalTo("wanda.cosmo@example.com"));
+                .body("email", equalTo("wanda.cosmo@example.com"))
+                .body(matchesJsonSchemaInClasspath("schemas/employee-schema.json"));
     }
 
     // case 2: employee id NOT found
