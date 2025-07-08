@@ -16,7 +16,6 @@ import io.restassured.RestAssured;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.equalTo;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -38,22 +37,9 @@ public class EmployeeEndToEndTest {
         this.employeeRepository.deleteAll();
         this.employeeList.clear();
 
-        // create some employees for testing:
+        System.out.println(employeeList);
 
-        /*
-         * {
-         * "id": 1,
-         * "first_name": "Timmy",
-         * "last_name": "Turner",
-         * "email": "timmehhh@example.com",
-         * },
-         * {
-         * "id": 2,
-         * "first_name": "Cosmo",
-         * "last_name": "Wanda",
-         * "email": "cosmo@example.com",
-         * }
-         */
+        // create some employees for testing:
 
         Employee employee1 = new Employee();
         employee1.setFirstName("Timmy");
@@ -69,6 +55,11 @@ public class EmployeeEndToEndTest {
         this.employeeRepository.save(employee2);
         this.employeeList.add(employee2);
 
+    }
+
+    @Test
+    public void printAllEmployees() {
+        employeeRepository.findAll().forEach(System.out::println);
     }
 
     // test for /employees
@@ -106,30 +97,31 @@ public class EmployeeEndToEndTest {
 
     @Test
     public void getEmployeeById_EmployeeInDB_ReturnsSuccess() {
+        Integer existingId = this.employeeList.get(0).getId();
         given()
-                .when().get("/employees/2")
+                .when().get("/employees/" + existingId)
                 .then().statusCode(HttpStatus.OK.value());
     }
 
     @Test
-    public void getEmployeeById_EmployeeInDB_ReturnsSuccessAndCorrectId() {
+    public void getEmployeeById_EmployeeInDB_ReturnsCorrectData() {
+        Integer existingId = this.employeeList.get(1).getId();
         given()
-                .when().get("/employees/2")
+                .when().get("/employees/" + existingId)
                 .then().statusCode(HttpStatus.OK.value())
-                .body("id", equalTo(2));
-        given()
-                .when().get("/employees/1")
-                .then().statusCode(HttpStatus.OK.value())
-                .body("id", equalTo(1));
+                .body("id", equalTo(existingId))
+                .body("firstName", equalTo("Wanda"))
+                .body("lastName", equalTo("Cosmo"))
+                .body("email", equalTo("wanda.cosmo@example.com"));
     }
 
     // case 2: employee id NOT found
     // returns 404 not found error
 
     @Test
-    public void getEmployeeById_EmployeeNotInDB_ReturnsNotFoundError() {
+    public void getEmployeeById_EmployeeNotInDB_NotFound() {
         given()
-                .when().get("/employees/1")
+                .when().get("/employees/999")
                 .then().statusCode(HttpStatus.NOT_FOUND.value());
     }
 
@@ -137,7 +129,7 @@ public class EmployeeEndToEndTest {
     // returns bad request error
 
     @Test
-    public void getEmployeeById_IdNotValid_ReturnsBadRequestError() {
+    public void getEmployeeById_IdNotValid_BadRequest() {
         given()
                 .when().get("/employees/sfee23")
                 .then().statusCode(HttpStatus.BAD_REQUEST.value());
