@@ -31,14 +31,15 @@ public class EmployeeController {
         return new ResponseEntity<>(allEmployees, HttpStatus.OK);
     }
 
-    @GetMapping("{/id}")
-    public ResponseEntity<Employee> getById(@PathVariable Integer id) throws Exception {
-        Optional<Employee> foundEmployee = this.employeeService.findById(id);
-        if (foundEmployee.isPresent()) {
-            return new ResponseEntity<>(foundEmployee.get(), HttpStatus.OK);
-        }
-        throw new Exception("Employee " + id + " not found.");
-    }
+    // @GetMapping("{/id}")
+    // public ResponseEntity<Employee> getById(@PathVariable Integer id) throws
+    // Exception {
+    // Optional<Employee> foundEmployee = this.employeeService.findById(id);
+    // if (foundEmployee.isPresent()) {
+    // return new ResponseEntity<>(foundEmployee.get(), HttpStatus.OK);
+    // }
+    // throw new Exception("Employee " + id + " not found.");
+    // }
 
     @PostMapping
     public ResponseEntity<Employee> create(@Valid @RequestBody CreateEmployeeDTO data) {
