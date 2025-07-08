@@ -1,6 +1,6 @@
 # Employee Creator
 
-[![CI](https://github.com/carriegale2710/employee-creator/actions/workflows/main.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/main.yml) [![Run Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/test.yml)
+[![CI](https://github.com/carriegale2710/employee-creator/actions/workflows/main.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/main.yml) [![Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/test.yml)
 
 ## Introduction
 
