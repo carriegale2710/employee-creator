@@ -214,6 +214,7 @@ npm run test     # frontend (if added)
 ## Design Goals / Approach
 
 See [Project Requirements](project-brief.md)
+See [Figma File](https://www.figma.com/design/YflKHxYST36Mj1gk73PX1s/employee-creator?node-id=0-1&t=pbSmg0X0pnkWJEaF-1)
 
 ### Overview
 
@@ -341,49 +342,79 @@ Backend E2E Test
   - Creates basic test for getAll() -> getAllEmployees_EmployeesInDB_ReturnsSuccess()
 - test badges update - Github actions
 
-### 07/07/2025 - Basic REST API CRUD endpoints
+### 08/07/2025 - Basic REST API CRUD endpoints
 
-#### Endpoints
+Created endpoints for:
 
-- getAll method
-- getById method
-- create method
-- deleteById method
+- getAll
+- getById
+- create
+- deleteById
 
-#### Tests
+### 09/07/2025 - Writing tests
 
-- outlined e2e test cases and edges for new all endpoints
-- fixed application.properties config bug for test suite
+- Outlined e2e test cases and edges for new all endpoints
+- Fixed application.properties config bug for test suite
 - Created config folder for ModelMapper library - easier to create new entities compared to manual setters
+- Created JSON schema for e2e test for creating new employees in DB
+- SmokeTest sanity check test
+- Fixed Github workflows for automated testing (see badges at top)
 
 ### In progress
 
-- create JSON schema for e2e test for creating new employees in DB
+- writing unit tests for Service layer (business logic)
 
 ### Sprint
 
-- write up basic integration tests
-- outlining unit tests
-- writing unit tests
+- basic react front-end
+- editById PUT method
 
 ### Backlog
 
-- react front-end
-- deployment test
+- create React front-end with Vite
+- install scss
+- write up basic tests for React front-end (Vite/Zod)
+- basic components: Page, List, Card, Button, Header
+- React build, test and deploy workflow
+- fetching and display employee data from API to react
+- deploy MVP app in AWS
 
 ---
 
 ## QA Checklist
 
-| Area     | Goals                                                                                                                                                                                                                                                                                           |
-| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Backend: | - App compiles and runs (Spring Boot)<br>- API has 3 working CRUD endpoints (GET, POST, DELETE)<br>- Unit/e2e tests run and pass ( J-Unit, Mockito)<br>- Error handling exists<br>- Logging strategy in place ( )                                                                               |
-| Frontend | - Tech-stack: React + Typescript<br>- React app compiles and runs (Vite)<br>- Create and view employee working<br>- Validation added (forms)<br>- Testing (opt) (Vitest)<br>- Form + list are styled and responsive (SCSS/Tailwind)                                                             |
-| Delivery | - README includes setup steps to compile and run the API and the Web app in localhost.<br>- Hosting link works (Heroku, AWS, Azure, etc.)<br>- Code is clean and documented.<br>- Production ready.<br>- Understandable and maintainable by other developers.<br>- Bug free, compiles and work. |
+### 🔧 Backend (Spring Boot)
+
+- [x] App compiles and runs
+- [x] API has 3 working CRUD endpoints (GET, POST, DELETE)
+- [/] Unit + end-to-end tests pass (JUnit, Mockito)
+- [ ] Error handling implemented
+- [ ] Logging strategy in place
+
+### 💻 Frontend (React + TypeScript)
+
+- [ ] React app compiles and runs (Vite)
+- [ ] Create + view employee functionality works
+- [ ] Form validation added
+- [ ] Optional testing included (Vitest)
+- [ ] UI styled + responsive (SCSS/Tailwind)
+
+### 🚚 Delivery & Deployment
+
+- [x] README includes clear setup steps for both API and Web app (local dev)
+- [ ] Hosting link works (Heroku, AWS, Azure, etc.)
+- [ ] Code is clean + well documented
+- [ ] App is production-ready
+- [ ] Codebase is understandable and maintainable
+- [ ] Bug-free and everything compiles + runs as expected
+
+---
 
 ## Known issues
 
 Remaining bugs, things that have been left unfixed
+
+- deleteById method
 
 Features that are buggy / flimsy
 
@@ -391,27 +422,32 @@ Features that are buggy / flimsy
 
 ## Future Goals
 
-- What are the immediate features you'd add given more time / ideas parking lot:
-- Find employee by id
-- Search Bar (find by name match)
+What are the immediate features you'd add given more time / ideas parking lot:
+
+- Add API Pagination (with findAll(Pageable pageable) from JpaRepository)
+- Search Bar (find by name match with query params)
+- Login and authentication service/security (for personal/sensitive data access) - Context API in frontend
 
 ## Learning Curves - What did you struggle with?
 
-- What? Why? How?
+What? Why? How?
+
 - Setting up Github Actions was a bit tricky in terms of config. Too many commits to test it.
 
 ---
 
 ## Licensing Details
 
-- What type of license are you releasing this under?
+What type of license are you releasing this under?
 
 ---
 
 ## Related projects, reimplementations
 
-- link client app README here later
+Link client app README here later
 
 ---
 
 ## Appendix
+
+misc. info

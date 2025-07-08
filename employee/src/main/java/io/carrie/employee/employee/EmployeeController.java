@@ -49,10 +49,10 @@ public class EmployeeController {
     @DeleteMapping
     public ResponseEntity<Void> deleteById(@PathVariable Integer id) throws Exception {
         boolean deleted = this.employeeService.deleteById(id);
-        if (deleted) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        if (!deleted) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        throw new Exception("Employee " + id + " not found.");
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 
     // @PutMapping

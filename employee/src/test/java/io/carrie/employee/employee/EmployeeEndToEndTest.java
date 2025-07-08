@@ -225,7 +225,7 @@ public class EmployeeEndToEndTest {
                 .contentType(ContentType.JSON).body(data)
                 .when().post("/employees")
                 .then().statusCode(HttpStatus.BAD_REQUEST.value());
-        // todo NOTE - this is caught by API but under 500 server error not 400!
+        // todo NOTE - this should not be 500 internal server error but 400!
     }
 
     @Test
