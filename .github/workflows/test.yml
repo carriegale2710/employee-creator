@@ -25,3 +25,4 @@ jobs:
 
       - name: 📋 Run tests
         run: mvn clean verify #Builds and runs all your tests (including E2E)
+        working-directory: ./employee
