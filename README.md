@@ -354,10 +354,13 @@ Backend E2E Test
 
 #### Tests
 
-### In progress
-
 - outlined e2e test cases and edges for new all endpoints
 - fixed application.properties config bug for test suite
+- Created config folder for ModelMapper library - easier to create new entities compared to manual setters
+
+### In progress
+
+- create JSON schema for e2e test for creating new employees in DB
 
 ### Sprint
 
