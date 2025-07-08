@@ -1,18 +1,14 @@
 # Employee Creator
 
-{add test badges here for test workflows: [Github Workflow Badges](https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/adding-a-workflow-status-badge)}
-
-[![CI](https://github.com/carriegale2710/employee-creator/actions/workflows/main.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/main.yml)
-
-[![Run Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/test.yml)
+[![CI](https://github.com/carriegale2710/employee-creator/actions/workflows/main.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/main.yml) [![Run Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/test.yml)
 
 ## Introduction
 
-### What it is:
+### What it is
 
 Employee Creator is a full-stack CRUD web app built with Java Spring Boot and React TypeScript. It allows users to manage employee records (add, view, edit, delete). The project demonstrates frontend/backend integration, RESTful API design, form validation, testing, and deployment.
 
-### Why I built it:
+### Why I built it
 
 This project was created to practice building production-ready applications with testing, responsive UI, and scalable architecture. It also mirrors typical enterprise apps used in HR systems.
 
@@ -35,16 +31,16 @@ This project was created to practice building production-ready applications with
 
 ## Techstack and why
 
-| Layer      | Technology                   | Why I chose it                      |
-| ---------- | ---------------------------- | ----------------------------------- |
-| Backend    | Java, Spring Boot, JPA       | Production-grade APIs, type safety  |
-| DB         | MySQL, JPA                   | SQL schema control, ORM integration |
-| Frontend   | React, TypeScript, Vite      | SPA structure, compile-time safety  |
-| Styling    | Tailwind CSS / SCSS          | Component-level styling, responsive |
-| Testing    | JUnit, Mockito, REST Assured | API + unit testing                  |
-| Deployment | Heroku (TBD)                 | Easy CI/CD                          |
+| Layer      | Technology                       | Why I chose it                      |
+| ---------- | -------------------------------- | ----------------------------------- |
+| Backend    | Java, Spring Boot, JPA           | Production-grade APIs, type safety  |
+| DB         | MySQL, JPA                       | SQL schema control, ORM integration |
+| Frontend   | React, TypeScript, Vite          | SPA structure, compile-time safety  |
+| Styling    | Tailwind (TBD) CSS / SCSS        | Component-level styling, responsive |
+| Testing    | JUnit, Mockito, REST Assured, H2 | API e2e + unit tests, mock data     |
+| Deployment | Heroku (TBD)                     | Easy CI/CD                          |
 
-### Other notes:
+### Other notes
 
 1. Backend:
 
@@ -63,13 +59,14 @@ This project was created to practice building production-ready applications with
 - how to build / run project
 - use proper code snippets if there are any commands to run
 
-```
+### Setup
+
+```bash
 # Clone the repo
 git clone https://github.com/your-username/employee-creator.git
 cd employee-creator
 
 # Backend setup
-cd backend
 ./mvnw spring-boot:run
 
 # Frontend setup
@@ -79,24 +76,128 @@ npm run dev
 
 ```
 
+### Running the App Locally (macOS & Windows)
+
+---
+
+#### 🐬 1. Install MySQL
+
+- **macOS**
+
+  ```bash
+  brew install mysql
+  brew services start mysql
+  ```
+
+- **Windows**
+
+  1. Download [MySQL Installer](https://dev.mysql.com/downloads/installer/)
+  2. Install MySQL Server
+  3. Make sure it's running as a service
+
+---
+
+#### 🛠️ 2. Create Database
+
+Open MySQL shell:
+
+```bash
+mysql -u root -p
+```
+
+Then run:
+
+```sql
+CREATE DATABASE your_database_name;
+```
+
+> ✅ **Skip user creation if you're using `root` for local dev**
+> Otherwise:
+>
+> ```sql
+> CREATE USER 'your_user'@'localhost' IDENTIFIED BY 'your_password';
+> GRANT ALL PRIVILEGES ON your_database_name.* TO 'your_user'@'localhost';
+> FLUSH PRIVILEGES;
+> ```
+
+---
+
+#### 📄 3. Add `.env` File
+
+Create a `.env` file in the project root:
+
+```env
+DB_NAME=your_database_name
+MYSQL_USER=your_user_or_root
+MYSQL_PASS=your_password
+```
+
+---
+
+#### 🧯 4. Fix Socket Errors [macOS Only]
+
+If you get MySQL socket errors on Mac, force TCP:
+
+```properties
+spring.datasource.url=jdbc:mysql://127.0.0.1:3306/${DB_NAME}
+```
+
+---
+
+#### ▶️ 5. Run the App
+
+```bash
+./mvnw spring-boot:run
+```
+
+Or use your IDE (IntelliJ, VSCode, etc.)
+
+---
+
+### Endpoints:
+
+Once running, your API will be available at:
+
+```
+http://localhost:8080
+```
+
+Opening this in your browser should return "Hello, world"
+
+- **GET all employees:**
+  `http://localhost:8080/api/employees`
+
+- **GET single employee:**
+  `http://localhost:8080/api/employees/{id}`
+
+- **POST new employee:**
+
+  - Method: `POST`
+  - URL: `http://localhost:8080/api/employees`
+  - Body (JSON):
+
+    ```json
+    {
+      "firstName": "Timmy",
+      "lastName": "Turner",
+      "email": "timmy@fairy.com",
+      "jobTitle": "Intern"
+    }
+    ```
+
+- Use [Postman](https://www.postman.com/downloads/) or a browser (for GET requests) to test.
+
 ---
 
 ## Testing
 
-| Type       | Tools Used      | Status |
-| ---------- | --------------- | ------ |
-| Unit Tests | JUnit + Mockito | ✅     |
-| API Tests  | REST Assured    | ✅     |
-| Frontend   | Vitest / Manual | ⏳     |
+| Type       | Tools Used       | Status |
+| ---------- | ---------------- | ------ |
+| Unit Tests | JUnit + Mockito  | ✅     |
+| API Tests  | REST Assured, H2 | ✅     |
+| Frontend   | Vitest / Manual  | ⏳     |
 
-### Libraries
-
-H2 Mock Database: https://mvnrepository.com/artifact/com.h2database/h2/2.3.232
-Rest Assured: https://github.com/rest-assured/rest-assured/wiki/gettingstarted
-
-### Run tests
-
-```
+```bash
 ./mvnw test      # backend
 npm run test     # frontend (if added)
 
@@ -110,21 +211,13 @@ npm run test     # frontend (if added)
 | 🟢 Green    | Build the simplest code to pass the test         |
 | 🟡 Refactor | Clean up code while keeping tests passing        |
 
-### QA Checklist
-
-| Area     | Goals                                                                                                                                                                                                                                                                                           |
-| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Backend: | - App compiles and runs (Spring Boot)<br>- API has 3 working CRUD endpoints (GET, POST, DELETE)<br>- Unit/e2e tests run and pass ( J-Unit, Mockito)<br>- Error handling exists<br>- Logging strategy in place ( )                                                                               |
-| Frontend | - Tech-stack: React + Typescript<br>- React app compiles and runs (Vite)<br>- Create and view employee working<br>- Validation added (forms)<br>- Testing (opt) (Vitest)<br>- Form + list are styled and responsive (SCSS/Tailwind)                                                             |
-| Delivery | - README includes setup steps to compile and run the API and the Web app in localhost.<br>- Hosting link works (Heroku, AWS, Azure, etc.)<br>- Code is clean and documented.<br>- Production ready.<br>- Understandable and maintainable by other developers.<br>- Bug free, compiles and work. |
-
 ---
 
 ## Design Goals / Approach
 
 See [Project Requirements](project-brief.md)
 
-### Overview:
+### Overview
 
 - Build a full-stack app:
   - Backend: Spring Boot REST API (CRUD for employees)
@@ -157,7 +250,7 @@ Why did you implement this the way you did?
 | F2  | Create Employee | Submit a form to add a new employee    |
 | F3  | Delete Employee | Remove an employee from the system     |
 
-#### API Endpoints
+### API Endpoints
 
 | ID  | Method   | Endpoint         | Input             | Output Data   | Success Response |
 | --- | -------- | ---------------- | ----------------- | ------------- | ---------------- |
@@ -248,26 +341,43 @@ Backend E2E Test
 - Adds records for e2e test setup using H2 database for mocking with dummy data
 - Write simple sanity check test that fails if app cannot start
   - Creates basic test for getAll() -> getAllEmployees_EmployeesInDB_ReturnsSuccess()
-
-### 07/07/2025 - Writing tests
-
 - test badges update - Github actions
 
+### 07/07/2025 - Basic REST API CRUD endpoints
+
+#### Endpoints
+
+- getAll method
+- getById method
+- create method
+- deleteById method
+
+#### Tests
+
 ### In progress
+
+- outlined e2e test cases and edges for new all endpoints
 
 ### Sprint
 
 - write up basic integration tests
-- unit tests
+- outlining unit tests
+- writing unit tests
 
 ### Backlog
 
-- create method
-- delete method
 - react front-end
 - deployment test
 
 ---
+
+## QA Checklist
+
+| Area     | Goals                                                                                                                                                                                                                                                                                           |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Backend: | - App compiles and runs (Spring Boot)<br>- API has 3 working CRUD endpoints (GET, POST, DELETE)<br>- Unit/e2e tests run and pass ( J-Unit, Mockito)<br>- Error handling exists<br>- Logging strategy in place ( )                                                                               |
+| Frontend | - Tech-stack: React + Typescript<br>- React app compiles and runs (Vite)<br>- Create and view employee working<br>- Validation added (forms)<br>- Testing (opt) (Vitest)<br>- Form + list are styled and responsive (SCSS/Tailwind)                                                             |
+| Delivery | - README includes setup steps to compile and run the API and the Web app in localhost.<br>- Hosting link works (Heroku, AWS, Azure, etc.)<br>- Code is clean and documented.<br>- Production ready.<br>- Understandable and maintainable by other developers.<br>- Bug free, compiles and work. |
 
 ## Known issues
 
@@ -276,6 +386,8 @@ Remaining bugs, things that have been left unfixed
 1. NoEmployeesInDB_ReturnsSuccessAndEmptyArray:
    java.lang.AssertionError: 1 expectation failed.
    Expected status code [200] but was [404].
+
+2. E2E test not working
 
 Features that are buggy / flimsy
 
