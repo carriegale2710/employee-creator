@@ -16,6 +16,6 @@ class EmployeeApplicationTests {
 
 /*
  * NOTE -
- * You can run this test in your IDE or on the command line (by running ./mvnw
- * test or ./gradlew test), and it should pass
+ * You can run this test in your IDE or on the command line
+ * (by running ./mvnw test), and it should pass
  */
