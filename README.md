@@ -385,14 +385,6 @@ Backend E2E Test
 
 Remaining bugs, things that have been left unfixed
 
-1. NoEmployeesInDB_ReturnsSuccessAndEmptyArray:
-   java.lang.AssertionError: 1 expectation failed.
-   Expected status code [200] but was [404].
-
-2. E2E test not working
-
-3. fix getById() mapping
-
 Features that are buggy / flimsy
 
 ---
