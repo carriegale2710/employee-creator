@@ -1,4 +1,4 @@
-package io.carrie.employee.employee.e2e;
+package io.carrie.employee.employee;
 
 import java.util.ArrayList;
 
@@ -9,12 +9,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
 
 import io.carrie.employee.employee.Employee;
 import io.carrie.employee.employee.EmployeeRepository;
 import io.restassured.RestAssured;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -97,17 +100,27 @@ public class EmployeeEndToEndTest {
     // SECTION - getById()
 
     // case 1: employee id found
-    // returns 200 SUCCESS code
-    // all data is valid
-    // only data with correct id is returned
-    // data is private info, needs authorisation for access
+    //// returns 200 OK
+    //// returns data with correct id
+    // (edge) if data is private info, needs authorisation for access
 
     @Test
     public void getEmployeeById_EmployeeInDB_ReturnsSuccess() {
         given()
+                .when().get("/employees/2")
+                .then().statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    public void getEmployeeById_EmployeeInDB_ReturnsSuccessAndCorrectId() {
+        given()
+                .when().get("/employees/2")
+                .then().statusCode(HttpStatus.OK.value())
+                .body("id", equalTo(2));
+        given()
                 .when().get("/employees/1")
                 .then().statusCode(HttpStatus.OK.value())
-                .body("$", hasSize(1));
+                .body("id", equalTo(1));
     }
 
     // case 2: employee id NOT found
@@ -118,7 +131,6 @@ public class EmployeeEndToEndTest {
         given()
                 .when().get("/employees/1")
                 .then().statusCode(HttpStatus.NOT_FOUND.value());
-
     }
 
     // case 3: id is not valid
@@ -138,16 +150,13 @@ public class EmployeeEndToEndTest {
     // data is invalid or corrupt
 
     // case 2 - id not found in DB
-    // id is integer but not in DB -> 404 NOT FOUND
-    // returns BAD REQUEST if id not valid
 
     // SECTION - create
 
     // case 1 - successfully added new employee to DB
-    // returns 200 OK status
+    // returns 201 CREATED
     // returns new employee data saved in DB
 
-    // case 2 - failed to add new employee to DB
     // 2.1 - DTO data is invalid or missing (BAD REQUEST)
     // 2.2 - duplicate data already exists in DB
     // 2.3 - email or phone number is already used
