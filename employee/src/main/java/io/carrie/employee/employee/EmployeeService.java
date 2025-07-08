@@ -12,8 +12,9 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
     private ModelMapper modelMapper;
 
-    EmployeeService(EmployeeRepository employeeRepository) {
+    EmployeeService(EmployeeRepository employeeRepository, ModelMapper modelMapper) {
         this.employeeRepository = employeeRepository;
+        this.modelMapper = modelMapper;
     }
 
     public List<Employee> findAll() {
