@@ -19,6 +19,7 @@ import io.restassured.RestAssured;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class EmployeeEndToEndTest {
+
     @LocalServerPort
     private int port;
 
@@ -26,8 +27,7 @@ public class EmployeeEndToEndTest {
     private EmployeeRepository employeeRepository;
     private ArrayList<Employee> employeeList = new ArrayList<>();
 
-    // set up data and save in db
-    @BeforeEach
+    @BeforeEach // set up data and save in db
     public void setUp() {
         RestAssured.port = this.port;
 
@@ -73,6 +73,10 @@ public class EmployeeEndToEndTest {
     // act
     // assert
 
+    // SECTION - getAll()
+    // should return correct all records
+    // should not throw error if no records yet
+
     @Test
     public void getAllEmployees_EmployeesInDB_ReturnsSuccess() {
         given()
@@ -85,9 +89,68 @@ public class EmployeeEndToEndTest {
     public void getAllEmployees_NoEmployeesInDB_ReturnsSuccessAndEmptyArray() {
         this.employeeRepository.deleteAll();
         given()
-                .when().get("/books")
+                .when().get("/employees")
                 .then().statusCode(HttpStatus.OK.value())
                 .body("$", hasSize(0));
     }
+
+    // SECTION - getById()
+
+    // case 1: employee id found
+    // returns 200 SUCCESS code
+    // all data is valid
+    // only data with correct id is returned
+    // data is private info, needs authorisation for access
+
+    @Test
+    public void getEmployeeById_EmployeeInDB_ReturnsSuccess() {
+        given()
+                .when().get("/employees/1")
+                .then().statusCode(HttpStatus.OK.value())
+                .body("$", hasSize(1));
+    }
+
+    // case 2: employee id NOT found
+    // returns 404 not found error
+
+    @Test
+    public void getEmployeeById_EmployeeNotInDB_ReturnsNotFoundError() {
+        given()
+                .when().get("/employees/1")
+                .then().statusCode(HttpStatus.NOT_FOUND.value());
+
+    }
+
+    // case 3: id is not valid
+    // returns bad request error
+
+    @Test
+    public void getEmployeeById_IdNotValid_ReturnsBadRequestError() {
+        given()
+                .when().get("/employees/sfee23")
+                .then().statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    // SECTION - deleteById
+
+    // case 1 - id found in DB
+    // data is valid and correct
+    // data is invalid or corrupt
+
+    // case 2 - id not found in DB
+    // id is integer but not in DB -> 404 NOT FOUND
+    // returns BAD REQUEST if id not valid
+
+    // SECTION - create
+
+    // case 1 - successfully added new employee to DB
+    // returns 200 OK status
+    // returns new employee data saved in DB
+
+    // case 2 - failed to add new employee to DB
+    // 2.1 - DTO data is invalid or missing (BAD REQUEST)
+    // 2.2 - duplicate data already exists in DB
+    // 2.3 - email or phone number is already used
+    // 2.4 - department does not exist in DB
 
 }

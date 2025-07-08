@@ -102,9 +102,27 @@ npm run test     # frontend (if added)
 
 ```
 
+### TDD Workflow
+
+| Phase       | Action                                           |
+| ----------- | ------------------------------------------------ |
+| 🔴 Red      | Write a test for a feature you haven’t built yet |
+| 🟢 Green    | Build the simplest code to pass the test         |
+| 🟡 Refactor | Clean up code while keeping tests passing        |
+
+### QA Checklist
+
+| Area     | Goals                                                                                                                                                                                                                                                                                           |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Backend: | - App compiles and runs (Spring Boot)<br>- API has 3 working CRUD endpoints (GET, POST, DELETE)<br>- Unit/e2e tests run and pass ( J-Unit, Mockito)<br>- Error handling exists<br>- Logging strategy in place ( )                                                                               |
+| Frontend | - Tech-stack: React + Typescript<br>- React app compiles and runs (Vite)<br>- Create and view employee working<br>- Validation added (forms)<br>- Testing (opt) (Vitest)<br>- Form + list are styled and responsive (SCSS/Tailwind)                                                             |
+| Delivery | - README includes setup steps to compile and run the API and the Web app in localhost.<br>- Hosting link works (Heroku, AWS, Azure, etc.)<br>- Code is clean and documented.<br>- Production ready.<br>- Understandable and maintainable by other developers.<br>- Bug free, compiles and work. |
+
 ---
 
 ## Design Goals / Approach
+
+See [Project Requirements](project-brief.md)
 
 ### Overview:
 
@@ -117,22 +135,6 @@ npm run test     # frontend (if added)
   - Basic validations
   - Responsive layout
   - Hosting (Heroku, AWS, etc.)
-
-### QA Checklist
-
-| Area     | Goals                                                                                                                                                                                                                                                                                           |
-| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Backend: | - App compiles and runs (Spring Boot)<br>- API has 3 working CRUD endpoints (GET, POST, DELETE)<br>- Unit/e2e tests run and pass ( J-Unit, Mockito)<br>- Error handling exists<br>- Logging strategy in place ( )                                                                               |
-| Frontend | - Tech-stack: React + Typescript<br>- React app compiles and runs (Vite)<br>- Create and view employee working<br>- Validation added (forms)<br>- Testing (opt) (Vitest)<br>- Form + list are styled and responsive (SCSS/Tailwind)                                                             |
-| Delivery | - README includes setup steps to compile and run the API and the Web app in localhost.<br>- Hosting link works (Heroku, AWS, Azure, etc.)<br>- Code is clean and documented.<br>- Production ready.<br>- Understandable and maintainable by other developers.<br>- Bug free, compiles and work. |
-
-### TDD Workflow
-
-| Phase       | Action                                           |
-| ----------- | ------------------------------------------------ |
-| 🔴 Red      | Write a test for a feature you haven’t built yet |
-| 🟢 Green    | Build the simplest code to pass the test         |
-| 🟡 Refactor | Clean up code while keeping tests passing        |
 
 ### Implementation
 
@@ -183,8 +185,6 @@ See [User Flows Mermaid Diagram](https://www.mermaidchart.com/app/projects/dc3bd
 ![layers](assets/data/app-service-layers.png)
 ![service-design](assets/refs/layer-example.png)
 
-### Schemas
-
 ### Employee Schema
 
 Data types for properties of Employee class.
@@ -196,90 +196,24 @@ Data types for properties of Employee class.
 - department : enum (dropdown in UI)
 - startDate : Date (datepicker UI, validation needed)
 
-### Employee List - Sample Data (GET Request)
-
-This is what the Employee List Data should look like when fetched from API.
-
-```json
-[
-  {
-    "id": 1,
-    "firstName": "Timmy",
-    "lastName": "Turner",
-    "email": "timmehhh@example.com",
-    "department": "ENGINEERING",
-    "startDate": "2023-01-10"
-  },
-  {
-    "id": 2,
-    "firstName": "Cosmo",
-    "lastName": "Cosma",
-    "email": "cosmo@example.com",
-    "department": "HUMAN_RESOURCES",
-    "startDate": "2020-08-15"
-  },
-  {
-    "id": 3,
-    "firstName": "Wanda",
-    "lastName": "Fairywinkle",
-    "email": "wanda@example.com",
-    "department": "SALES",
-    "startDate": "2019-04-22"
-  }
-]
-```
+See more in [Schemas](assets/data/README.md)
 
 ### CreateEmployeeDTO Schema
 
-This is the type of data that will be sent from the client side. Note: A unique Id & email should be generated in backend
+This is the type of data that will be sent from the client side form to create a new employee in DB. Note: A unique Id & email (if not entered) should be generated in backend upon creation.
 
 - first_name : string
 - last_name : string
-- department : enum (dropdown in UI)
+- department : enum (dropdown in UI) (optional)
+- email : (optional, if null, generate based on name)
 - startDate : Date (datepicker UI, validation needed)
 
 Note: 🔒 "department" must be one of:
 "ENGINEERING", "SALES", "HUMAN_RESOURCES", "MARKETING", "FINANCE"
 
-### Sample Data for POST Request
-
-```json
-{
-  "firstName": "Timmy",
-  "lastName": "Turner",
-  "department": "ENGINEERING",
-  "startDate": "2023-01-10"
-}
-```
-
-### SQL Schema - Database
-
-```sql
--- Define enum type
-CREATE TYPE department AS ENUM (
-  'ENGINEERING',
-  'SALES',
-  'HUMAN_RESOURCES',
-  'MARKETING',
-  'FINANCE'
-);
-
--- Table using enum
-CREATE TABLE employees (
-  id SERIAL PRIMARY KEY,
-  first_name VARCHAR(50) NOT NULL,
-  last_name VARCHAR(50) NOT NULL,
-  email VARCHAR(100) UNIQUE NOT NULL,
-  department department NOT NULL,
-  start_date DATE NOT NULL
-);
-```
-
 ---
 
 ## Change logs
-
-- Write a paragraph labelled with the date every day you work on the project to discuss what you've done for the say. Be specific about the changes that have happened for that day.
 
 ### 05/07/2025 - Backend API Project Setup
 
@@ -317,27 +251,33 @@ Backend E2E Test
 
 ### 07/07/2025 - Writing tests
 
+- test badges update - Github actions
+
 ### In progress
 
 ### Sprint
 
 - write up basic integration tests
+- unit tests
 
 ### Backlog
 
-- unit tests
 - create method
 - delete method
 - react front-end
 - deployment test
-- test badges update - Github actions
 
 ---
 
 ## Known issues
 
-- Remaining bugs, things that have been left unfixed
-- Features that are buggy / flimsy
+Remaining bugs, things that have been left unfixed
+
+1. NoEmployeesInDB_ReturnsSuccessAndEmptyArray:
+   java.lang.AssertionError: 1 expectation failed.
+   Expected status code [200] but was [404].
+
+Features that are buggy / flimsy
 
 ---
 
