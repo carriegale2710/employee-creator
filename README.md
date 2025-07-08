@@ -357,6 +357,7 @@ Backend E2E Test
 ### In progress
 
 - outlined e2e test cases and edges for new all endpoints
+- fixed application.properties config bug for test suite
 
 ### Sprint
 
@@ -388,6 +389,8 @@ Remaining bugs, things that have been left unfixed
    Expected status code [200] but was [404].
 
 2. E2E test not working
+
+3. fix getById() mapping
 
 Features that are buggy / flimsy
 
