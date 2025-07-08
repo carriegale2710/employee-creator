@@ -14,10 +14,10 @@ Demonstrates an understanding of:
 [Project Brief](https://github.com/nology-tech/aus-post-course-guide/tree/main/projects/employee-creator)
 
 - We need a web application to manage employees:
-  - [ ] create
-  - [ ] list
+  - [x] create
+  - [x] list
   - [ ] modify
-  - [ ] delete
+  - [x] delete
 - The schema for the employee is left to the criteria of the candidate.
 
 Also code should be:
@@ -25,8 +25,8 @@ Also code should be:
 - [ ] Production ready.
 - [ ] Understandable and maintainable by other developers.
 - [ ] Robust and handle error situations.
-- [ ] Bug free, compile and work.
-- [ ] Include instructions to compile and run the API and the Web app in localhost.
+- [x] Bug free, compile and work.
+- [x] Include instructions to compile and run the API and the Web app in localhost.
 - [ ] Hosting (Heroku, AWS, Azure, etc.) is required.
 - [ ] If your code includes unit tests you may use a unit test framework of your choice.
 
@@ -58,11 +58,11 @@ Also code should be:
   - [x] MySQL is reccomended
 - Implementing an API logging strategy.
   - [ ] Log2j **highly** reccomended
-- [ ] Implementing error handling strategy.
+- [/] Implementing error handling strategy.
 - At least 3 endpoints are required:
-  - [ ] To create an employee `/create`
-  - [ ] To get a list of existing employees `/list`
-  - [ ] To delete an employee `delete?id={id}`
+  - [x] To create an employee
+  - [x] To get a list of existing employees
+  - [x] To delete an employee
 
 ### Design Snippets (examples from brief)
 
@@ -90,9 +90,9 @@ Also code should be:
 
   - [x] Spring Web,
   - [x] Validation I/O
-  - [ ] Spring Testing
-    - [ ] Rest assured
-    - [ ] mockito
+  - [x] Spring Testing
+    - [x] Rest assured
+    - [x] mockito
   - [x] Spring Data JPA
   - [x] MySQL Driver
   - [x] Spring Devtools
@@ -101,6 +101,7 @@ Testing
 
 - https://spring.io/guides/gs/testing-web/
 - https://www.baeldung.com/spring-mock-rest-template
+- https://github.com/spring-guides/gs-testing-web
 
 Logging
 
