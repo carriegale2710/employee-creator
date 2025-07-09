@@ -12,7 +12,7 @@ Employee Creator is a full-stack CRUD web app built with Java Spring Boot and Re
 
 This project was created to practice building production-ready applications with testing, responsive UI, and scalable architecture. It also mirrors typical enterprise apps used in HR systems.
 
-## Demo & Snippets
+<!-- ## Demo & Snippets
 
 - [ ] Include hosted link: TBA
 - [ ] Include images of app if CLI or Client App
@@ -25,7 +25,7 @@ This project was created to practice building production-ready applications with
 
 ### Feature 2: New Employee Form
 
-(TBA)
+(TBA) -->
 
 ---
 
@@ -56,8 +56,8 @@ This project was created to practice building production-ready applications with
 
 ## Build Steps
 
-- how to build / run project
-- use proper code snippets if there are any commands to run
+<!-- - how to build / run project
+- use proper code snippets if there are any commands to run -->
 
 ### Setup
 
@@ -201,6 +201,10 @@ npm run test     # frontend (if added)
 
 ```
 
+---
+
+## Design Goals / Approach
+
 ### TDD Workflow
 
 | Phase       | Action                                           |
@@ -208,10 +212,6 @@ npm run test     # frontend (if added)
 | 🔴 Red      | Write a test for a feature you haven’t built yet |
 | 🟢 Green    | Build the simplest code to pass the test         |
 | 🟡 Refactor | Clean up code while keeping tests passing        |
-
----
-
-## Design Goals / Approach
 
 ### MVP Objectives
 
@@ -227,11 +227,7 @@ See [Project Requirements](project-brief.md)
   - Responsive layout
   - Hosting (Heroku, AWS, etc.)
 
-### UX + System Design Plans
-
-See [Figma File](https://www.figma.com/design/YflKHxYST36Mj1gk73PX1s/employee-creator?node-id=0-1&t=pbSmg0X0pnkWJEaF-1)
-
-#### User Stories
+### User Stories to fufill
 
 | ID  | Feature           | User Wants To...   | So They Can...    | User should be able to...                                                  |
 | --- | ----------------- | ------------------ | ----------------- | -------------------------------------------------------------------------- |
@@ -239,124 +235,64 @@ See [Figma File](https://www.figma.com/design/YflKHxYST36Mj1gk73PX1s/employee-cr
 | 2   | `Create Employee` | Add a new employee | Register new hire | Click button that opens a form to add a new employee as a new record in DB |
 | 3   | `Delete Employee` | Delete employee    | Remove old record | Click a button to delete a record of an existing employee in DB            |
 
-#### Flows
-
-```mermaid
----
-config:
-  layout: elk
-  theme: neutral
-  look: neo
----
-flowchart TD
- subgraph s2["ADD EMPLOYEE"]
-        C1@{ label: "User clicks 'Add Employee'" }
-        C2["Show create form"]
-        C3["User submits form"]
-        C4["POST /employees"]
-        C5["Return new employee data"]
-        C6["Show success / update list"]
-  end
- subgraph s4["DELETE EMPLOYEE"]
-        E1@{ label: "User clicks 'Delete'" }
-        E2["Show confirmation popup"]
-        E3["User confirms"]
-        E4["DELETE /employees/:id"]
-        E5["Return 204 No Content"]
-        E6["Remove from UI and show success"]
-  end
- subgraph s1["VIEW EMPLOYEE LIST"]
-        A1@{ label: "User clicks 'Employees' nav link" }
-        A2["GET /employees"]
-        A3["Return paginated employee list"]
-        A4["Render employee list in UI"]
-  end
- subgraph s5["VIEW EMPLOYEE RECORD"]
-        B1["User clicks employee from list"]
-        B2["GET /employees/:id"]
-        B3["Return employee details"]
-        B4["Render employee profile view"]
-  end
- subgraph s3["EDIT EMPLOYEE"]
-        D1@{ label: "User clicks 'Edit' on profile" }
-        D2["Show pre-filled form"]
-        D3["User submits form"]
-        D4["PUT /employees/:id"]
-        D5["Return updated employee data"]
-        D6["Show updated profile / list"]
-  end
-    A1 --> A2
-    A2 --> A3
-    A3 --> A4
-    B1 --> B2
-    B2 --> B3
-    B3 --> B4
-    C1 --> C2
-    C2 --> C3
-    C3 --> C4
-    C4 --> C5
-    C5 --> C6
-    D1 --> D2
-    D2 --> D3
-    D3 --> D4
-    D4 --> D5
-    D5 --> D6
-    E1 --> E2
-    E2 --> E3
-    E3 --> E4
-    E4 --> E5
-    E5 --> E6
-    A1@{ shape: rect}
-    C1@{ shape: rect}
-    D1@{ shape: rect}
-    E1@{ shape: rect}
-     A1:::Pine
-     A2:::api
-     A3:::api
-     A4:::Pine
-     C1:::Pine
-     C4:::api
-     C5:::api
-     C6:::Pine
-     D1:::Pine
-     D4:::api
-     D5:::api
-     D6:::Pine
-     E1:::Pine
-     E4:::api
-     E5:::api
-     E6:::Pine
-     B1:::Pine
-     B2:::api
-     B3:::api
-     B4:::Pine
-    classDef api fill:#fdf6e3,stroke:#b58900,stroke-width:1px
-    classDef Pine stroke-width:1px, stroke-dasharray:none, stroke:#254336, fill:#27654A, color:#FFFFFF
-    style s4 stroke:#D50000
-    style s2 stroke:#D50000
-    style s1 stroke:#D50000
-
-```
-
-### App Layers: (update later)
-
-![layers](assets/diagrams/app-service-layers.png)
-![service-design](assets/diagrams/layer-example.png)
-
 ### Implementation
 
-Why did you implement this the way you did?
+<!-- Why did you implement this the way you did? -->
 
 - Used enum for department to enforce consistency.
 - Used top-down TDD to define backend before connecting to frontend.
   - Write up basic tests before coding to understand functionality, entity shapes & edge cases.
 - Used Tailwind for quick responsive UI with minimal setup.
 
+#### React Components
+
+```mermaid
+---
+config:
+  layout: elk
+  theme: neo-dark
+---
+flowchart TD
+ subgraph Card["Card"]
+        L1["UserData"]
+        L2["Button: Edit"]
+        L3["Button: Delete"]
+  end
+ subgraph List["List"]
+        Card
+  end
+ subgraph Form["Form"]
+        B1["Form field <br>(onEdit: prefilled)"]
+        B2["Button: Submit"]
+  end
+ subgraph ListPage["ListPage"]
+        List
+        A3["Button : Add"]
+  end
+ subgraph FormPage["FormPage"]
+        Form
+        B4["Button: Cancel"]
+  end
+    A3 --> FormPage
+    B4 --> ListPage
+    L2 --> FormPage
+
+```
+
+<!--
+### React Code Structure
+
+| File                   | Purpose                                                  |
+| ---------------------- | -------------------------------------------------------- |
+| `employeeService.js`   | Handles raw API calls (GET, POST, PUT, DELETE)           |
+| `useEmployees.js`      | Manages local state + calls service + keeps list in sync |
+| `EmployeeListPage.jsx` | Renders the list and uses the hook                       |
+| `EmployeeForm.jsx`     | Reuses hook to trigger updates after submit              |
+ -->
+
 ---
 
 ## Features
-
-- What features does the project have? list them...
 
 | ID  | Feature         | Description                            |
 | --- | --------------- | -------------------------------------- |
@@ -367,6 +303,8 @@ Why did you implement this the way you did?
 
 ### API Endpoints
 
+See [Full Sequence Diagram](assets/diagrams/sequence-diagram.md)
+
 | ID  | Method   | Endpoint         | Input             | Output Data | Success Response |
 | --- | -------- | ---------------- | ----------------- | ----------- | ---------------- |
 | 1   | `GET`    | `/employees`     | none              | DB List     | `200 OK`         |
@@ -374,33 +312,33 @@ Why did you implement this the way you did?
 | 3   | `DELETE` | `/employees/:id` | employee id       | No Content  | `204 No Content` |
 | 1   | `GET`    | `/employees/:id` | employee id       | DB Record   | `200 OK`         |
 
-### Employee DB Schema
+### Schemas
 
 Data types for properties of Employee class.
 
-- id : unique number (generated in backend)
-- first_name : string
-- last_name : string
-- email : unique string (generated in backend)
-- department : enum (dropdown in UI)
-- startDate : Date (datepicker UI, validation needed)
+- `id` : unique number (generated in backend)
+- `firstName` : string
+- `lastName` : string
+- `email` : unique string (generated in backend)
+<!-- - department : enum (dropdown in UI)
+- startDate : Date (datepicker UI, validation needed) -->
+
+#### CreateEmployeeDTO Schema
+
+This is the type of data that will be sent from the client side form to create a new employee in DB.
+
+- `firstName` : string
+- `lastName` : string
+- email : (optional, if null, generate based on name)
+<!-- - department : enum (dropdown in UI) (optional)
+- startDate : Date (datepicker UI, validation needed) -->
+
+Note: A unique Id & email (if not entered) should be generated in backend upon creation.
+
+<!-- Note: 🔒 "department" must be one of:
+"ENGINEERING", "SALES", "HUMAN_RESOURCES", "MARKETING", "FINANCE" -->
 
 See more in [Schemas](assets/data/README.md)
-
-### CreateEmployeeDTO Schema
-
-This is the type of data that will be sent from the client side form to create a new employee in DB. Note: A unique Id & email (if not entered) should be generated in backend upon creation.
-
-- first_name : string
-- last_name : string
-- department : enum (dropdown in UI) (optional)
-- email : (optional, if null, generate based on name)
-- startDate : Date (datepicker UI, validation needed)
-
-Note: 🔒 "department" must be one of:
-"ENGINEERING", "SALES", "HUMAN_RESOURCES", "MARKETING", "FINANCE"
-
----
 
 ## Change logs
 
@@ -457,6 +395,7 @@ API Test Setup:
 - SmokeTest sanity check test
 - writing unit tests for Service layer (business logic)
 
+<!--
 ### 09/07/2025 - Passing API e2e tests + Front-end Creation
 
 ### In progress
@@ -471,6 +410,8 @@ API Test Setup:
 - feature: Edit employee record
   - editById PUT method - TDD - write tests + function in parallel
 
+### Backlog
+
 React setup
 
 - create React front-end with Vite
@@ -478,9 +419,6 @@ React setup
 - front-end: render DB employee list on page
 - build and deploy fullstack MVP app in AWS
 - React build, test and deploy workflow
-
-### Backlog
-
 Components + Tests
 
 - deconstruct UI design mockups provided into React components using Figma (+ bonus data flow Mermaid diagram)
@@ -500,7 +438,7 @@ UI styling - Global styling
 - gather and import design system assets
 - structure in index and partials/variables: color palette, typography
 - write up reusable mixins: eg. flexbox wrappers
-- explore UI libraries /inspo if time (produce UI MVP ref first)
+- explore UI libraries /inspo if time (produce UI MVP ref first) -->
 
 ---
 
@@ -514,7 +452,7 @@ UI styling - Global styling
 - [ ] Error handling implemented
 - [ ] Logging strategy in place
 
-### 💻 Frontend (React + TypeScript)
+<!-- ### 💻 Frontend (React + TypeScript)
 
 - [ ] React app compiles and runs (Vite)
 - [ ] Create + view employee functionality works
@@ -529,15 +467,15 @@ UI styling - Global styling
 - [ ] Code is clean + well documented
 - [ ] App is production-ready
 - [ ] Codebase is understandable and maintainable
-- [ ] Bug-free and everything compiles + runs as expected
+- [ ] Bug-free and everything compiles + runs as expected -->
 
 ---
 
 ## Known issues
 
-Remaining bugs, things that have been left unfixed:
+<!-- Remaining bugs, things that have been left unfixed:
 
-Features that are buggy / flimsy/not functional yet:
+Features that are buggy / flimsy/not functional yet: -->
 
 - delete by employee id
 
@@ -545,21 +483,21 @@ Features that are buggy / flimsy/not functional yet:
 
 ## Future Goals
 
-What are the immediate features you'd add given more time / ideas parking lot:
+<!-- What are the immediate features you'd add given more time / ideas parking lot: -->
 
 - Add API Pagination (with findAll(Pageable pageable) from JpaRepository)
 - Search Bar (find by name match with query params)
 - Login and authentication service/security (for personal/sensitive data access) - Context API in frontend
 
-## Learning Curves - What did you struggle with?
+## Learning Curves
 
-What? Why? How?
+<!-- - What did you struggle with? What? Why? How? -->
 
 - Setting up Github Actions was a bit tricky in terms of config. Too many commits to test it.
 
 ---
 
-## Licensing Details
+<!-- ## Licensing Details
 
 What type of license are you releasing this under?
 
@@ -573,4 +511,4 @@ Link client app README here later
 
 ## Appendix
 
-misc. info
+misc. info -->
