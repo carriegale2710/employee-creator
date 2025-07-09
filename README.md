@@ -395,35 +395,40 @@ API Test Setup:
 - SmokeTest sanity check test
 - writing unit tests for Service layer (business logic)
 
-<!--
-### 09/07/2025 - Passing API e2e tests + Front-end Creation
+### 09/07/2025 - Front-end Planning + Creation
+
+- deconstruct UI design mockups provided into React components using Figma (+ bonus data flow Mermaid diagram)
+- install Vite + TypeScript to create React front-end
 
 ### In progress
 
+- create employee-service.ts to render fetch data from DB
+- data render in App.tsx
+
+### Sprint
+
+- create file structure for basic presentational components: List, Card, Button
 - pass e2e tests:
   - delete
   - create
 
-### Sprint
+<!--
 
+React setup
+
+
+### Backlog
+
+- React build, test and deploy workflow
+- build and deploy fullstack MVP app in AWS
 - implement API logging strategy
 - feature: Edit employee record
   - editById PUT method - TDD - write tests + function in parallel
 
-### Backlog
 
-React setup
-
-- create React front-end with Vite
-- fetching and display employee data from API to react
-- front-end: render DB employee list on page
-- build and deploy fullstack MVP app in AWS
-- React build, test and deploy workflow
 Components + Tests
 
-- deconstruct UI design mockups provided into React components using Figma (+ bonus data flow Mermaid diagram)
 - write up basic logic tests for React front-end fetching service (Vitest/Zod schema)
-- create file structure for basic presentational components: Page, List, Card, Button, Header
 - write up basic component tests for React front-end (Vitest) : Page, List, Card, Button, Header
 
 Backend Refactoring - Error/Data handling
@@ -452,7 +457,7 @@ UI styling - Global styling
 - [ ] Error handling implemented
 - [ ] Logging strategy in place
 
-<!-- ### 💻 Frontend (React + TypeScript)
+### 💻 Frontend (React + TypeScript)
 
 - [ ] React app compiles and runs (Vite)
 - [ ] Create + view employee functionality works
@@ -467,7 +472,7 @@ UI styling - Global styling
 - [ ] Code is clean + well documented
 - [ ] App is production-ready
 - [ ] Codebase is understandable and maintainable
-- [ ] Bug-free and everything compiles + runs as expected -->
+- [ ] Bug-free and everything compiles + runs as expected
 
 ---
 
