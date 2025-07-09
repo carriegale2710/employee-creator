@@ -1,12 +1,17 @@
+import type { Employee } from "../../services/employees";
 import Card from "../Card/Card";
 
-const List = () => {
+interface ListProps {
+  employees: Employee[];
+}
+const List = ({ employees }: ListProps) => {
   return (
     <>
       <h2>Employee List</h2>
-      <Card />
-      <Card />
-      <Card />
+      {employees &&
+        employees.map((employee: Employee) => {
+          return <Card employee={employee} key={employee.id} />;
+        })}
     </>
   );
 };
