@@ -213,10 +213,9 @@ npm run test     # frontend (if added)
 
 ## Design Goals / Approach
 
-See [Project Requirements](project-brief.md)
-See [Figma File](https://www.figma.com/design/YflKHxYST36Mj1gk73PX1s/employee-creator?node-id=0-1&t=pbSmg0X0pnkWJEaF-1)
+### MVP Objectives
 
-### Overview
+See [Project Requirements](project-brief.md)
 
 - Build a full-stack app:
   - Backend: Spring Boot REST API (CRUD for employees)
@@ -227,6 +226,122 @@ See [Figma File](https://www.figma.com/design/YflKHxYST36Mj1gk73PX1s/employee-cr
   - Basic validations
   - Responsive layout
   - Hosting (Heroku, AWS, etc.)
+
+### UX + System Design Plans
+
+See [Figma File](https://www.figma.com/design/YflKHxYST36Mj1gk73PX1s/employee-creator?node-id=0-1&t=pbSmg0X0pnkWJEaF-1)
+
+#### User Stories
+
+| ID  | Feature           | User Wants To...   | So They Can...    | User should be able to...                                                  |
+| --- | ----------------- | ------------------ | ----------------- | -------------------------------------------------------------------------- |
+| 1   | `List Employees`  | See all employees  | Review records    | Click link to view a paginated list of all employee records                |
+| 2   | `Create Employee` | Add a new employee | Register new hire | Click button that opens a form to add a new employee as a new record in DB |
+| 3   | `Delete Employee` | Delete employee    | Remove old record | Click a button to delete a record of an existing employee in DB            |
+
+#### Flows
+
+```mermaid
+---
+config:
+  layout: elk
+  theme: neutral
+  look: neo
+---
+flowchart TD
+ subgraph s2["ADD EMPLOYEE"]
+        C1@{ label: "User clicks 'Add Employee'" }
+        C2["Show create form"]
+        C3["User submits form"]
+        C4["POST /employees"]
+        C5["Return new employee data"]
+        C6["Show success / update list"]
+  end
+ subgraph s4["DELETE EMPLOYEE"]
+        E1@{ label: "User clicks 'Delete'" }
+        E2["Show confirmation popup"]
+        E3["User confirms"]
+        E4["DELETE /employees/:id"]
+        E5["Return 204 No Content"]
+        E6["Remove from UI and show success"]
+  end
+ subgraph s1["VIEW EMPLOYEE LIST"]
+        A1@{ label: "User clicks 'Employees' nav link" }
+        A2["GET /employees"]
+        A3["Return paginated employee list"]
+        A4["Render employee list in UI"]
+  end
+ subgraph s5["VIEW EMPLOYEE RECORD"]
+        B1["User clicks employee from list"]
+        B2["GET /employees/:id"]
+        B3["Return employee details"]
+        B4["Render employee profile view"]
+  end
+ subgraph s3["EDIT EMPLOYEE"]
+        D1@{ label: "User clicks 'Edit' on profile" }
+        D2["Show pre-filled form"]
+        D3["User submits form"]
+        D4["PUT /employees/:id"]
+        D5["Return updated employee data"]
+        D6["Show updated profile / list"]
+  end
+    A1 --> A2
+    A2 --> A3
+    A3 --> A4
+    B1 --> B2
+    B2 --> B3
+    B3 --> B4
+    C1 --> C2
+    C2 --> C3
+    C3 --> C4
+    C4 --> C5
+    C5 --> C6
+    D1 --> D2
+    D2 --> D3
+    D3 --> D4
+    D4 --> D5
+    D5 --> D6
+    E1 --> E2
+    E2 --> E3
+    E3 --> E4
+    E4 --> E5
+    E5 --> E6
+    A1@{ shape: rect}
+    C1@{ shape: rect}
+    D1@{ shape: rect}
+    E1@{ shape: rect}
+     A1:::Pine
+     A2:::api
+     A3:::api
+     A4:::Pine
+     C1:::Pine
+     C4:::api
+     C5:::api
+     C6:::Pine
+     D1:::Pine
+     D4:::api
+     D5:::api
+     D6:::Pine
+     E1:::Pine
+     E4:::api
+     E5:::api
+     E6:::Pine
+     B1:::Pine
+     B2:::api
+     B3:::api
+     B4:::Pine
+    classDef api fill:#fdf6e3,stroke:#b58900,stroke-width:1px
+    classDef Pine stroke-width:1px, stroke-dasharray:none, stroke:#254336, fill:#27654A, color:#FFFFFF
+    style s4 stroke:#D50000
+    style s2 stroke:#D50000
+    style s1 stroke:#D50000
+
+```
+
+### App Layers: (update later)
+
+![layers](assets/diagrams/app-service-layers.png)
+![service-design](assets/diagrams/layer-example.png)
 
 ### Implementation
 
@@ -248,36 +363,18 @@ Why did you implement this the way you did?
 | F1  | List Employees  | View a paginated list of all employees |
 | F2  | Create Employee | Submit a form to add a new employee    |
 | F3  | Delete Employee | Remove an employee from the system     |
+| F4  | View Employee   | View details of one employee in DB     |
 
 ### API Endpoints
 
-| ID  | Method   | Endpoint         | Input             | Output Data   | Success Response |
-| --- | -------- | ---------------- | ----------------- | ------------- | ---------------- |
-| 1   | `GET`    | `/employees`     | none              | DB List       | `200 OK`         |
-| 2   | `POST`   | `/employees`     | CreateEmployeeDTO | employee data | `201 Created`    |
-| 3   | `DELETE` | `/employees/:id` | employee id       | no content    | `204 No Content` |
+| ID  | Method   | Endpoint         | Input             | Output Data | Success Response |
+| --- | -------- | ---------------- | ----------------- | ----------- | ---------------- |
+| 1   | `GET`    | `/employees`     | none              | DB List     | `200 OK`         |
+| 2   | `POST`   | `/employees`     | CreateEmployeeDTO | DB Record   | `201 Created`    |
+| 3   | `DELETE` | `/employees/:id` | employee id       | No Content  | `204 No Content` |
+| 1   | `GET`    | `/employees/:id` | employee id       | DB Record   | `200 OK`         |
 
-#### User Stories
-
-| ID  | Feature           | User Wants To...   | So They Can...    | User should be able to...                                                  |
-| --- | ----------------- | ------------------ | ----------------- | -------------------------------------------------------------------------- |
-| 1   | `List Employees`  | See all employees  | Review records    | Click link to view a paginated list of all employee records                |
-| 2   | `Create Employee` | Add a new employee | Register new hire | Click button that opens a form to add a new employee as a new record in DB |
-| 3   | `Delete Employee` | Delete employee    | Remove old record | Click a button to delete a record of an existing employee in DB            |
-
-#### User Flows
-
-\*Red borders are core MVP features
-![userflows](assets/userflows/UserFlows%20_%20Mermaid%20Chart-2025-07-07-104854.png)
-
-See [User Flows Mermaid Diagram](https://www.mermaidchart.com/app/projects/dc3bdcc4-0838-4954-b61e-39ed0000a222/diagrams/7ff245ec-49e3-47a7-af4d-bf5ce3f4158b/version/v0.1/edit)
-
-### App Layers: (update later)
-
-![layers](assets/data/app-service-layers.png)
-![service-design](assets/refs/layer-example.png)
-
-### Employee Schema
+### Employee DB Schema
 
 Data types for properties of Employee class.
 
@@ -338,46 +435,72 @@ Backend E2E Test
 - Installs dependency for H2 database for testing with separate db - avoid breaking from actual DB.
 - Installs Rest Assured Library for writing automated test that send requests during testing.
 - Adds records for e2e test setup using H2 database for mocking with dummy data
-- Write simple sanity check test that fails if app cannot start
-  - Creates basic test for getAll() -> getAllEmployees_EmployeesInDB_ReturnsSuccess()
+  - Creates basic test for `getAll()`
 - test badges update - Github actions
 
-### 08/07/2025 - Basic REST API CRUD endpoints
+### 08/07/2025 - Basic CRUD endpoints + Writing tests
 
 Created endpoints for:
 
-- getAll
-- getById
-- create
-- deleteById
+- `GET` `/employees` = [DB -> list (of records)]
+- `GET` `/employees/{id}` = [DB -> record]
+- `POST` `/employees` = [DB + record]
+- `DELETE` `/employee/{id}` = [DB - record]
 
-### 09/07/2025 - Writing tests
+API Test Setup:
 
+- Fixed Github workflows for automated testing (see badges at top)
 - Outlined e2e test cases and edges for new all endpoints
 - Fixed application.properties config bug for test suite
 - Created config folder for ModelMapper library - easier to create new entities compared to manual setters
 - Created JSON schema for e2e test for creating new employees in DB
 - SmokeTest sanity check test
-- Fixed Github workflows for automated testing (see badges at top)
+- writing unit tests for Service layer (business logic)
+
+### 09/07/2025 - Passing API e2e tests + Front-end Creation
 
 ### In progress
 
-- writing unit tests for Service layer (business logic)
+- pass e2e tests:
+  - delete
+  - create
 
 ### Sprint
 
-- basic react front-end
-- editById PUT method
+- implement API logging strategy
+- feature: Edit employee record
+  - editById PUT method - TDD - write tests + function in parallel
+
+React setup
+
+- create React front-end with Vite
+- fetching and display employee data from API to react
+- front-end: render DB employee list on page
+- build and deploy fullstack MVP app in AWS
+- React build, test and deploy workflow
 
 ### Backlog
 
-- create React front-end with Vite
+Components + Tests
+
+- deconstruct UI design mockups provided into React components using Figma (+ bonus data flow Mermaid diagram)
+- write up basic logic tests for React front-end fetching service (Vitest/Zod schema)
+- create file structure for basic presentational components: Page, List, Card, Button, Header
+- write up basic component tests for React front-end (Vitest) : Page, List, Card, Button, Header
+
+Backend Refactoring - Error/Data handling
+
+- go back and introduce error handling for backend API
+- prepare data handling on backend to make front-end just an IO (goal: reduce front-end complexity)
+
+UI styling - Global styling
+
 - install scss
-- write up basic tests for React front-end (Vite/Zod)
-- basic components: Page, List, Card, Button, Header
-- React build, test and deploy workflow
-- fetching and display employee data from API to react
-- deploy MVP app in AWS
+- research SCSS vs tailwind styling for React components
+- gather and import design system assets
+- structure in index and partials/variables: color palette, typography
+- write up reusable mixins: eg. flexbox wrappers
+- explore UI libraries /inspo if time (produce UI MVP ref first)
 
 ---
 
@@ -412,11 +535,11 @@ Created endpoints for:
 
 ## Known issues
 
-Remaining bugs, things that have been left unfixed
+Remaining bugs, things that have been left unfixed:
 
-- deleteById method
+Features that are buggy / flimsy/not functional yet:
 
-Features that are buggy / flimsy
+- delete by employee id
 
 ---
 
