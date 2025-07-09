@@ -1,0 +1,30 @@
+.card {
+  text-align: left;
+  border: 1px solid black;
+}
+
+.data {
+  min-width: 50%;
+  border: 1px solid black;
+  h2 {
+    margin: 0px;
+  }
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  border: 1px solid black;
+  justify-content: space-between;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  height: fit-content;
+  gap: 5px;
+  font-size: small;
+  border: 1px solid black;
+}
