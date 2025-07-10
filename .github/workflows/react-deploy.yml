@@ -1,0 +1,46 @@
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+
+permissions:
+  # Allows the workflow to obtain an ID token to authenticate with AWS securely
+  id-token: write
+  # Grants permission to read the repository content (useful for actions like checking out code)
+  contents: read
+
+jobs:
+  build-and-deploy:
+    # The job runs on the latest Ubuntu environment provided by GitHub Actions
+    runs-on: ubuntu-latest
+    steps:
+      # Checks out the repository code to the runner machine
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      # Installs all npm dependencies required to build the React app-
+      - name: Install dependencies
+        run: npm install
+
+      # Builds the React app, creating a production-ready version in the 'dist' folder
+      - name: Build React App
+        run: npm run build
+
+      # Configures AWS credentials for the workflow to interact with AWS
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          #   double-check that this is needed
+          #   role-session-name: GitHubActionsSession
+
+      - name:
+          Deploy to S3
+          # upload index.html file to s3, if it already exists, replace it
+          # Syncs the 'assets' directory from the 'dist' folder to the S3 bucket, deleting old files that no longer exist
+        run: |
+          aws s3 cp ./dist/index.html s3://${{ secrets.AWS_S3_BUCKET }}/index.html
+          aws s3 sync ./dist/assets s3://${{ secrets.AWS_S3_BUCKET }}/assets --delete
