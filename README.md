@@ -398,47 +398,57 @@ API Test Setup:
 ### 09/07/2025 - Front-end Planning + Creation
 
 - deconstruct UI design mockups provided into React components using Figma (+ bonus data flow Mermaid diagram)
-- install Vite + TypeScript to create React front-end
+- install Vite + TypeScript + Scss to create React front-end
+- create employee-service.ts to render fetch data from DB
+- create basic React presentational components: List, Card, Button
+- employee services: getAll() , getById()
+- backend: Implemented Webconfig for CORS errors
+- render and pass data from Page -> List -> Card
+- basic scss styling of Card
+
+### 10/07/2025
+
+- fixed bug with env variables not loading into application.properties for backend by changing file name
+- Successfully deployed backend Spring App to EC2 instance in AWS - Available at: `ec2-3-107-209-102.ap-southeast-2.compute.amazonaws.com:8080/employees`
 
 ### In progress
 
-- create employee-service.ts to render fetch data from DB
-- data render in App.tsx
+- build and deploy fullstack MVP app in AWS
 
 ### Sprint
 
-- create file structure for basic presentational components: List, Card, Button
-- pass e2e tests:
+- React build, test and deploy workflow
+- BE feature: Edit employee record
+
+  - editById PUT method - TDD - write tests + function in parallel
+
+- pass BE basic e2e tests:
   - delete
   - create
+  - edit
 
 <!--
 
-React setup
-
-
 ### Backlog
 
-- React build, test and deploy workflow
-- build and deploy fullstack MVP app in AWS
-- implement API logging strategy
-- feature: Edit employee record
-  - editById PUT method - TDD - write tests + function in parallel
+Front-end work
 
+Form React UI for create/edit features:
+- Create basic form inputs and submit button(use React Form API?)
+- TDD: write test for what form should do in : create vs edit mode
+- create : send data POST
+- edit prefilled form with data from card + added changes -> PUT
+- TDD: write up basic logic tests for service in React + data shape needed (Vitest/Zod schema)
 
-Components + Tests
-
-- write up basic logic tests for React front-end fetching service (Vitest/Zod schema)
-- write up basic component tests for React front-end (Vitest) : Page, List, Card, Button, Header
 
 Backend Refactoring - Error/Data handling
 
+- implement API logging strategy
 - go back and introduce error handling for backend API
 - prepare data handling on backend to make front-end just an IO (goal: reduce front-end complexity)
 
 UI styling - Global styling
 
-- install scss
 - research SCSS vs tailwind styling for React components
 - gather and import design system assets
 - structure in index and partials/variables: color palette, typography
