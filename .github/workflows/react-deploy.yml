@@ -44,3 +44,10 @@ jobs:
         run: |
           aws s3 cp ./dist/index.html s3://${{ secrets.AWS_S3_BUCKET }}/index.html
           aws s3 sync ./dist/assets s3://${{ secrets.AWS_S3_BUCKET }}/assets --delete
+        working-directory: front-end
+
+      - name:
+          Invalidate CloudFront cache
+          # ensure that after every deployment, CloudFront clears its cached content for all paths (\*), forcing it to fetch the latest version of your files from the S3 bucket.
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
