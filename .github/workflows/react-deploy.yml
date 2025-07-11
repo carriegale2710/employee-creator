@@ -26,13 +26,13 @@ jobs:
 
       # Installs all npm dependencies required to build the React app-
       - name: Install dependencies
-        run: |
-          cd front-end
-          npm install
+        run: npm install
+        working-directory: front-end
 
       # Builds the React app, creating a production-ready version in the 'dist' folder
       - name: Build React App
         run: npm run build
+        working-directory: front-end
 
       # Configures AWS credentials for the workflow to interact with AWS
       - name: Configure AWS credentials
@@ -48,6 +48,6 @@ jobs:
           # upload index.html file to s3, if it already exists, replace it
           # Syncs the 'assets' directory from the 'dist' folder to the S3 bucket, deleting old files that no longer exist
         run: |
-          cd front-end
           aws s3 cp ./dist/index.html s3://${{ secrets.AWS_S3_BUCKET }}/index.html
           aws s3 sync ./dist/assets s3://${{ secrets.AWS_S3_BUCKET }}/assets --delete
+        working-directory: front-end
