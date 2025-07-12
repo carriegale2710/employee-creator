@@ -6,7 +6,7 @@ on:
       - main
     types:
       - closed
-    paths: ["back-end/**"]
+    paths: ["./front-end/**"] # Only run if something in front-end changes
 
 permissions:
   # Allows the workflow to obtain an ID token to authenticate with AWS securely

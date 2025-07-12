@@ -2,14 +2,18 @@
 
 name: Spring App EC2 Deploy
 
+# Controls when the workflow will run
 on:
   push:
     branches: ["main"]
-    # paths: ["./employee/**"] # Only run if something in back-end changes
+    paths: ["./employee/**"] # Only run if something in back-end changes
 
   pull_request:
     branches: ["main"]
-    # paths: ["./employee/**"]
+    paths: ["./employee/**"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 permissions:
   id-token: write # Allows the workflow to obtain an ID token to authenticate with AWS securely
