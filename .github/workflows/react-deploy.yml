@@ -1,23 +1,20 @@
 on:
+  push:
+    branches: ["main"]
+    paths: ["front-end/**"] # Only run if something in back-end changes
   pull_request:
-    branches:
-      - main
-    types:
-      - closed
-    paths: ["./front-end/**"] # Only run if something in front-end changes
+    branches: ["main"]
+    types: [closed]
+    paths: ["front-end/**"]
 
-    # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
 
 permissions:
-  # Allows the workflow to obtain an ID token to authenticate with AWS securely
-  id-token: write
-  # Grants permission to read the repository content (useful for actions like checking out code)
-  contents: read
+  id-token: write # Allows the workflow to obtain an ID token to authenticate with AWS securely
+  contents: read # Grants permission to read the repository content (useful for actions like checking out code)
 
 jobs:
   build-and-deploy:
-    # The job runs on the latest Ubuntu environment provided by GitHub Actions
     runs-on: ubuntu-latest
     steps:
       # Checks out the repository code to the runner machine
