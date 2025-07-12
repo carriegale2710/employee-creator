@@ -411,13 +411,17 @@ API Test Setup:
 - fixed bug with env variables not loading into application.properties for backend by changing file name
 - Successfully deployed backend Spring App to EC2 instance in AWS - Available at: `ec2-3-107-209-102.ap-southeast-2.compute.amazonaws.com:8080/employees`
 
-### In progress
+## 11/07/2025
 
-- build and deploy fullstack MVP app in AWS
+- Deployed React front-end as [static app](https://d3bcyx0s1yb5do.cloudfront.net/) in AWS S3 (Simple Storage Service):
+- Created React build, test and deploy [Github workflow](.github/workflows/react-deploy.yml)
+
+### In progress
 
 ### Sprint
 
-- React build, test and deploy workflow
+- API logging
+
 - BE feature: Edit employee record
 
   - editById PUT method - TDD - write tests + function in parallel
@@ -478,7 +482,7 @@ UI styling - Global styling
 ### 🚚 Delivery & Deployment
 
 - [x] README includes clear setup steps for both API and Web app (local dev)
-- [ ] Hosting link works (Heroku, AWS, Azure, etc.)
+- [x] Hosting link works (Heroku, AWS, Azure, etc.)
 - [ ] Code is clean + well documented
 - [ ] App is production-ready
 - [ ] Codebase is understandable and maintainable
@@ -493,6 +497,8 @@ UI styling - Global styling
 Features that are buggy / flimsy/not functional yet: -->
 
 - delete by employee id
+- front-end not switching the api key according to env (dev vs production mode)
+- duplicate data (for email) posting needs to return BAD_REQUEST status code
 
 ---
 
@@ -502,13 +508,14 @@ Features that are buggy / flimsy/not functional yet: -->
 
 - Add API Pagination (with findAll(Pageable pageable) from JpaRepository)
 - Search Bar (find by name match with query params)
-- Login and authentication service/security (for personal/sensitive data access) - Context API in frontend
+- Login and authentication service/security (for admin access only) - Context API for frontend?
 
 ## Learning Curves
 
 <!-- - What did you struggle with? What? Why? How? -->
 
 - Setting up Github Actions was a bit tricky in terms of config. Too many commits to test it.
+- How to link up back end with front-end ?
 
 ---
 
