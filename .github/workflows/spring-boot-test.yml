@@ -1,4 +1,4 @@
-name: Run Spring Boot Tests
+name: Spring Boot Tests
 
 on: [push, pull_request] #Triggers on every push or PR
 
@@ -7,22 +7,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📦 Checkout code
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: ☕ Set up JDK 21
+      - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
           java-version: "21"
           distribution: "temurin"
 
-      - name: 🛠️ Cache Maven packages
+      - name: Cache Maven packages
         uses: actions/cache@v3 #Speeds up Maven builds by caching dependencies
         with:
           path: ~/.m2
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-maven
 
-      - name: 📋 Run tests
+      - name: Run tests
         run: mvn clean verify #Builds and runs all your tests (including E2E)
         working-directory: ./employee

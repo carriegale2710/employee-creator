@@ -4,6 +4,7 @@ on:
       - main
     types:
       - closed
+    paths: ["back-end/**"]
 
 permissions:
   # Allows the workflow to obtain an ID token to authenticate with AWS securely
