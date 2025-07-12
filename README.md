@@ -1,6 +1,6 @@
 # Employee Creator
 
-[![Java CI with Maven](https://github.com/carriegale2710/employee-creator/actions/workflows/maven.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/maven.yml) [![Run Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/test.yml) [![React Deploy](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml)
+[![Java CI with Maven](https://github.com/carriegale2710/employee-creator/actions/workflows/maven.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/maven.yml) [![Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml) [![React Deploy](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml)
 
 ## Introduction
 
