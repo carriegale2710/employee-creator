@@ -1,0 +1,59 @@
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+name: Spring App EC2 Deploy
+
+on:
+  push:
+    branches: ["main"]
+    # paths: ["./employee/**"] # Only run if something in back-end changes
+
+  pull_request:
+    branches: ["main"]
+    # paths: ["./employee/**"]
+
+permissions:
+  id-token: write # Allows the workflow to obtain an ID token to authenticate with AWS securely
+  contents: read # Grants permission to read the repository content (useful for actions like checking out code)
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # The job runs on the latest Ubuntu environment provided by GitHub Actions
+    defaults:
+      run:
+        working-directory: ./employee # Spring app folder
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          cache: maven # cache dependencies to speed up workflow runs
+
+      - name: Build Spring Boot app on local env
+        run: mvn clean install -DskipTests
+
+      - name: 📤 Upload jar to EC2
+        uses: appleboy/scp-action@v0.1.1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "./target/employee-0.0.1-SNAPSHOT.jar"
+          target: "/home/ec2-user"
+
+      - name: 🔁 Restart app on EC2
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            echo "Stopping any existing app..."
+            pkill -f employee-0.0.1-SNAPSHOT.jar || true
+
+            echo "Starting new app..."
+            nohup java -jar employee-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
