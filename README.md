@@ -192,8 +192,8 @@ Use [Postman](https://www.postman.com/downloads/) or a browser (for GET requests
 | Type       | Tools Used       | Status |
 | ---------- | ---------------- | ------ |
 | Unit Tests | JUnit + Mockito  | ✅     |
-| API Tests  | REST Assured, H2 | ✅     |
-| Frontend   | Vitest / Manual  | ⏳     |
+| E2E Tests  | REST Assured, H2 | ⏳     |
+| Frontend   | Vitest / Zod     | ⏳     |
 
 ```bash
 ./mvnw test      # backend
@@ -239,10 +239,11 @@ See [Project Requirements](project-brief.md)
 
 <!-- Why did you implement this the way you did? -->
 
-- Used enum for department to enforce consistency.
+<!-- - Used enum for department to enforce consistency.
+- Used Tailwind for quick responsive UI with minimal setup. -->
+
 - Used top-down TDD to define backend before connecting to frontend.
   - Write up basic tests before coding to understand functionality, entity shapes & edge cases.
-- Used Tailwind for quick responsive UI with minimal setup.
 
 #### React Components
 
@@ -303,14 +304,42 @@ flowchart TD
 
 ### API Endpoints
 
-See [Full Sequence Diagram](assets/diagrams/sequence-diagram.md)
-
 | ID  | Method   | Endpoint         | Input             | Output Data | Success Response |
 | --- | -------- | ---------------- | ----------------- | ----------- | ---------------- |
 | 1   | `GET`    | `/employees`     | none              | DB List     | `200 OK`         |
 | 2   | `POST`   | `/employees`     | CreateEmployeeDTO | DB Record   | `201 Created`    |
 | 3   | `DELETE` | `/employees/:id` | employee id       | No Content  | `204 No Content` |
 | 1   | `GET`    | `/employees/:id` | employee id       | DB Record   | `200 OK`         |
+
+### Sequence Diagram
+
+```mermaid
+
+sequenceDiagram
+  actor User
+  participant ReactApp as React App
+  participant SpringAPI as Spring Boot API
+  participant MySQL as MySQL Database
+
+  Note over User: View all employees
+  User->>ReactApp: Clicks 'Employees' nav link
+  ReactApp->>SpringAPI: GET /employees
+  SpringAPI->>MySQL: SELECT * FROM employees
+  MySQL-->>SpringAPI: Rows (employee list)
+  SpringAPI-->>ReactApp: JSON response
+  ReactApp-->>User: Display list
+
+  Note over User: Add a new employee
+  User->>ReactApp: Fills out form
+  ReactApp->>SpringAPI: POST /employees (form data)
+  SpringAPI->>MySQL: INSERT INTO employees
+  MySQL-->>SpringAPI: OK
+  SpringAPI-->>ReactApp: 201 CREATED (+New employee JSON)
+  ReactApp-->>User: Confirmation
+
+```
+
+See [Full Sequence Diagram](assets/diagrams/sequence-diagram.md)
 
 ### Schemas
 
@@ -406,21 +435,32 @@ API Test Setup:
 - render and pass data from Page -> List -> Card
 - basic scss styling of Card
 
-### 10/07/2025
+### 10/07/2025 - Spring App EC2 Deployment
 
 - fixed bug with env variables not loading into application.properties for backend by changing file name
 - Successfully deployed backend Spring App to EC2 instance in AWS - Available at: `ec2-3-107-209-102.ap-southeast-2.compute.amazonaws.com:8080/employees`
 
-## 11/07/2025
+### 11/07/2025 - S3 React Deployment
 
 - Deployed React front-end as [static app](https://d3bcyx0s1yb5do.cloudfront.net/) in AWS S3 (Simple Storage Service):
 - Created React build, test and deploy [Github workflow](.github/workflows/react-deploy.yml)
 
+### 12/07/2025 - Custom Domain for API
+
+- Created new healthcheck controller endpoint for testing load balancer
+
 ### In progress
+
+- Started: [Custom Domain for EC2](https://github.com/nology-tech/chicago-consultancy/tree/main/code-alongs/aws/adding-custom-domian-with-https) for fetching safely from front-end
+
+  - error, stuck at "Test out your API" : "If it is not returning the expected response, or if the health check fails, you might need to look at your EC2 security group settings."
+  <!-- message Martyna about it (maybe see discord/Fred) -->
+
+- Started: Auto-deployment workflow for Spring App EC2 Deployment (not working yet) (on hold)
 
 ### Sprint
 
-- API logging
+- implement API logging strategy
 
 - BE feature: Edit employee record
 
@@ -447,7 +487,6 @@ Form React UI for create/edit features:
 
 Backend Refactoring - Error/Data handling
 
-- implement API logging strategy
 - go back and introduce error handling for backend API
 - prepare data handling on backend to make front-end just an IO (goal: reduce front-end complexity)
 
@@ -467,13 +506,13 @@ UI styling - Global styling
 
 - [x] App compiles and runs
 - [x] API has 3 working CRUD endpoints (GET, POST, DELETE)
-- [/] Unit + end-to-end tests pass (JUnit, Mockito)
+- [ ] Unit + end-to-end tests pass (JUnit, Mockito)
 - [ ] Error handling implemented
 - [ ] Logging strategy in place
 
 ### 💻 Frontend (React + TypeScript)
 
-- [ ] React app compiles and runs (Vite)
+- [x] React app compiles and runs (Vite)
 - [ ] Create + view employee functionality works
 - [ ] Form validation added
 - [ ] Optional testing included (Vitest)
@@ -484,7 +523,7 @@ UI styling - Global styling
 - [x] README includes clear setup steps for both API and Web app (local dev)
 - [x] Hosting link works (Heroku, AWS, Azure, etc.)
 - [ ] Code is clean + well documented
-- [ ] App is production-ready
+- [x] App is production-ready
 - [ ] Codebase is understandable and maintainable
 - [ ] Bug-free and everything compiles + runs as expected
 
@@ -499,6 +538,7 @@ Features that are buggy / flimsy/not functional yet: -->
 - delete by employee id
 - front-end not switching the api key according to env (dev vs production mode)
 - duplicate data (for email) posting needs to return BAD_REQUEST status code
+- custom domain for EC2 :
 
 ---
 
@@ -510,12 +550,12 @@ Features that are buggy / flimsy/not functional yet: -->
 - Search Bar (find by name match with query params)
 - Login and authentication service/security (for admin access only) - Context API for frontend?
 
-## Learning Curves
+## Learning Curves / Questions
 
 <!-- - What did you struggle with? What? Why? How? -->
 
 - Setting up Github Actions was a bit tricky in terms of config. Too many commits to test it.
-- How to link up back end with front-end ?
+- How to link up back end with front-end ? -> Custom Domain setup
 
 ---
 
