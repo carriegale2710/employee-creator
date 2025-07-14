@@ -449,8 +449,6 @@ API Test Setup:
 
 - Created new healthcheck controller endpoint for testing load balancer
 
-### In progress
-
 - Started: [Custom Domain for EC2](https://github.com/nology-tech/chicago-consultancy/tree/main/code-alongs/aws/adding-custom-domian-with-https) for fetching safely from front-end
 
   - error, stuck at "Test out your API" : "If it is not returning the expected response, or if the health check fails, you might need to look at your EC2 security group settings."
@@ -458,18 +456,28 @@ API Test Setup:
 
 - Started: Auto-deployment workflow for Spring App EC2 Deployment (not working yet) (on hold)
 
+### 14/07/2025 - API Logging
+
+- API logging strategy:
+  - implemented SLF4J facade in EmployeeApplication controller class
+  - created dev profile for console and file log formats and level filtering
+  - configured SLF4J to use Log4j2 instead of default (Logback)
+  - created log4j2-spring.xml for log configuration and formatting, with dev profile
+
+### In progress
+
 ### Sprint
 
-- implement API logging strategy
+- pass BE basic e2e tests:
+
+  - delete
+  - create
 
 - BE feature: Edit employee record
 
   - editById PUT method - TDD - write tests + function in parallel
 
-- pass BE basic e2e tests:
-  - delete
-  - create
-  - edit
+- start writing tests for front-end
 
 <!--
 

@@ -35,5 +35,10 @@ build/
 .env
 
 application-secrets.properties
+application-dev.properties
+
+spring.log
+
+/logs/
 logs/
 application-dev.properties
