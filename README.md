@@ -1,6 +1,8 @@
 # Employee Creator
 
-[![Spring App EC2 Deploy](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-ec2-deploy.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-ec2-deploy.yml) [![Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml) [![React Deploy](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml)
+<!-- [![Spring App EC2 Deploy](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-ec2-deploy.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-ec2-deploy.yml) -->
+
+[![Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml) [![React Deploy](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml)
 
 ## Introduction
 
@@ -12,11 +14,21 @@ Employee Creator is a full-stack CRUD web app built with Java Spring Boot and Re
 
 This project was created to practice building production-ready applications with testing, responsive UI, and scalable architecture. It also mirrors typical enterprise apps used in HR systems.
 
-<!-- ## Demo & Snippets
+## Demo & Snippets
 
-- [ ] Include hosted link: TBA
-- [ ] Include images of app if CLI or Client App
+<!-- - [x] Include hosted link: TBA -->
 
+Hosted Links:
+
+API:
+`ec2-3-107-209-102.ap-southeast-2.compute.amazonaws.com:8080/employees`
+
+Front-end app:
+`https://d3bcyx0s1yb5do.cloudfront.net/`
+
+<!-- - [ ] Include images of app if CLI or Client App -->
+
+<!--
 //TODO - (replace with own finished front-end UI upon completion)
 
 ### Feature 1: Employee List
@@ -280,6 +292,8 @@ flowchart TD
 
 ```
 
+![ListPage-deconstructed-components](image-1.png)
+
 <!--
 ### React Code Structure
 
@@ -449,11 +463,7 @@ API Test Setup:
 
 - Created new healthcheck controller endpoint for testing load balancer
 
-- Started: [Custom Domain for EC2](https://github.com/nology-tech/chicago-consultancy/tree/main/code-alongs/aws/adding-custom-domian-with-https) for fetching safely from front-end
-
-  - error, stuck at "Test out your API" : "If it is not returning the expected response, or if the health check fails, you might need to look at your EC2 security group settings."
-  <!-- message Martyna about it (maybe see discord/Fred) -->
-
+- Bought custom domain from porkbun - to be implemented:
 - Started: Auto-deployment workflow for Spring App EC2 Deployment (not working yet) (on hold)
 
 ### 14/07/2025 - API Logging
@@ -464,39 +474,45 @@ API Test Setup:
   - configured SLF4J to use Log4j2 instead of default (Logback)
   - created log4j2-spring.xml for log configuration and formatting, with dev profile
 
+### 15/07/2025
+
+- FE:
+
 ### In progress
 
+<!--
 ### Sprint
 
-- pass BE basic e2e tests:
+- BE: basic e2e tests for:
 
   - delete
   - create
 
-- BE feature: Edit employee record
+- BE feature: Edit employee record:
 
   - editById PUT method - TDD - write tests + function in parallel
 
-- start writing tests for front-end
+- FE: start writing component tests for
+  - List,
+  - Page,
+  - Card
 
-<!--
+- TDD: write test for what form should do in : create vs edit mode
+- TDD: write up basic logic tests for service in React + data shape needed (Vitest/Zod schema)
 
 ### Backlog
+
+Backend Refactoring - Error/Data handling
+- go back and introduce error handling for backend API
+- prepare data handling on backend to make front-end just an IO (goal: reduce front-end complexity)
 
 Front-end work
 
 Form React UI for create/edit features:
 - Create basic form inputs and submit button(use React Form API?)
-- TDD: write test for what form should do in : create vs edit mode
 - create : send data POST
 - edit prefilled form with data from card + added changes -> PUT
-- TDD: write up basic logic tests for service in React + data shape needed (Vitest/Zod schema)
 
-
-Backend Refactoring - Error/Data handling
-
-- go back and introduce error handling for backend API
-- prepare data handling on backend to make front-end just an IO (goal: reduce front-end complexity)
 
 UI styling - Global styling
 
@@ -513,18 +529,18 @@ UI styling - Global styling
 ### 🔧 Backend (Spring Boot)
 
 - [x] App compiles and runs
-- [x] API has 3 working CRUD endpoints (GET, POST, DELETE)
-- [ ] Unit + end-to-end tests pass (JUnit, Mockito)
+- [/] API has working CRUD endpoints (GET, CREATE, DELETE + EDIT)
+- [/] Unit + end-to-end tests (JUnit, Mockito)
 - [ ] Error handling implemented
-- [ ] Logging strategy in place
+- [x] Logging strategy in place
 
 ### 💻 Frontend (React + TypeScript)
 
 - [x] React app compiles and runs (Vite)
-- [ ] Create + view employee functionality works
+- [ ] Basic CRUD employee functionality works
 - [ ] Form validation added
-- [ ] Optional testing included (Vitest)
-- [ ] UI styled + responsive (SCSS/Tailwind)
+- [ ] Optional testing included (Vitest/Zod)
+- [/] UI styled + responsive (SCSS/Tailwind)
 
 ### 🚚 Delivery & Deployment
 
@@ -533,7 +549,7 @@ UI styling - Global styling
 - [ ] Code is clean + well documented
 - [x] App is production-ready
 - [ ] Codebase is understandable and maintainable
-- [ ] Bug-free and everything compiles + runs as expected
+- [x] Bug-free and everything compiles + runs as expected
 
 ---
 
@@ -543,10 +559,15 @@ UI styling - Global styling
 
 Features that are buggy / flimsy/not functional yet: -->
 
-- delete by employee id
-- front-end not switching the api key according to env (dev vs production mode)
-- duplicate data (for email) posting needs to return BAD_REQUEST status code
-- custom domain for EC2 :
+1. Delete by employee id not working in BE.
+2. Front-end app is not switching the VITE api key according to env (dev vs production mode).
+3. Duplicate data (for email) posting needs to return BAD_REQUEST status code.
+4. [14/07/25] Custom domain for EC2 : for fetching safely from front-end (otherwise error below)
+   -> stuck at "Test out your API" : health check failing, need to look at EC2 security group setting again
+
+![console-error-message-from-failed-API-fetching-with-EC2](image.png)
+
+5. [15/07/25] Need to audit API logging and react app fetching for any security holes
 
 ---
 
@@ -555,6 +576,10 @@ Features that are buggy / flimsy/not functional yet: -->
 <!-- What are the immediate features you'd add given more time / ideas parking lot: -->
 
 - Add API Pagination (with findAll(Pageable pageable) from JpaRepository)
+- Contracts: Implement a contracts table schema, with a one-to-many relationship with each employee (one employee can have many contracts)
+
+Maybes:
+
 - Search Bar (find by name match with query params)
 - Login and authentication service/security (for admin access only) - Context API for frontend?
 
@@ -563,9 +588,7 @@ Features that are buggy / flimsy/not functional yet: -->
 <!-- - What did you struggle with? What? Why? How? -->
 
 - Setting up Github Actions was a bit tricky in terms of config. Too many commits to test it.
-- How to link up back end with front-end ? -> Custom Domain setup
-
----
+- Deployment was straight forward but linking up BE with FE a bit tricky with setting up AWS security settings for custom domain for EC2 server hosting
 
 <!-- ## Licensing Details
 
