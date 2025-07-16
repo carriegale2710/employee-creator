@@ -1,11 +1,15 @@
-const API_URL = import.meta.env.VITE_API_URL;
-console.log("API:", import.meta.env.VITE_API_URL);
+const API_URL = "http://localhost:8080";
+console.log("API:", API_URL);
 
 export interface Employee {
   id: number;
   firstName: string;
   lastName: string;
   email: string;
+  phoneNumber?: string;
+  address?: string;
+  dateOfBirth?: string; // ISO date string
+  taxFileNumber: string;
 }
 
 export const getAllEmployees = async (): Promise<Employee[]> => {
