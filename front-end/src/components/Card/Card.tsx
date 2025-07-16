@@ -2,7 +2,7 @@ import type { Employee } from "../../services/employees";
 import Button from "../Button/Button";
 import "./Card.scss";
 
-interface CardProps {
+export interface CardProps {
   employee: Employee;
 }
 

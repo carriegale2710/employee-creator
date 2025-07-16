@@ -19,7 +19,6 @@ function App() {
   return (
     <>
       <h1>Employee Creator App</h1>
-      <p>test 4</p>
       <div className="intro">
         <p>Click on "Edit" to see more about each employee.</p>
         <Button>Add Employee</Button>
