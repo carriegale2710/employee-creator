@@ -1,5 +1,4 @@
 .env
 application-env.properties
-assets/references/
-spring-refs/
+assets/refs/
 logs/
