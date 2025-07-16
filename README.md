@@ -217,15 +217,7 @@ npm run test     # frontend (if added)
 
 ## Design Goals / Approach
 
-### TDD Workflow
-
-| Phase       | Action                                           |
-| ----------- | ------------------------------------------------ |
-| 🔴 Red      | Write a test for a feature you haven’t built yet |
-| 🟢 Green    | Build the simplest code to pass the test         |
-| 🟡 Refactor | Clean up code while keeping tests passing        |
-
-### MVP Objectives
+#### MVP Objectives
 
 See [Project Requirements](project-brief.md)
 
@@ -239,7 +231,7 @@ See [Project Requirements](project-brief.md)
   - Responsive layout
   - Hosting (Heroku, AWS, etc.)
 
-### User Stories to fufill
+#### User Stories to fufill
 
 | ID  | Feature           | User Wants To...   | So They Can...    | User should be able to...                                                  |
 | --- | ----------------- | ------------------ | ----------------- | -------------------------------------------------------------------------- |
@@ -255,57 +247,24 @@ See [Project Requirements](project-brief.md)
 - Used Tailwind for quick responsive UI with minimal setup. -->
 
 - Used top-down TDD to define backend before connecting to frontend.
-  - Write up basic tests before coding to understand functionality, entity shapes & edge cases.
+- Write up basic tests before coding to understand functionality, entity shapes & edge cases.
 
-#### React Components
+#### TDD Workflow
 
-```mermaid
----
-config:
-  layout: elk
-  theme: neo-dark
----
-flowchart TD
- subgraph Card["Card"]
-        L1["UserData"]
-        L2["Button: Edit"]
-        L3["Button: Delete"]
-  end
- subgraph List["List"]
-        Card
-  end
- subgraph Form["Form"]
-        B1["Form field <br>(onEdit: prefilled)"]
-        B2["Button: Submit"]
-  end
- subgraph ListPage["ListPage"]
-        List
-        A3["Button : Add"]
-  end
- subgraph FormPage["FormPage"]
-        Form
-        B4["Button: Cancel"]
-  end
-    A3 --> FormPage
-    B4 --> ListPage
-    L2 --> FormPage
+| Phase       | Action                                           |
+| ----------- | ------------------------------------------------ |
+| 🔴 Red      | Write a test for a feature you haven’t built yet |
+| 🟢 Green    | Build the simplest code to pass the test         |
+| 🟡 Refactor | Clean up code while keeping tests passing        |
 
-```
+#### Entity Relationship Diagram (ERD)
 
-![ListPage-deconstructed-components](image-1.png)
+- Included a contracts and departments table with a `one-to-many relationship` for `employees -> contracts` and `departments -> contracts`
+- This allows for flexible, quicker UX when editing of DB records via in FE client app with only minor updates eg. salary, contract dates etc.
 
-<!--
-### React Code Structure
+![diagram of one-to-many class between employee and contracts tables in database](assets\data\erd.png)
 
-| File                   | Purpose                                                  |
-| ---------------------- | -------------------------------------------------------- |
-| `employeeService.js`   | Handles raw API calls (GET, POST, PUT, DELETE)           |
-| `useEmployees.js`      | Manages local state + calls service + keeps list in sync |
-| `EmployeeListPage.jsx` | Renders the list and uses the hook                       |
-| `EmployeeForm.jsx`     | Reuses hook to trigger updates after submit              |
- -->
-
----
+See more in [Schemas](assets/data/README.md)
 
 ## Features
 
@@ -351,37 +310,25 @@ sequenceDiagram
   SpringAPI-->>ReactApp: 201 CREATED (+New employee JSON)
   ReactApp-->>User: Confirmation
 
+  Note over User: Edit an employee
+  User->>ReactApp: Clicks Edit
+  ReactApp->>SpringAPI: PUT /employees/:id (updated data)
+  SpringAPI->>MySQL: UPDATE employees WHERE id=...
+  MySQL-->>SpringAPI: OK
+  SpringAPI-->>ReactApp: Updated JSON
+  ReactApp-->>User: Show updated data
+
+  Note over User: Delete an employee
+  User->>ReactApp: Clicks Delete
+  ReactApp->>SpringAPI: DELETE /employees/:id
+  SpringAPI->>MySQL: DELETE FROM employees WHERE id=...
+  MySQL-->>SpringAPI: OK
+  SpringAPI-->>ReactApp: 204 NO CONTENT
+  ReactApp-->>User: Item removed
+
 ```
 
-See [Full Sequence Diagram](assets/diagrams/sequence-diagram.md)
-
-### Schemas
-
-Data types for properties of Employee class.
-
-- `id` : unique number (generated in backend)
-- `firstName` : string
-- `lastName` : string
-- `email` : unique string (generated in backend)
-<!-- - department : enum (dropdown in UI)
-- startDate : Date (datepicker UI, validation needed) -->
-
-#### CreateEmployeeDTO Schema
-
-This is the type of data that will be sent from the client side form to create a new employee in DB.
-
-- `firstName` : string
-- `lastName` : string
-- email : (optional, if null, generate based on name)
-<!-- - department : enum (dropdown in UI) (optional)
-- startDate : Date (datepicker UI, validation needed) -->
-
-Note: A unique Id & email (if not entered) should be generated in backend upon creation.
-
-<!-- Note: 🔒 "department" must be one of:
-"ENGINEERING", "SALES", "HUMAN_RESOURCES", "MARKETING", "FINANCE" -->
-
-See more in [Schemas](assets/data/README.md)
+[Sequence Diagram](assets/diagrams/sequence-diagram.md)
 
 ## Change logs
 
@@ -476,50 +423,65 @@ API Test Setup:
 
 ### 15/07/2025
 
-- FE:
+- Deconstructed React components for List and Form pages.
+
+Database Schema Updates:
+
+- Department is no longer stored directly in the Employee schema
+- Start date and department are now part of the Contract entity
+- Employees can have multiple contracts
+- See updated ['Database Structure' README](assets/data/README.md) for more
+
+### 16/07/2025
 
 ### In progress
 
-<!--
 ### Sprint
 
-- BE: basic e2e tests for:
+Form React UI for create/edit features:
 
-  - delete
-  - create
+Backend
 
-- BE feature: Edit employee record:
-
-  - editById PUT method - TDD - write tests + function in parallel
-
-- FE: start writing component tests for
-  - List,
-  - Page,
-  - Card
-
-- TDD: write test for what form should do in : create vs edit mode
-- TDD: write up basic logic tests for service in React + data shape needed (Vitest/Zod schema)
-
-### Backlog
-
-Backend Refactoring - Error/Data handling
+- BE: basic e2e tests for: delete, create, edit
 - go back and introduce error handling for backend API
 - prepare data handling on backend to make front-end just an IO (goal: reduce front-end complexity)
 
 Front-end work
 
-Form React UI for create/edit features:
 - Create basic form inputs and submit button(use React Form API?)
 - create : send data POST
-- edit prefilled form with data from card + added changes -> PUT
 
+- structure in index and partials/variables: color palette, typography
+- write up reusable mixins: eg. flexbox wrappers
+
+- edit prefilled form with data from card + added changes -> PUT
+- Form tests and validation with zod
+<!--
+
+### Backlog
+
+FE Tests:
+
+- FE: start writing component tests for
+  - List,
+  - Page,
+  - Card
+- TDD: write test for what form should do in : create vs edit mode
+- TDD: write up basic logic tests for service in React + data shape needed (Vitest/Zod schema)
+
+- BE feature: Edit employee record:
+
+  - editById PUT method - TDD - write tests + function in parallel
+
+Front-end work
+
+Form validation
 
 UI styling - Global styling
 
 - research SCSS vs tailwind styling for React components
 - gather and import design system assets
-- structure in index and partials/variables: color palette, typography
-- write up reusable mixins: eg. flexbox wrappers
+
 - explore UI libraries /inspo if time (produce UI MVP ref first) -->
 
 ---
@@ -565,7 +527,7 @@ Features that are buggy / flimsy/not functional yet: -->
 4. [14/07/25] Custom domain for EC2 : for fetching safely from front-end (otherwise error below)
    -> stuck at "Test out your API" : health check failing, need to look at EC2 security group setting again
 
-![console-error-message-from-failed-API-fetching-with-EC2](image.png)
+![console-error-message-from-failed-API-fetching-with-EC2](logs/FE-API-fetching-error.png)
 
 5. [15/07/25] Need to audit API logging and react app fetching for any security holes
 
@@ -583,25 +545,74 @@ Maybes:
 - Search Bar (find by name match with query params)
 - Login and authentication service/security (for admin access only) - Context API for frontend?
 
-## Learning Curves / Questions
+---
+
+## Learning Curves + Research Questions
 
 <!-- - What did you struggle with? What? Why? How? -->
 
 - Setting up Github Actions was a bit tricky in terms of config. Too many commits to test it.
 - Deployment was straight forward but linking up BE with FE a bit tricky with setting up AWS security settings for custom domain for EC2 server hosting
 
-<!-- ## Licensing Details
+---
 
-What type of license are you releasing this under?
+## Lessons + skills learnt
+
+- TDD + documentation helps with immensely with project scope definition/creep
+- How to deploy both FE and BE with AWS
+
+---
+
+## Licensing Details
+
+<!-- What type of license are you releasing this under? -->
+
+MIT License.
+
+<!-- ✅ Option 2: Add License to an Existing Repo
+Option A: Use GitHub UI
+Go to your repo on GitHub.
+
+Click “Add file” → “Create new file”
+
+Name the file LICENSE (no extension).
+
+GitHub will detect the name and offer a “Choose a license template” button — click that.
+
+Pick a license (e.g., MIT).
+
+Review, then click Commit new file.
+
+Option B: Do it locally
+In your project folder:
+
+bash
+Copy
+Edit
+touch LICENSE
+Copy-paste your license text into it (e.g., from https://choosealicense.com/licenses/mit/)
+
+Add and commit:
+
+bash
+Copy
+Edit
+git add LICENSE
+git commit -m "Add MIT license"
+git push
+🧠 Bonus Tip: GitHub License Badge
+If your repo is public, GitHub will auto-detect the license and display it in the repo header.
+
+You can also add a badge in your README:
+
+md
+Copy
+Edit
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+ -->
 
 ---
 
 ## Related projects, reimplementations
 
-Link client app README here later
-
----
-
-## Appendix
-
-misc. info -->
+See related documentation for [React Client App](front-end/README.md).
