@@ -1,15 +1,22 @@
-import "./App.scss";
+import { BrowserRouter, Route, Routes } from "react-router";
+import Home from "./pages/Home";
+import ListPage from "./pages/ListPage";
 import CreatePage from "./pages/CreatePage";
 import EditPage from "./pages/EditPage";
-import ListPage from "./pages/ListPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import "./App.scss";
 
 function App() {
   return (
-    <>
-      <ListPage />
-      <EditPage />
-      <CreatePage />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/employees" element={<ListPage />} />
+        <Route path="/employees/:id" element={<EditPage />} />
+        <Route path="/employees/new" element={<CreatePage />} />
+        <Route path="/*" element={<NotFoundPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
