@@ -1,10 +1,11 @@
+import { NavLink } from "react-router-dom";
 import Button from "../components/Button/Button";
 
 const Home = () => {
   return (
     <>
       <h1>Home</h1>
-      <Button>View Employees</Button>
+      <NavLink to="/employees">View Employees</NavLink>
       <Button>Register an Employee</Button>
     </>
   );
