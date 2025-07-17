@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router";
+import NavBar from "./components/NavBar/NavBar";
 import Home from "./pages/Home";
 import ListPage from "./pages/ListPage";
 import CreatePage from "./pages/CreatePage";
@@ -9,6 +10,7 @@ import "./App.scss";
 function App() {
   return (
     <BrowserRouter>
+      <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/employees" element={<ListPage />} />
