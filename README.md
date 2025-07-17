@@ -1,8 +1,8 @@
-# Employee Creator
+# Employee Creator API
 
 <!-- [![Spring App EC2 Deploy](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-ec2-deploy.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-ec2-deploy.yml) -->
 
-[![Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml) [![React Deploy](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml)
+[![Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml) [![React Deploy](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Introduction
 
@@ -43,14 +43,14 @@ Front-end app:
 
 ## Techstack and why
 
-| Layer      | Technology                       | Why I chose it                      |
-| ---------- | -------------------------------- | ----------------------------------- |
-| Backend    | Java, Spring Boot, JPA           | Production-grade APIs, type safety  |
-| DB         | MySQL, JPA                       | SQL schema control, ORM integration |
-| Frontend   | React, TypeScript, Vite          | SPA structure, compile-time safety  |
-| Styling    | Tailwind (TBD) CSS / SCSS        | Component-level styling, responsive |
-| Testing    | JUnit, Mockito, REST Assured, H2 | API e2e + unit tests, mock data     |
-| Deployment | Heroku (TBD)                     | Easy CI/CD                          |
+| Layer      | Technology                              | Why I chose it                      |
+| ---------- | --------------------------------------- | ----------------------------------- |
+| Backend    | Java, Spring Boot                       | Production-grade APIs, type safety  |
+| DB         | MySQL, JPA                              | SQL schema control, ORM integration |
+| Frontend   | React, TypeScript, Vite                 | SPA structure, compile-time safety  |
+| Styling    | Tailwind (TBD) CSS / SCSS               | Component-level styling, responsive |
+| Testing    | JUnit, Mockito, REST Assured, H2        | API e2e + unit tests, mock data     |
+| Deployment | AWS EC2 (Backend API) S3 (Front-end UI) | Easy CI/CD, low costs               |
 
 ### Other notes
 
@@ -217,6 +217,14 @@ npm run test     # frontend (if added)
 
 ## Design Goals / Approach
 
+#### TDD Workflow
+
+| Phase       | Action                                           |
+| ----------- | ------------------------------------------------ |
+| 🔴 Red      | Write a test for a feature you haven’t built yet |
+| 🟢 Green    | Build the simplest code to pass the test         |
+| 🟡 Refactor | Clean up code while keeping tests passing        |
+
 #### MVP Objectives
 
 See [Project Requirements](project-brief.md)
@@ -248,14 +256,6 @@ See [Project Requirements](project-brief.md)
 
 - Used top-down TDD to define backend before connecting to frontend.
 - Write up basic tests before coding to understand functionality, entity shapes & edge cases.
-
-#### TDD Workflow
-
-| Phase       | Action                                           |
-| ----------- | ------------------------------------------------ |
-| 🔴 Red      | Write a test for a feature you haven’t built yet |
-| 🟢 Green    | Build the simplest code to pass the test         |
-| 🟡 Refactor | Clean up code while keeping tests passing        |
 
 #### Entity Relationship Diagram (ERD)
 
@@ -434,31 +434,56 @@ Database Schema Updates:
 
 ### 16/07/2025
 
+- Edit feature prefilled form with data from card + added changes
+- Form tests
+
+## Task Tracker
+
+<!-- | Icon | Meaning              |
+| ---- | -------------------- |
+| ⬜️  | To Do (not started)  |
+| 🔄   | In Progress          |
+| ⛔️  | Blocked / Needs Help |
+| ✅   | Done (completed)     |
+| 🧪   | Needs Testing        |
+| 📦   | Deployed / Delivered | -->
+
+Features: *=MVP
+| ID | Feature | BE | FE |
+| --- | --------------- | ---|---- |
+| F1 | *List Employees | ✅ | 🧪 |
+| F2 | *Create Employee | | 🔄 |
+| F3 | *Delete Employee | 🔄 | 🔄 |
+| F5 | \*Create Employee | 🔄 | 🔄 |
+| F4 | View Employee | | |
+| F6 | Create Contract | | |
+| F7 | Edit Contract | | |
+
 ### In progress
+
+- Create basic form inputs and submit button(use React Form API?)
 
 ### Sprint
 
 Form React UI for create/edit features:
 
-Backend
+#### Backend
 
 - BE: basic e2e tests for: delete, create, edit
 - go back and introduce error handling for backend API
 - prepare data handling on backend to make front-end just an IO (goal: reduce front-end complexity)
 
-Front-end work
+#### Front-end
 
-- Create basic form inputs and submit button(use React Form API?)
 - create : send data POST
 
 - structure in index and partials/variables: color palette, typography
 - write up reusable mixins: eg. flexbox wrappers
-
-- edit prefilled form with data from card + added changes -> PUT
-- Form tests and validation with zod
-<!--
+- validation with zod
 
 ### Backlog
+
+#### Backend
 
 FE Tests:
 
@@ -473,7 +498,7 @@ FE Tests:
 
   - editById PUT method - TDD - write tests + function in parallel
 
-Front-end work
+#### Front-end
 
 Form validation
 
@@ -482,7 +507,7 @@ UI styling - Global styling
 - research SCSS vs tailwind styling for React components
 - gather and import design system assets
 
-- explore UI libraries /inspo if time (produce UI MVP ref first) -->
+- explore UI libraries /inspo if time (produce UI MVP ref first)
 
 ---
 
@@ -491,8 +516,8 @@ UI styling - Global styling
 ### 🔧 Backend (Spring Boot)
 
 - [x] App compiles and runs
-- [/] API has working CRUD endpoints (GET, CREATE, DELETE + EDIT)
-- [/] Unit + end-to-end tests (JUnit, Mockito)
+- [ ] API has working CRUD endpoints (GET, CREATE, DELETE + EDIT)
+- [x] Unit + end-to-end tests (JUnit, Mockito)
 - [ ] Error handling implemented
 - [x] Logging strategy in place
 
@@ -501,8 +526,8 @@ UI styling - Global styling
 - [x] React app compiles and runs (Vite)
 - [ ] Basic CRUD employee functionality works
 - [ ] Form validation added
-- [ ] Optional testing included (Vitest/Zod)
-- [/] UI styled + responsive (SCSS/Tailwind)
+- [x] Optional testing included (Vitest/Zod)
+- [ ] UI styled + responsive (SCSS/Tailwind)
 
 ### 🚚 Delivery & Deployment
 
@@ -553,15 +578,22 @@ Maybes:
 
 - Setting up Github Actions was a bit tricky in terms of config. Too many commits to test it.
 - Deployment was straight forward but linking up BE with FE a bit tricky with setting up AWS security settings for custom domain for EC2 server hosting
+- ***
 
----
+## Retrospective: Lessons + skills learnt from this project
 
-## Lessons + skills learnt
+### Practicing Test Driven Development (TDD)
 
-- TDD + documentation helps with immensely with project scope definition/creep
-- How to deploy both FE and BE with AWS
+- Writing E2E tests for my backend API was super helpful for understanding what exactly my features were.
+- Also helped with motivation seeing green ticks.
+- Better efficiency with regression testing during refactors rather than debugging in browser.
 
----
+### Experimenting with more efficient, sustainable project documentation strategies (eg. change logs, mermaid diagrams).
+
+- I have found that writing a few notes on your progress helped A LOT with project scope definition/creep. Also just better understanding what the project brief is about and thinking earlier about what potential blockers to beware of during production.
+- Before I was using trello before, which was good but not as sustainable for more solo dev work (good for collaboration though). - I have found just writing mini-progress reports in a README file to be simpler and even safer way due to better version history. I don't need to worry about accidently deleting anything as I can go back to older commits.
+- I can also track progress changes overtime, and refresh my brain on what I was working on the day before.
+- Will continue using this method for solo projects.
 
 ## Licensing Details
 
@@ -569,50 +601,51 @@ Maybes:
 
 MIT License.
 
-<!-- ✅ Option 2: Add License to an Existing Repo
-Option A: Use GitHub UI
-Go to your repo on GitHub.
-
-Click “Add file” → “Create new file”
-
-Name the file LICENSE (no extension).
-
-GitHub will detect the name and offer a “Choose a license template” button — click that.
-
-Pick a license (e.g., MIT).
-
-Review, then click Commit new file.
-
-Option B: Do it locally
-In your project folder:
-
-bash
-Copy
-Edit
-touch LICENSE
-Copy-paste your license text into it (e.g., from https://choosealicense.com/licenses/mit/)
-
-Add and commit:
-
-bash
-Copy
-Edit
-git add LICENSE
-git commit -m "Add MIT license"
-git push
-🧠 Bonus Tip: GitHub License Badge
-If your repo is public, GitHub will auto-detect the license and display it in the repo header.
-
-You can also add a badge in your README:
-
-md
-Copy
-Edit
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
- -->
-
 ---
 
-## Related projects, reimplementations
+## Related projects, reimplementations, misc.
+
+### Client App UI
 
 See related documentation for [React Client App](front-end/README.md).
+
+### Documentation habits
+
+```mermaid
+gitGraph
+    commit id: "main"
+    branch dev
+    checkout dev
+    commit id: "setup project"
+
+    %% Feature branches
+    branch feature/create-employee
+    checkout feature/create-employee
+    commit id: "Add backend API"
+    commit id: "Add frontend form"
+    checkout dev
+    merge feature/create-employee
+
+    branch feature/edit-employee
+    checkout feature/edit-employee
+    commit id: "Update backend logic"
+    commit id: "Update frontend UI"
+    checkout dev
+    merge feature/edit-employee
+
+    %% Hybrid long-lived branches for refactors
+    branch refactor/frontend-rewrite
+    checkout refactor/frontend-rewrite
+    commit id: "Rewrite UI structure"
+    checkout dev
+    merge refactor/frontend-rewrite
+
+    branch refactor/backend-cleanup
+    checkout refactor/backend-cleanup
+    commit id: "Refactor controller logic"
+    checkout dev
+    merge refactor/backend-cleanup
+
+    checkout main
+    merge dev
+```
