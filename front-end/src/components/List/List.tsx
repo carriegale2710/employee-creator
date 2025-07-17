@@ -7,7 +7,6 @@ interface ListProps {
 const List = ({ employees }: ListProps) => {
   return (
     <>
-      <h2>Employee List</h2>
       {employees &&
         employees.map((employee: Employee) => {
           return <Card employee={employee} key={employee.id} />;

@@ -1,16 +1,16 @@
 export interface TextInputProps {
   label: string;
   type: string;
-  placeholder?: string;
+  value?: string;
   children: React.ReactNode;
 }
 
-const Input = ({ label, type, placeholder, children }: TextInputProps) => {
+const Input = ({ label, type, value, children }: TextInputProps) => {
   return (
     <div>
       <label htmlFor={label}>{children}</label>
       <br />
-      <input name={label} type={type} placeholder={placeholder} />
+      <input name={label} type={type} value={value} />
       <br />
     </div>
   );

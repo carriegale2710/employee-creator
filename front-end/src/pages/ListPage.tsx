@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getAllEmployees, type Employee } from "../services/employees";
 import Button from "../components/Button/Button";
 import List from "../components/List/List";
+import { NavLink } from "react-router-dom";
 
 function ListPage() {
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -17,10 +18,12 @@ function ListPage() {
 
   return (
     <>
-      <h1>Employee Creator App</h1>
+      <h1>Employee List</h1>
       <div className="intro">
         <p>Click on "Edit" to see more about each employee.</p>
-        <Button>Add Employee</Button>
+        <NavLink to="/employees/new">
+          <Button>Add Employee</Button>
+        </NavLink>
       </div>
       <List employees={employees} />
     </>
