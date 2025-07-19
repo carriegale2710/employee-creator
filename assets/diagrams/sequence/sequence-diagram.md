@@ -1,5 +1,3 @@
-# Sequence Diagram
-
 ```mermaid
 
 ---
