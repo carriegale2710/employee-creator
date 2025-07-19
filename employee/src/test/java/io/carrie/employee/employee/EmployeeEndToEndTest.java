@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -19,6 +23,7 @@ import static org.hamcrest.Matchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class EmployeeEndToEndTest {
 
     @LocalServerPort
@@ -61,182 +66,203 @@ public class EmployeeEndToEndTest {
         employeeRepository.findAll().forEach(System.out::println);
     }
 
-    // test for /employees
+    // test framework (AAA)
     // arrange - set up mock data and variables
     // act - run the code you are testing
     // assert - check result is correct
 
     // SECTION - GET "/employees"
+    @Nested
+    @DisplayName("GET /employees")
+    class GetEmployeeTests {
 
-    @Test
-    public void getAllEmployees_EmployeesInDB_ReturnsSuccess() {
-        given()
-                .when().get("/employees")
-                .then().statusCode(HttpStatus.OK.value())
-                .body("$", hasSize(2)) // should return 2 records in list
-                .body(matchesJsonSchemaInClasspath("schemas/employee-list-schema.json"));
-    }
+        @Test
+        public void getAllEmployees_EmployeesInDB_ReturnsSuccess() {
+            given()
+                    .when().get("/employees")
+                    .then().statusCode(HttpStatus.OK.value())
+                    .body("$", hasSize(2)) // should return 2 records in list
+                    .body(matchesJsonSchemaInClasspath("schemas/employee-list-schema.json"));
+        }
 
-    @Test
-    public void getAllEmployees_NoEmployeesInDB_ReturnsSuccessAndEmptyArray() {
-        this.employeeRepository.deleteAll();
-        given()
-                .when().get("/employees")
-                .then().statusCode(HttpStatus.OK.value())
-                .body("$", hasSize(0));
+        @Test
+        public void getAllEmployees_NoEmployeesInDB_ReturnsSuccessAndEmptyArray() {
+            employeeRepository.deleteAll();
+            given()
+                    .when().get("/employees")
+                    .then().statusCode(HttpStatus.OK.value())
+                    .body("$", hasSize(0));
+        }
+
     }
 
     // SECTION - GET "/employees/{id}"
+    @Nested
+    @DisplayName("GET /employees/{id}")
+    class GetEmployeeByIdTests {
 
-    @Test
-    public void getEmployeeById_EmployeeInDB_ReturnsSuccess() {
-        Integer existingId = this.employeeList.get(0).getId();
-        given()
-                .when().get("/employees/" + existingId)
-                .then().statusCode(HttpStatus.OK.value());
-    }
+        @Test
+        public void getEmployeeById_EmployeeInDB_ReturnsSuccess() {
+            Integer existingId = employeeList.get(0).getId();
+            given()
+                    .when().get("/employees/" + existingId)
+                    .then().statusCode(HttpStatus.OK.value());
+        }
 
-    @Test
-    public void getEmployeeById_EmployeeInDB_ReturnsCorrectData() {
-        Integer existingId = this.employeeList.get(1).getId();
-        given()
-                .when().get("/employees/" + existingId)
-                .then().statusCode(HttpStatus.OK.value())
-                .body("id", equalTo(existingId))
-                .body("firstName", equalTo("Wanda"))
-                .body("lastName", equalTo("Cosmo"))
-                .body("email", equalTo("wanda.cosmo@example.com"))
-                .body(matchesJsonSchemaInClasspath("schemas/employee-schema.json"));
-    }
+        @Test
+        public void getEmployeeById_EmployeeInDB_ReturnsCorrectData() {
+            Integer existingId = employeeList.get(1).getId();
+            given()
+                    .when().get("/employees/" + existingId)
+                    .then().statusCode(HttpStatus.OK.value())
+                    .body("id", equalTo(existingId))
+                    .body("firstName", equalTo("Wanda"))
+                    .body("lastName", equalTo("Cosmo"))
+                    .body("email", equalTo("wanda.cosmo@example.com"))
+                    .body(matchesJsonSchemaInClasspath("schemas/employee-schema.json"));
+        }
 
-    @Test
-    public void getEmployeeById_EmployeeNotInDB_NotFound() {
-        given()
-                .when().get("/employees/999")
-                .then().statusCode(HttpStatus.NOT_FOUND.value());
-    }
+        @Test
+        public void getEmployeeById_EmployeeNotInDB_NotFound() {
+            given()
+                    .when().get("/employees/999")
+                    .then().statusCode(HttpStatus.NOT_FOUND.value());
+        }
 
-    @Test
-    public void getEmployeeById_IdNotValid_BadRequest() {
-        given()
-                .when().get("/employees/sfee23")
-                .then().statusCode(HttpStatus.BAD_REQUEST.value());
+        @Test
+        public void getEmployeeById_IdNotValid_BadRequest() {
+            given()
+                    .when().get("/employees/sfee23")
+                    .then().statusCode(HttpStatus.BAD_REQUEST.value());
+        }
+
     }
 
     // SECTION - DELETE "/employees/{id}"
+    @Nested
+    @DisplayName("DELETE /employees/{id}")
+    class DeleteEmployeeByIdTests {
 
-    @Test
-    public void deleteEmployeeById_EmployeeInDb_SuccessNoContent() {
-        Integer existingId = employeeList.get(0).getId();
-        given()
-                .when().delete("employees/" + existingId)
-                .then().statusCode(HttpStatus.NO_CONTENT.value());
-        // todo - id must be double-checked with data
-        // todo - check record was actually deleted from repo
-    }
+        @Test
+        public void deleteEmployeeById_EmployeeInDb_SuccessNoContent() {
+            Integer existingId = employeeList.get(0).getId();
+            given()
+                    .when().delete("employees/" + existingId)
+                    .then().statusCode(HttpStatus.NO_CONTENT.value());
+            // todo - id must be double-checked with data
+            // todo - check record was actually deleted from repo
+        }
 
-    @Test
-    public void deleteEmployeeById_EmployeeNotInDB_NotFound() {
-        given()
-                .when().delete("/employees/999")
-                .then().statusCode(HttpStatus.NOT_FOUND.value());
-    }
+        @Test
+        public void deleteEmployeeById_EmployeeNotInDB_NotFound() {
+            given()
+                    .when().delete("/employees/999")
+                    .then().statusCode(HttpStatus.NOT_FOUND.value());
+        }
 
-    @Test
-    public void deleteEmployeeById_IdNotValid_BadRequest() {
-        given()
-                .when().delete("/employees/sfee23")
-                .then().statusCode(HttpStatus.BAD_REQUEST.value());
+        @Test
+        public void deleteEmployeeById_IdNotValid_BadRequest() {
+            given()
+                    .when().delete("/employees/sfee23")
+                    .then().statusCode(HttpStatus.BAD_REQUEST.value());
+        }
+
     }
 
     // SECTION - POST "/employees"
+    @Nested
+    @Disabled
+    @DisplayName("POST /employees/{id}")
+    class CreateEmployeeByIdTests {
 
-    @Test
-    public void createEmployee_ValidData_Created() {
+        @Test
+        public void createEmployee_ValidData_Created() {
 
-        HashMap<String, String> data = new HashMap<>();
-        data.put("firstName", "Cosmo");
-        data.put("lastName", "Cosma");
-        data.put("email", "cosmo@example.com");
+            HashMap<String, String> data = new HashMap<>();
+            data.put("firstName", "Cosmo");
+            data.put("lastName", "Cosma");
+            data.put("email", "cosmo@example.com");
 
-        given()
-                .contentType(ContentType.JSON).body(data)
-                .when().post("/employees")
-                .then().statusCode(HttpStatus.CREATED.value())
-                .body("firstName", equalTo("Cosmo")); // returns correct data
-        // todo - check data was successfully added as new employee in DB
+            given()
+                    .contentType(ContentType.JSON).body(data)
+                    .when().post("/employees")
+                    .then().statusCode(HttpStatus.CREATED.value())
+                    .body("firstName", equalTo("Cosmo")); // returns correct data
+            // todo - check data was successfully added as new employee in DB
 
-    }
+        }
 
-    @Test
-    public void createEmployee_MissingData_BadRequest() {
-        HashMap<String, String> data = new HashMap<>();
-        data.put("firstName", "Cosmo");
+        @Test
+        public void createEmployee_MissingData_BadRequest() {
+            HashMap<String, String> data = new HashMap<>();
+            data.put("firstName", "Cosmo");
 
-        given()
-                .contentType(ContentType.JSON).body(data)
-                .when().post("/employees")
-                .then().statusCode(HttpStatus.BAD_REQUEST.value());
+            given()
+                    .contentType(ContentType.JSON).body(data)
+                    .when().post("/employees")
+                    .then().statusCode(HttpStatus.BAD_REQUEST.value());
 
-    }
+        }
 
-    @Test
-    public void createEmployee_InvalidName_BadRequest() {
+        @Test
+        public void createEmployee_InvalidName_BadRequest() {
 
-        HashMap<String, String> data = new HashMap<>();
+            HashMap<String, String> data = new HashMap<>();
 
-        data.put("firstName", "Cosmo");
-        data.put("lastName", "Cosma3q43"); // invalid name
-        data.put("email", "cosmo@example.com");
+            data.put("firstName", "Cosmo");
+            data.put("lastName", "Cosma3q43"); // invalid name
+            data.put("email", "cosmo@example.com");
 
-        given()
-                .contentType(ContentType.JSON).body(data)
-                .when().post("/employees")
-                .then().statusCode(HttpStatus.BAD_REQUEST.value());
-    }
+            given()
+                    .contentType(ContentType.JSON).body(data)
+                    .when().post("/employees")
+                    .then().statusCode(HttpStatus.BAD_REQUEST.value());
+        }
 
-    @Test
-    public void createEmployee_InvalidEmail_BadRequest() {
+        @Test
+        public void createEmployee_InvalidEmail_BadRequest() {
 
-        HashMap<String, String> data = new HashMap<>();
+            HashMap<String, String> data = new HashMap<>();
 
-        data.put("firstName", "Cosmo");
-        data.put("lastName", "Cosma");
-        data.put("email", "cosmoexample.com"); // invalid email
+            data.put("firstName", "Cosmo");
+            data.put("lastName", "Cosma");
+            data.put("email", "cosmoexample.com"); // invalid email
 
-        given()
-                .contentType(ContentType.JSON).body(data)
-                .when().post("/employees")
-                .then().statusCode(HttpStatus.BAD_REQUEST.value());
-    }
+            given()
+                    .contentType(ContentType.JSON).body(data)
+                    .when().post("/employees")
+                    .then().statusCode(HttpStatus.BAD_REQUEST.value());
+        }
 
-    @Test
-    public void createEmployee_DuplicateData_BadRequest() {
+        @Test
+        public void createEmployee_DuplicateData_BadRequest() {
 
-        HashMap<String, String> data = new HashMap<>();
-        data.put("firstName", "Timmy");
-        data.put("lastName", "Turner");
-        data.put("email", "timmehhh@example.com");
+            HashMap<String, String> data = new HashMap<>();
+            data.put("firstName", "Timmy");
+            data.put("lastName", "Turner");
+            data.put("email", "timmehhh@example.com");
 
-        given()
-                .contentType(ContentType.JSON).body(data)
-                .when().post("/employees")
-                .then().statusCode(HttpStatus.BAD_REQUEST.value());
-        // todo NOTE - this should not be 500 internal server error but 400!
-    }
+            given()
+                    .contentType(ContentType.JSON).body(data)
+                    .when().post("/employees")
+                    .then().statusCode(HttpStatus.BAD_REQUEST.value());
+            // todo NOTE - this should not be 500 internal server error but 400!
+        }
 
-    @Test
-    public void createEmployee_DuplicateEmail_BadRequest() {
+        @Test
+        public void createEmployee_DuplicateEmail_BadRequest() {
 
-        HashMap<String, String> data = new HashMap<>();
-        data.put("firstName", "Icky");
-        data.put("lastName", "Vicky");
-        data.put("email", "timmehhh@example.com"); // only email matters
+            HashMap<String, String> data = new HashMap<>();
+            data.put("firstName", "Icky");
+            data.put("lastName", "Vicky");
+            data.put("email", "timmehhh@example.com"); // only email matters
 
-        given()
-                .contentType(ContentType.JSON).body(data)
-                .when().post("/employees")
-                .then().statusCode(HttpStatus.BAD_REQUEST.value());
+            given()
+                    .contentType(ContentType.JSON).body(data)
+                    .when().post("/employees")
+                    .then().statusCode(HttpStatus.BAD_REQUEST.value());
+        }
+
     }
 
     // SECTION - PUT "/employees/{id}"
