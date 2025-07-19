@@ -4,19 +4,16 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 
 public class CreateEmployeeDTO {
 
     @NotBlank
     @NotNull
-    // @Size(min = 2, max = 30)
     @Pattern(regexp = "^[a-zA-Z]{2,30}$", message = "First name must be 2 to 30 characters long and contain only letters.")
     private String firstName;
 
     @NotBlank
     @NotNull
-    // @Size(min = 2, max = 30)
     @Pattern(regexp = "^[a-zA-Z]{2,30}$", message = "Last name must be 2 to 30 characters long and contain only letters.")
     private String lastName;
 
