@@ -439,15 +439,6 @@ Database Schema Updates:
 
 ## Task Tracker
 
-<!-- | Icon | Meaning              |
-| ---- | -------------------- |
-| ⬜️  | To Do (not started)  |
-| 🔄   | In Progress          |
-| ⛔️  | Blocked / Needs Help |
-| ✅   | Done (completed)     |
-| 🧪   | Needs Testing        |
-| 📦   | Deployed / Delivered | -->
-
 Features: *=MVP
 | ID | Feature | BE | FE |
 | --- | --------------- | ---|---- |
@@ -465,8 +456,6 @@ Features: *=MVP
 
 ### Sprint
 
-Form React UI for create/edit features:
-
 #### Backend
 
 - BE: basic e2e tests for: delete, create, edit
@@ -474,12 +463,6 @@ Form React UI for create/edit features:
 - prepare data handling on backend to make front-end just an IO (goal: reduce front-end complexity)
 
 #### Front-end
-
-- create : send data POST
-
-- structure in index and partials/variables: color palette, typography
-- write up reusable mixins: eg. flexbox wrappers
-- validation with zod
 
 ### Backlog
 
@@ -499,6 +482,12 @@ FE Tests:
   - editById PUT method - TDD - write tests + function in parallel
 
 #### Front-end
+
+- create : send data POST
+
+- structure in index and partials/variables: color palette, typography
+- write up reusable mixins: eg. flexbox wrappers
+- validation with zod
 
 Form validation
 

@@ -13,10 +13,11 @@ const Button: React.FC<ButtonProps> = ({
   type = "button",
   altText,
   children,
+  ...rest
 }) => {
   return (
     <>
-      <button type={type} aria-label={altText}>
+      <button type={type} aria-label={altText} {...rest}>
         {children}
       </button>
     </>
