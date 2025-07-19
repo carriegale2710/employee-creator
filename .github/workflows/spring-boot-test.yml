@@ -2,9 +2,9 @@ name: Spring Boot Tests
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "dev"]
   pull_request:
-    branches: ["main"]
+    branches: ["main", "dev"]
 
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
 
