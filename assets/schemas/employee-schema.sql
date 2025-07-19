@@ -21,7 +21,6 @@ CREATE TABLE employees (
 
 --   salary DECIMAL(10, 2),                    -- e.g. 80000.00
 
---   tax_file_number VARCHAR(20),             -- Store securely
 
 --   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
