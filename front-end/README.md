@@ -1,12 +1,121 @@
-# Client App (Employee-Creator Front-end)
+# Employee Creator Frontend / Client App
 
 [![React S3 Deploy](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml)
 
-## Techstack
+---
+
+## Introduction
+
+### Implementation: Front-end decisions
+
+<!-- Why did you implement this the way you did? -->
+
+- Used top-down TDD to define backend before connecting to frontend.
+- Write up basic tests before coding to understand functionality, entity shapes & edge cases.
+
+### Techstack
 
 - React: SPA for responsive layout
 - Typescript: validating forms for user input before being sent to DB saves time in both DX and UX.
 - SCSS/Tailwind: For modular, reusable styles and themes based on design systems.
+
+---
+
+## Setup
+
+### React Frontend Setup Steps
+
+TBA
+
+1. Installation
+2. Setup
+3. Running the React App
+
+---
+
+## Testing
+
+The app UI is pretty minimal and straightforward (just CRUD), so I will only test internals/implementation for now in order to speed up production.
+
+More advanced testing like data and fetching should be abstracted to the backend, hence e2e and integration tests will be pushed back until more advanced features like signup/login flows are created.
+
+FE testing will be more for ensuring correct validation/error handling on create/edit features in the Form component, as this is where most unexpected user inputs/interaction may occur.
+
+### Running tests
+
+Techstack used: Vitest + Zod
+
+```bash
+npm run test
+```
+
+### Test Approach
+
+- Main Purpose: "Does the user interface act like it should when I use it?"
+
+- TDD: write test, pass, refactor for each new feature/component. Avoid overbuilding before MVP.
+
+- Component Tests: Good for testing individual functionality quickly.
+
+Right now, testing public features only:
+
+- What the user sees (rendering, UI)
+- What the user does (onClick, onSubmit, onHover)
+- What the user expects (data, nav, buttons)
+
+| Test Type      | Example Test                               |
+| -------------- | ------------------------------------------ |
+| UI rendering   | “Form loads with all fields”               |
+| User flow      | “User can submit form and see success msg” |
+| Validation     | “Shows error for empty email”              |
+| Error handling | “Shows message if server fails”            |
+
+---
+
+## UI Design
+
+### User Stories to fufill
+
+| ID  | Feature           | User Wants To...   | So They Can...    | User should be able to...                                                  |
+| --- | ----------------- | ------------------ | ----------------- | -------------------------------------------------------------------------- |
+| 1   | `List Employees`  | See all employees  | Review records    | Click link to view a paginated list of all employee records                |
+| 2   | `Create Employee` | Add a new employee | Register new hire | Click button that opens a form to add a new employee as a new record in DB |
+| 3   | `Delete Employee` | Delete employee    | Remove old record | Click a button to delete a record of an existing employee in DB            |
+
+### QA Checklist
+
+### 💻 Frontend MVP (React + TypeScript)
+
+- [x] React app compiles and runs (Vite)
+- [ ] Basic CRUD employee functionality works
+- [ ] Form validation added
+- [x] Optional testing included (Vitest/Zod)
+- [ ] UI styled + responsive (SCSS/Tailwind)
+
+### Core Flows
+
+- [x] Page loads with correct data from backend (GET)
+- [ ] Form inputs accept user input
+- [ ] Form submits valid data successfully (POST/PUT)
+- [ ] Item can be deleted (DELETE)
+- [ ] Navigation or redirects work after actions
+
+### Error Handling
+
+- [ ] Required fields show validation error if empty
+- [ ] Invalid input (e.g. bad email) is blocked
+- [ ] Backend error (e.g. 400 or 500) shows helpful message
+- [ ] Loading and error states show something visible (e.g. spinner or alert)
+
+### User Experience
+
+- [ ] Mobile/responsive layout works (test one small screen)
+- [ ] Buttons and links are clickable and have visual feedback
+- [ ] Basic keyboard navigation works (Tab, Enter)
+- [ ] No obvious visual glitches after user actions
+- [ ] Toasts or alerts auto-dismiss after success
+
+---
 
 ## Mockups (brief)
 
@@ -75,136 +184,67 @@ flowchart TD
 
 ---
 
-## Testing
+## Change logs
 
-Techstack used: Vitest + Zod
+### 09/07/2025 - Front-end Planning + Creation
 
-### Run Front-end tests
+- deconstruct UI design mockups provided into React components using Figma (+ bonus data flow Mermaid diagram)
+- install Vite + TypeScript + Scss to create React front-end
+- create employee-service.ts to render fetch data from DB
+- create basic React presentational components: List, Card, Button
+- employee services: getAll() , getById()
+- backend: Implemented Webconfig for CORS errors
+- render and pass data from Page -> List -> Card
+- basic scss styling of Card
 
-```bash
-npm run test
-```
+### 11/07/2025 - S3 React Deployment
 
-### Test Approach
+- Deployed React front-end as [static app](https://d3bcyx0s1yb5do.cloudfront.net/) in AWS S3 (Simple Storage Service):
+- Created React build, test and deploy [Github workflow](.github/workflows/react-deploy.yml)
 
-- Main Purpose: "Does the user interface act like it should when I use it?"
+### 15/07/2025
 
-- TDD: write test, pass, refactor for each new feature/component. Avoid overbuilding before MVP.
+- Deconstructed React components for List and Form pages.
 
-- Component Tests: Good for testing individual functionality quickly.
+Database Schema Updates:
 
-### Test Goals
+- Department is no longer stored directly in the Employee schema
+- Start date and department are now part of the Contract entity
+- Employees can have multiple contracts
+- See updated ['Database Structure' README](assets/data/README.md) for more
 
-FE testing will be more for ensuring correct validation/error handling on create/edit features in the Form component, as this is where most unexpected user inputs/interaction may occur.
+### 16/07/2025
 
-Right now, testing public features only:
-
-- What the user sees (rendering, UI)
-- What the user does (onClick, onSubmit, onHover)
-- What the user expects (data, nav, buttons)
-
-| Test Type      | Example Test                               |
-| -------------- | ------------------------------------------ |
-| UI rendering   | “Form loads with all fields”               |
-| User flow      | “User can submit form and see success msg” |
-| Validation     | “Shows error for empty email”              |
-| Error handling | “Shows message if server fails”            |
-
-Note: The app UI is pretty minimal and straightforward (just CRUD), so I will only test internals/implementation for now in order to speed up production. More advanced testing like data and fetching should be abstracted to the backend, hence e2e and integration tests will be pushed back until more advanced features like signup/login flows are created.
-
-### Minimal E2E Test Checklist
-
-#### Core Flows
-
-- [x] Page loads with correct data from backend (GET)
-- [ ] Form inputs accept user input
-- [ ] Form submits valid data successfully (POST/PUT)
-- [ ] Item can be deleted (DELETE)
-- [ ] Navigation or redirects work after actions
-
-#### Error Handling
-
-- [ ] Required fields show validation error if empty
-- [ ] Invalid input (e.g. bad email) is blocked
-- [ ] Backend error (e.g. 400 or 500) shows helpful message
-- [ ] Loading and error states show something visible (e.g. spinner or alert)
-
-#### User Experience
-
-- [ ] Mobile/responsive layout works (test one small screen)
-- [ ] Buttons and links are clickable and have visual feedback
-- [ ] Basic keyboard navigation works (Tab, Enter)
-- [ ] No obvious visual glitches after user actions
-- [ ] Toasts or alerts auto-dismiss after success
+- Edit feature prefilled form with data from card + added changes
+- Form tests
 
 ---
 
-## React + TypeScript + Vite
+## Agile Board
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### In progress
 
-Currently, two official plugins are available:
+- Create basic form inputs and submit button(use React Form API?)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Sprint
 
-### Expanding the ESLint configuration
+Form React UI for create/edit features:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- create : send data POST
 
-```js
-export default tseslint.config([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
+- structure in index and partials/variables: color palette, typography
+- write up reusable mixins: eg. flexbox wrappers
+- validation with zod
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Backlog
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+Form validation
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+UI styling - Global styling
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+- research SCSS vs tailwind styling for React components
+- gather and import design system assets
 
-export default tseslint.config([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+- explore UI libraries /inspo if time (produce UI MVP ref first)
+
+---
