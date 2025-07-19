@@ -469,32 +469,25 @@ API Test Setup:
   - configured SLF4J to use Log4j2 instead of default (Logback)
   - created log4j2-spring.xml for log configuration and formatting, with dev profile
 
+### 19/07/2025
+
+Working on `Delete employee record`:
+
+- Return `BAD REQUEST` if wrong input - fixed
+- Return `NO_CONTENT` on successful deletion - fixed
+
 ---
 
 Agile Board
 
 ### In progress
 
-- Create basic form inputs and submit button(use React Form API?)
-
 ### Sprint
 
-- BE: basic e2e tests for: delete, create, edit
 - go back and introduce error handling for backend API
 - prepare data handling on backend to make front-end just an IO (goal: reduce front-end complexity)
 
-### Backlog
-
-#### Backend
-
-FE Tests:
-
-- FE: start writing component tests for
-  - List,
-  - Page,
-  - Card
-- TDD: write test for what form should do in : create vs edit mode
-- TDD: write up basic logic tests for service in React + data shape needed (Vitest/Zod schema)
+### Backlog - Backend
 
 - BE feature: Edit employee record:
 

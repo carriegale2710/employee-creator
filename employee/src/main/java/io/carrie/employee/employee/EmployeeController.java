@@ -25,6 +25,12 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
+    @PostMapping
+    public ResponseEntity<Employee> create(@Valid @RequestBody CreateEmployeeDTO data) {
+        Employee newEmployee = this.employeeService.create(data);
+        return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
+    }
+
     @GetMapping
     public ResponseEntity<List<Employee>> getAll() {
         List<Employee> allEmployees = this.employeeService.findAll();
@@ -40,19 +46,13 @@ public class EmployeeController {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping
-    public ResponseEntity<Employee> create(@Valid @RequestBody CreateEmployeeDTO data) {
-        Employee newEmployee = this.employeeService.create(data);
-        return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
-    }
-
-    @DeleteMapping
+    @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Integer id) throws Exception {
         boolean deleted = this.employeeService.deleteById(id);
-        if (!deleted) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        if (deleted) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     // @PutMapping
