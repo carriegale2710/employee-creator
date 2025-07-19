@@ -489,14 +489,13 @@ API Test Setup:
 `Create employee record`:
 
 - Return `BAD REQUEST` if invalid first/last name - passing
+- Return `BAD REQUEST` if invalid duplicate email - passing
 
 ---
 
 ## Agile Board
 
 ### In progress
-
-- Return `BAD REQUEST` if invalid duplicate email - passing
 
 ### Sprint
 

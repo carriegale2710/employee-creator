@@ -267,6 +267,7 @@ public class EmployeeEndToEndTest {
 
         @Test
         public void createEmployee_DuplicateEmail_BadRequest() {
+            // NOTE - this should not be 500 internal server error but 400!
 
             HashMap<String, String> data = new HashMap<>();
             data.put("firstName", "Icky");
@@ -277,7 +278,7 @@ public class EmployeeEndToEndTest {
                     .contentType(ContentType.JSON).body(data)
                     .when().post("/employees")
                     .then().statusCode(HttpStatus.BAD_REQUEST.value());
-            // NOTE - this should not be 500 internal server error but 400!
+
         }
 
     }
