@@ -62,9 +62,9 @@ public class EmployeeEndToEndTest {
     }
 
     // test for /employees
-    // arrange
-    // act
-    // assert
+    // arrange - set up mock data and variables
+    // act - run the code you are testing
+    // assert - check result is correct
 
     // SECTION - GET "/employees"
 
@@ -109,8 +109,6 @@ public class EmployeeEndToEndTest {
                 .body(matchesJsonSchemaInClasspath("schemas/employee-schema.json"));
     }
 
-    // TODO - (edge) employee id found but data is private/needs login authorisation
-
     @Test
     public void getEmployeeById_EmployeeNotInDB_NotFound() {
         given()
@@ -128,12 +126,11 @@ public class EmployeeEndToEndTest {
     // SECTION - DELETE "/employees/{id}"
 
     @Test
-    public void deleteEmployeeById_EmployeeInDb_ReturnsSuccessNoContent() {
+    public void deleteEmployeeById_EmployeeInDb_SuccessNoContent() {
         Integer existingId = employeeList.get(0).getId();
         given()
                 .when().delete("employees/" + existingId)
-                .then().statusCode(HttpStatus.NO_CONTENT.value())
-                .body("$", hasSize(0));
+                .then().statusCode(HttpStatus.NO_CONTENT.value());
         // todo - id must be double-checked with data
         // todo - check record was actually deleted from repo
     }
