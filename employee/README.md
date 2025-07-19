@@ -145,12 +145,6 @@ Use [Postman](https://www.postman.com/downloads/) or a browser (for GET requests
     }
     ```
 
-## Endpoints
-
-- GET /employees
-- GET /employees/{id}
-- POST /employees
-
 ## Testing
 
 | Type       | Tools Used       | Status |
@@ -475,27 +469,9 @@ API Test Setup:
   - configured SLF4J to use Log4j2 instead of default (Logback)
   - created log4j2-spring.xml for log configuration and formatting, with dev profile
 
-## Task Tracker
+---
 
-<!-- | Icon | Meaning              |
-| ---- | -------------------- |
-| ⬜️  | To Do (not started)  |
-| 🔄   | In Progress          |
-| ⛔️  | Blocked / Needs Help |
-| ✅   | Done (completed)     |
-| 🧪   | Needs Testing        |
-| 📦   | Deployed / Delivered | -->
-
-Features: *=MVP
-| ID | Feature | BE | FE |
-| --- | --------------- | ---|---- |
-| F1 | *List Employees | ✅ | 🧪 |
-| F2 | *Create Employee | | 🔄 |
-| F3 | *Delete Employee | 🔄 | 🔄 |
-| F5 | \*Create Employee | 🔄 | 🔄 |
-| F4 | View Employee | | |
-| F6 | Create Contract | | |
-| F7 | Edit Contract | | |
+Agile Board
 
 ### In progress
 
