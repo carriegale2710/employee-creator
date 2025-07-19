@@ -34,11 +34,11 @@ public class EmployeeService {
 
     public boolean deleteById(Integer id) {
         Optional<Employee> foundEmployee = this.findById(id); // does the book exist?
-        if (foundEmployee.isPresent()) {
-            this.employeeRepository.delete(foundEmployee.get());
-            return true;
+        if (foundEmployee.isEmpty()) {
+            return false;
         }
-        return false;
+        this.employeeRepository.deleteById(id);
+        return true;
     }
 
 }

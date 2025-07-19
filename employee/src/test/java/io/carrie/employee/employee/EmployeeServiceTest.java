@@ -3,8 +3,11 @@ package io.carrie.employee.employee;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,8 +53,10 @@ public class EmployeeServiceTest {
 
     @Test
     public void deleteById_CallsDeleteByIdOnRepo() {
-        this.employeeService.deleteById(1);
+        doReturn(Optional.of(new Employee())).when(employeeService).findById(1);
+        boolean result = this.employeeService.deleteById(1);
         verify(this.employeeRepository).deleteById(1);
+        assertEquals(true, result);
     }
 
     @Test // this will have some logic to check data that gets returned is correct

@@ -2,7 +2,7 @@
 
 <!-- [![Spring App EC2 Deploy](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-ec2-deploy.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-ec2-deploy.yml) -->
 
-[![Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml) [![React Deploy](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ### Documentation - Note
 
@@ -144,12 +144,6 @@ Use [Postman](https://www.postman.com/downloads/) or a browser (for GET requests
       "email": "timmy@fairy.com"
     }
     ```
-
-## Endpoints
-
-- GET /employees
-- GET /employees/{id}
-- POST /employees
 
 ## Testing
 
@@ -475,50 +469,25 @@ API Test Setup:
   - configured SLF4J to use Log4j2 instead of default (Logback)
   - created log4j2-spring.xml for log configuration and formatting, with dev profile
 
-## Task Tracker
+### 19/07/2025
 
-<!-- | Icon | Meaning              |
-| ---- | -------------------- |
-| ⬜️  | To Do (not started)  |
-| 🔄   | In Progress          |
-| ⛔️  | Blocked / Needs Help |
-| ✅   | Done (completed)     |
-| 🧪   | Needs Testing        |
-| 📦   | Deployed / Delivered | -->
+Working on `Delete employee record`:
 
-Features: *=MVP
-| ID | Feature | BE | FE |
-| --- | --------------- | ---|---- |
-| F1 | *List Employees | ✅ | 🧪 |
-| F2 | *Create Employee | | 🔄 |
-| F3 | *Delete Employee | 🔄 | 🔄 |
-| F5 | \*Create Employee | 🔄 | 🔄 |
-| F4 | View Employee | | |
-| F6 | Create Contract | | |
-| F7 | Edit Contract | | |
+- Return `BAD REQUEST` if wrong input - fixed
+- Return `NO_CONTENT` on successful deletion - fixed
+
+---
+
+Agile Board
 
 ### In progress
 
-- Create basic form inputs and submit button(use React Form API?)
-
 ### Sprint
 
-- BE: basic e2e tests for: delete, create, edit
 - go back and introduce error handling for backend API
 - prepare data handling on backend to make front-end just an IO (goal: reduce front-end complexity)
 
-### Backlog
-
-#### Backend
-
-FE Tests:
-
-- FE: start writing component tests for
-  - List,
-  - Page,
-  - Card
-- TDD: write test for what form should do in : create vs edit mode
-- TDD: write up basic logic tests for service in React + data shape needed (Vitest/Zod schema)
+### Backlog - Backend
 
 - BE feature: Edit employee record:
 
