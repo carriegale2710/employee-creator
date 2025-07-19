@@ -4,6 +4,16 @@
 
 [![Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml) [![React Deploy](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+### Documentation - Note
+
+This documentation for this project is split up into backend vs front-end specific locations in the code base. They include more details like build steps, testing and change logs.
+
+| Location                                     | Purpose                                                 |
+| -------------------------------------------- | ------------------------------------------------------- |
+| `README.md` (this file)                      | 🔷 High-level overview of the entire full-stack project |
+| [`employee/README.md`](employee/README.md)   | ⚙️ Backend-specific setup, API docs, DB, test config.   |
+| [`front-end/README.md`](front-end/README.md) | 🎨 Frontend-specific setup, dev commands, tests         |
+
 ## Introduction
 
 ### What it is
@@ -18,9 +28,9 @@ This project was created to practice building production-ready applications with
 
 <!-- - [x] Include hosted link: TBA -->
 
-Hosted Links:
+### Hosted Links:
 
-API:
+Back-end API:
 `ec2-3-107-209-102.ap-southeast-2.compute.amazonaws.com:8080/employees`
 
 Front-end app:
@@ -71,6 +81,10 @@ Front-end app:
 <!-- - how to build / run project
 - use proper code snippets if there are any commands to run -->
 
+<!-- ## Build - Quickstart
+
+put quickstart version here -->
+
 Refer to 'Build Steps' instructions in these READMEs.
 
 - [Building Backend API](employee/README.md)
@@ -116,13 +130,7 @@ See [Project Requirements](project-brief.md)
 | 🟢 Green    | Build the simplest code to pass the test         |
 | 🟡 Refactor | Clean up code while keeping tests passing        |
 
-### Documentation habits
-
-| Location              | Purpose                                                 |
-| --------------------- | ------------------------------------------------------- |
-| `README.md`           | 🔷 High-level overview of the entire full-stack project |
-| `front-end/README.md` | 🎨 Frontend-specific setup, dev commands, tests         |
-| `back-end/README.md`  | ⚙️ Backend-specific setup, API docs, DB, test config    |
+### Production Protocol
 
 ```mermaid
 gitGraph

@@ -4,6 +4,16 @@
 
 [![Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml) [![React Deploy](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+### Documentation - Note
+
+This documentation for this project is split up into backend vs front-end specific locations in the code base. They include more details like build steps, testing and change logs.
+
+| Location                                        | Purpose                                                 |
+| ----------------------------------------------- | ------------------------------------------------------- |
+| [`README.md`](../README.md)                     | 🔷 High-level overview of the entire full-stack project |
+| `employee/README.md` (this file)                | ⚙️ Backend-specific setup, API docs, DB, test config.   |
+| [`front-end/README.md`](../front-end/README.md) | 🎨 Frontend-specific setup, dev commands, tests         |
+
 ## Build Steps - Backend Setup
 
 <!-- - how to build / run project
