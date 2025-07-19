@@ -1,3 +1,4 @@
+import { useFormStatus } from "react-dom";
 import type { Employee } from "../../services/employees";
 import Button from "../Button/Button";
 import Input from "./Input";
@@ -7,8 +8,16 @@ export interface FormProps {
 }
 
 const Form = ({ prefilled }: FormProps) => {
+  const { pending } = useFormStatus();
+
+  // const onSubmit = ()=>{
+  //   const userDetails = formData.
+  // }
+
   return (
-    <form>
+    <form
+    // action={onSubmit}
+    >
       <h2>Employee Details</h2>
       <Input label="firstName" type="text" value={prefilled?.firstName}>
         First Name
@@ -31,7 +40,9 @@ const Form = ({ prefilled }: FormProps) => {
       <Input label="tfn" type="number" value={prefilled?.taxFileNumber}>
         Tax File Number
       </Input>
-      <Button type="submit">Submit</Button>
+      <Button type="submit" disabled={pending}>
+        {pending ? "Submitting..." : "Submit"}
+      </Button>
     </form>
   );
 };

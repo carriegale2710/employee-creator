@@ -61,17 +61,11 @@ public class EmployeeEndToEndTest {
 
     }
 
-    @Test
-    public void printAllEmployees() {
-        employeeRepository.findAll().forEach(System.out::println);
-    }
-
     // test framework (AAA)
     // arrange - set up mock data and variables
     // act - run the code you are testing
     // assert - check result is correct
 
-    // SECTION - GET "/employees"
     @Nested
     @DisplayName("GET /employees")
     class GetEmployeeTests {
@@ -96,7 +90,6 @@ public class EmployeeEndToEndTest {
 
     }
 
-    // SECTION - GET "/employees/{id}"
     @Nested
     @DisplayName("GET /employees/{id}")
     class GetEmployeeByIdTests {
@@ -138,7 +131,6 @@ public class EmployeeEndToEndTest {
 
     }
 
-    // SECTION - DELETE "/employees/{id}"
     @Nested
     @DisplayName("DELETE /employees/{id}")
     class DeleteEmployeeByIdTests {
@@ -169,10 +161,8 @@ public class EmployeeEndToEndTest {
 
     }
 
-    // SECTION - POST "/employees"
     @Nested
-    @Disabled
-    @DisplayName("POST /employees/{id}")
+    @DisplayName("POST /employees")
     class CreateEmployeeByIdTests {
 
         @Test
@@ -205,14 +195,55 @@ public class EmployeeEndToEndTest {
         }
 
         @Test
-        public void createEmployee_InvalidName_BadRequest() {
+        public void createEmployee_InvalidFirstName_BadRequest() {
 
             HashMap<String, String> data = new HashMap<>();
 
             data.put("firstName", "Cosmo");
-            data.put("lastName", "Cosma3q43"); // invalid name
+            data.put("lastName", "Cosma"); // invalid name
             data.put("email", "cosmo@example.com");
 
+            data.put("lastName", "hasPunctuation,,.");
+            given()
+                    .contentType(ContentType.JSON).body(data)
+                    .when().post("/employees")
+                    .then().statusCode(HttpStatus.BAD_REQUEST.value());
+
+            data.put("lastName", "hasNumbers3245");
+            given()
+                    .contentType(ContentType.JSON).body(data)
+                    .when().post("/employees")
+                    .then().statusCode(HttpStatus.BAD_REQUEST.value());
+
+            data.put("firstName", "thisisareallyreallyreallylongnamethatistoolong"); // invalid name
+            given()
+                    .contentType(ContentType.JSON).body(data)
+                    .when().post("/employees")
+                    .then().statusCode(HttpStatus.BAD_REQUEST.value());
+        }
+
+        @Test
+        public void createEmployee_InvalidLastName_BadRequest() {
+
+            HashMap<String, String> data = new HashMap<>();
+
+            data.put("firstName", "Cosmo");
+            data.put("lastName", "Cosma"); // invalid name
+            data.put("email", "cosmo@example.com");
+
+            data.put("lastName", "hasPunctuation,,.");
+            given()
+                    .contentType(ContentType.JSON).body(data)
+                    .when().post("/employees")
+                    .then().statusCode(HttpStatus.BAD_REQUEST.value());
+
+            data.put("lastName", "hasNumbers3245");
+            given()
+                    .contentType(ContentType.JSON).body(data)
+                    .when().post("/employees")
+                    .then().statusCode(HttpStatus.BAD_REQUEST.value());
+
+            data.put("lastName", "thisisareallyreallyreallylongnamethatistoolong"); // invalid name
             given()
                     .contentType(ContentType.JSON).body(data)
                     .when().post("/employees")
@@ -235,22 +266,8 @@ public class EmployeeEndToEndTest {
         }
 
         @Test
-        public void createEmployee_DuplicateData_BadRequest() {
-
-            HashMap<String, String> data = new HashMap<>();
-            data.put("firstName", "Timmy");
-            data.put("lastName", "Turner");
-            data.put("email", "timmehhh@example.com");
-
-            given()
-                    .contentType(ContentType.JSON).body(data)
-                    .when().post("/employees")
-                    .then().statusCode(HttpStatus.BAD_REQUEST.value());
-            // todo NOTE - this should not be 500 internal server error but 400!
-        }
-
-        @Test
         public void createEmployee_DuplicateEmail_BadRequest() {
+            // NOTE - this should not be 500 internal server error but 400!
 
             HashMap<String, String> data = new HashMap<>();
             data.put("firstName", "Icky");
@@ -261,6 +278,7 @@ public class EmployeeEndToEndTest {
                     .contentType(ContentType.JSON).body(data)
                     .when().post("/employees")
                     .then().statusCode(HttpStatus.BAD_REQUEST.value());
+
         }
 
     }

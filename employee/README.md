@@ -2,7 +2,7 @@
 
 <!-- [![Spring App EC2 Deploy](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-ec2-deploy.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-ec2-deploy.yml) -->
 
-[![Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml) [![React Deploy](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ### Documentation - Note
 
@@ -250,8 +250,6 @@ interface Contract {
 }
 ```
 
----
-
 #### Department Schema
 
 Lookup table to keep departments consistent but flexible to be updated later.
@@ -274,11 +272,87 @@ JSON HTTP 'PUT' Request:
 
 ---
 
+### DTO Schemas
+
+#### CreateEmployeeDTO
+
+When creating a new employee with an option for initial contract:
+
+```ts
+interface CreateEmployeeDTO {
+  firstName: string;
+  lastName: string;
+  // email: string; get backend to generate
+  phoneNumber: string;
+  address?: string;
+  contract?: ContractDTO; //opt.
+}
+```
+
+AS `POST` HTTP request (JSON):
+
+```json
+{
+  "firstName": "Timmy",
+  "lastName": "Turner",
+  "email": "timmehhh@example.com",
+  "phoneNumber": "0400000000",
+  "currentContract": CreateContractDTO //optional on creation?
+}
+```
+
+#### CreateContractDTO
+
+```ts
+interface CreateContractDTO {
+  departmentId: number; //get this from name
+  contractType: "FULL_TIME" | "PART_TIME";
+  startDate: string; // ISO date string
+  salaryAmount?: number;
+  hoursPerWeek?: number;
+}
+```
+
+```json
+{
+  "contractType": "FULL_TIME",
+  "startDate": "2023-01-10",
+  "department": "ENGINEERING"
+}
+```
+
+#### EditEmployeeDTO
+
+When editing personal details of existing employee.
+
+- As `PUT` HTTP request to update only email (JSON):
+
+```json
+{
+  "employee_id": 11, //required
+  "email": "timmy_turner@example.com"
+}
+```
+
+#### EditContractDTO (bonus)
+
+When editing personal details of existing contract.
+
+- As `PUT` HTTP request to update only salary in employee's contract (JSON):
+
+```json
+{
+  "employee_id": 11, //required
+  "contract_id": 101, //required
+  "salaryAmount": 85000
+}
+```
+
+---
+
 ### Sample Employee List Response (GET `/employees`)
 
 Joining the employee with their current contract and department for display.
-
-- Can clean up HTTP response to exclude sensitive information for security.
 
 JSON HTTP Response:
 
@@ -313,86 +387,22 @@ JSON HTTP Response:
 
 ---
 
-### DTO Schemas
-
-#### CreateEmployeeDTO + CreateContractDTO (opt.)
-
-When creating a new employee with an option for initial contract:
-
-```ts
-interface CreateEmployeeDTO {
-  firstName: string;
-  lastName: string;
-  // email: string; get backend to generate
-  phoneNumber: string;
-  address?: string;
-  contract?: ContractDTO; //opt.
-}
-interface CreateContractDTO {
-  departmentId: number; //get this from name
-  contractType: "FULL_TIME" | "PART_TIME";
-  startDate: string; // ISO date string
-  salaryAmount?: number;
-  hoursPerWeek?: number;
-}
-```
-
-AS `POST` HTTP request (JSON):
-
-```json
-{
-  "firstName": "Timmy",
-  "lastName": "Turner",
-  "email": "timmehhh@example.com",
-  "phoneNumber": "0400000000",
-  "currentContract": {
-    "contractType": "FULL_TIME",
-    "startDate": "2023-01-10",
-    "department": "ENGINEERING"
-  }
-}
-```
-
-#### EditEmployeeDTO
-
-When editing personal details of existing employee.
-
-- As `POST` HTTP request to update only email (JSON):
-
-```json
-{
-  "employee_id": 11, //required
-  "email": "timmy_turner@example.com"
-}
-```
-
-#### EditContractDTO
-
-When editing personal details of existing contract.
-
-- As `POST` HTTP request to update only salary in employee's contract (JSON):
-
-```json
-{
-  "employee_id": 11, //required
-  "contract_id": 101, //required
-  "salaryAmount": 85000
-}
-```
-
 ### API Endpoints
 
-| ID  | Method   | Endpoint         | Input             | Output Data | Success Response |
-| --- | -------- | ---------------- | ----------------- | ----------- | ---------------- |
-| 1   | `GET`    | `/employees`     | none              | DB List     | `200 OK`         |
-| 2   | `POST`   | `/employees`     | CreateEmployeeDTO | DB Record   | `201 Created`    |
-| 3   | `DELETE` | `/employees/:id` | employee id       | No Content  | `204 No Content` |
-| 1   | `GET`    | `/employees/:id` | employee id       | DB Record   | `200 OK`         |
+| ID  | Method   | Endpoint         | Input                         | Output Data | Success Response |
+| --- | -------- | ---------------- | ----------------------------- | ----------- | ---------------- |
+| 1   | `GET`    | `/employees`     | none                          | DB List     | `200 OK`         |
+| 2   | `GET`    | `/employees/:id` | employee id                   | DB List     | `200 OK`         |
+| 3   | `POST`   | `/employees`     | CreateEmployeeDTO             | DB Record   | `201 Created`    |
+| 4   | `DELETE` | `/employees/:id` | employee id                   | No Content  | `204 No Content` |
+| 5   | `PUT`    | `/employees/:id` | employee id + EditEmployeeDTO | DB Record   | `200 OK`         |
 
 ### Sequence Diagram
 
 [Sequence Diagram](assets/diagrams/sequence/sequence-diagram.md)
 ![Sequence Diagram](assets/diagrams/sequence/sequence-diagram.png)
+
+---
 
 ## Change logs
 
@@ -469,29 +479,32 @@ API Test Setup:
   - configured SLF4J to use Log4j2 instead of default (Logback)
   - created log4j2-spring.xml for log configuration and formatting, with dev profile
 
-### 19/07/2025
+### 19/07/2025 - Error handling
 
-Working on `Delete employee record`:
+`Delete employee record`:
 
-- Return `BAD REQUEST` if wrong input - fixed
-- Return `NO_CONTENT` on successful deletion - fixed
+- Return `BAD REQUEST` if wrong input - fixed, passing
+- Return `NO_CONTENT` on successful deletion - fixed, passing
+
+`Create employee record`:
+
+- Return `BAD REQUEST` if invalid first/last name - passing
+- Return `BAD REQUEST` if invalid duplicate email - passing
 
 ---
 
-Agile Board
+## Agile Board
 
 ### In progress
 
 ### Sprint
 
-- go back and introduce error handling for backend API
-- prepare data handling on backend to make front-end just an IO (goal: reduce front-end complexity)
+- editById PUT method - TDD - write tests + function in parallel
 
 ### Backlog - Backend
 
-- BE feature: Edit employee record:
-
-  - editById PUT method - TDD - write tests + function in parallel
+- go back and introduce error handling for backend API
+- prepare data handling on backend to make front-end just an IO (goal: reduce front-end complexity)
 
 ## QA Checklist
 

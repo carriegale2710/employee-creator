@@ -26,8 +26,8 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<Employee> create(@Valid @RequestBody CreateEmployeeDTO data) {
-        Employee newEmployee = this.employeeService.create(data);
+    public ResponseEntity<Employee> create(@Valid @RequestBody CreateEmployeeDTO dto) throws IllegalArgumentException {
+        Employee newEmployee = this.employeeService.create(dto);
         return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
     }
 
