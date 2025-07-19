@@ -1,13 +1,24 @@
-import React from "react";
+import type { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
 
-interface ButtonProps {
+interface ButtonProps
+  extends DetailedHTMLProps<
+    ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
+  > {
   children: React.ReactNode;
+  altText?: string;
 }
 
-const Button = ({ children }: ButtonProps) => {
+const Button: React.FC<ButtonProps> = ({
+  type = "button",
+  altText,
+  children,
+}) => {
   return (
     <>
-      <button>{children}</button>
+      <button type={type} aria-label={altText}>
+        {children}
+      </button>
     </>
   );
 };

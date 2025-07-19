@@ -217,14 +217,6 @@ npm run test     # frontend (if added)
 
 ## Design Goals / Approach
 
-#### TDD Workflow
-
-| Phase       | Action                                           |
-| ----------- | ------------------------------------------------ |
-| 🔴 Red      | Write a test for a feature you haven’t built yet |
-| 🟢 Green    | Build the simplest code to pass the test         |
-| 🟡 Refactor | Clean up code while keeping tests passing        |
-
 #### MVP Objectives
 
 See [Project Requirements](project-brief.md)
@@ -247,24 +239,289 @@ See [Project Requirements](project-brief.md)
 | 2   | `Create Employee` | Add a new employee | Register new hire | Click button that opens a form to add a new employee as a new record in DB |
 | 3   | `Delete Employee` | Delete employee    | Remove old record | Click a button to delete a record of an existing employee in DB            |
 
+#### TDD Workflow
+
+| Phase       | Action                                           |
+| ----------- | ------------------------------------------------ |
+| 🔴 Red      | Write a test for a feature you haven’t built yet |
+| 🟢 Green    | Build the simplest code to pass the test         |
+| 🟡 Refactor | Clean up code while keeping tests passing        |
+
+#### Documentation habits
+
+| Location              | Purpose                                                 |
+| --------------------- | ------------------------------------------------------- |
+| `README.md`           | 🔷 High-level overview of the entire full-stack project |
+| `front-end/README.md` | 🎨 Frontend-specific setup, dev commands, tests         |
+| `back-end/README.md`  | ⚙️ Backend-specific setup, API docs, DB, test config    |
+
+```mermaid
+gitGraph
+    commit id: "main"
+    branch dev
+    checkout dev
+    commit id: "setup project"
+
+    %% Feature branches
+    branch feature/create-employee
+    checkout feature/create-employee
+    commit id: "Add backend API"
+    commit id: "Add frontend form"
+    checkout dev
+    merge feature/create-employee
+
+    branch feature/edit-employee
+    checkout feature/edit-employee
+    commit id: "Update backend logic"
+    commit id: "Update frontend UI"
+    checkout dev
+    merge feature/edit-employee
+
+    %% Hybrid long-lived branches for refactors
+    branch refactor/frontend-rewrite
+    checkout refactor/frontend-rewrite
+    commit id: "Rewrite UI structure"
+    checkout dev
+    merge refactor/frontend-rewrite
+
+    branch refactor/backend-cleanup
+    checkout refactor/backend-cleanup
+    commit id: "Refactor controller logic"
+    checkout dev
+    merge refactor/backend-cleanup
+
+    checkout main
+    merge dev
+```
+
 ### Implementation
 
 <!-- Why did you implement this the way you did? -->
 
-<!-- - Used enum for department to enforce consistency.
-- Used Tailwind for quick responsive UI with minimal setup. -->
+#### Front-end decisions
 
 - Used top-down TDD to define backend before connecting to frontend.
 - Write up basic tests before coding to understand functionality, entity shapes & edge cases.
 
-#### Entity Relationship Diagram (ERD)
+#### Backend decisions
 
 - Included a contracts and departments table with a `one-to-many relationship` for `employees -> contracts` and `departments -> contracts`
 - This allows for flexible, quicker UX when editing of DB records via in FE client app with only minor updates eg. salary, contract dates etc.
 
-![diagram of one-to-many class between employee and contracts tables in database](assets\data\erd.png)
+## Database structure
 
-See more in [Schemas](assets/data/README.md)
+### Entity Relationship Diagram (ERD)
+
+![diagram of one-to-many class between employee and contracts tables in database](assets/diagrams/erd.png)
+
+#### Summary
+
+| What                       | Relationship            | Why we did this                                                    |
+| -------------------------- | ----------------------- | ------------------------------------------------------------------ |
+| **Employees table**        | Has personal info only  | Department can change → so not stored here                         |
+| **Contracts table**        | Has job info per period | Stores department, salary, hours, type, dates for each role/period |
+| **Departments table**      | Lookup table            | Keeps department names unique and consistent                       |
+| **Employee → Contracts**   | One-to-Many             | - Each employee can have multiple contracts over time              |
+| **Department → Contracts** | One-to-Many             | Each contract is tied to one department at that time               |
+
+<!-- - In `Employee`:`@OneToMany(mappedBy = "employee")`
+- In `Contract`:`@ManyToOne`
+- In `Contract`:`@ManyToOne`
+- In `Department`:`@OneToMany(mappedBy = "department")` (optional) -->
+
+---
+
+### Schemas
+
+#### Employee Schema
+
+Basic employee personal data — no department or job info here (now handled via `contracts` and `departments`).
+
+```ts
+interface Employee {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber?: string;
+  address?: string;
+}
+```
+
+```json
+{
+  "id": 1,
+  "firstName": "Timmy",
+  "lastName": "Turner",
+  "email": "timmehhh@example.com",
+  "phoneNumber": "0400000000",
+  "address": "123 Fairy Lane"
+}
+```
+
+---
+
+#### Contract Schema
+
+Each employee can have multiple contracts across different time periods and departments.
+
+```ts
+interface Contract {
+  id: number;
+  employeeId: number;
+  departmentId?: number;
+  contractType: "FULL_TIME" | "PART_TIME";
+  salaryAmount?: number;
+  hoursPerWeek?: number;
+  startDate: string; // ISO date string
+  endDate?: string; // ISO date string or null
+  isActive: boolean;
+}
+```
+
+```json
+{
+  "id": 101,
+  "employeeId": 1,
+  "departmentId": 1,
+  "contractType": "FULL_TIME",
+  "salaryAmount": 80000,
+  "hoursPerWeek": 38,
+  "startDate": "2023-01-10",
+  "endDate": null,
+  "isActive": true
+}
+```
+
+---
+
+#### Department Schema
+
+Lookup table to keep departments consistent but flexible to be updated later.
+
+```ts
+interface Department {
+  id: number;
+  name: "ENGINEERING" | "SALES" | "HUMAN_RESOURCES" | "MARKETING" | "FINANCE";
+}
+```
+
+JSON HTTP 'PUT' Request:
+
+```json
+{
+  "id": 1, //not needed if "POST" request (creation)
+  "name": "ENGINEERING"
+}
+```
+
+---
+
+### Sample Employee List Response (GET `/employees`)
+
+Joining the employee with their current contract and department for display.
+
+- Can clean up HTTP response to exclude sensitive information for security.
+
+JSON HTTP Response:
+
+```json
+[
+  {
+    "id": 1,
+    "firstName": "Timmy",
+    "lastName": "Turner",
+    "email": "timmehhh@example.com",
+    "currentContract": {
+      //virtual field
+      "contractType": "FULL_TIME",
+      "startDate": "2023-01-10",
+      "department": "ENGINEERING"
+    }
+  },
+  {
+    "id": 2,
+    "firstName": "Cosmo",
+    "lastName": "Cosma",
+    "email": "cosmo@example.com",
+    "currentContract": {
+      //virtual field
+      "contractType": "PART_TIME",
+      "startDate": "2022-04-12",
+      "department": "HUMAN_RESOURCES"
+    }
+  }
+]
+```
+
+---
+
+### DTO Schemas
+
+#### CreateEmployeeDTO + CreateContractDTO (opt.)
+
+When creating a new employee with an option for initial contract:
+
+```ts
+interface CreateEmployeeDTO {
+  firstName: string;
+  lastName: string;
+  // email: string; get backend to generate
+  phoneNumber: string;
+  address?: string;
+  contract?: ContractDTO; //opt.
+}
+interface CreateContractDTO {
+  departmentId: number; //get this from name
+  contractType: "FULL_TIME" | "PART_TIME";
+  startDate: string; // ISO date string
+  salaryAmount?: number;
+  hoursPerWeek?: number;
+}
+```
+
+AS `POST` HTTP request (JSON):
+
+```json
+{
+  "firstName": "Timmy",
+  "lastName": "Turner",
+  "email": "timmehhh@example.com",
+  "phoneNumber": "0400000000",
+  "currentContract": {
+    "contractType": "FULL_TIME",
+    "startDate": "2023-01-10",
+    "department": "ENGINEERING"
+  }
+}
+```
+
+#### EditEmployeeDTO
+
+When editing personal details of existing employee.
+
+- As `POST` HTTP request to update only email (JSON):
+
+```json
+{
+  "employee_id": 11, //required
+  "email": "timmy_turner@example.com"
+}
+```
+
+#### EditContractDTO
+
+When editing personal details of existing contract.
+
+- As `POST` HTTP request to update only salary in employee's contract (JSON):
+
+```json
+{
+  "employee_id": 11, //required
+  "contract_id": 101, //required
+  "salaryAmount": 85000
+}
+```
 
 ## Features
 
@@ -288,28 +545,29 @@ See more in [Schemas](assets/data/README.md)
 
 ```mermaid
 
+---
+config:
+  theme: redux-dark-color
+---
 sequenceDiagram
   actor User
   participant ReactApp as React App
   participant SpringAPI as Spring Boot API
   participant MySQL as MySQL Database
-
   Note over User: View all employees
-  User->>ReactApp: Clicks 'Employees' nav link
+  User->>ReactApp: Opens Employee List
   ReactApp->>SpringAPI: GET /employees
   SpringAPI->>MySQL: SELECT * FROM employees
   MySQL-->>SpringAPI: Rows (employee list)
   SpringAPI-->>ReactApp: JSON response
   ReactApp-->>User: Display list
-
   Note over User: Add a new employee
   User->>ReactApp: Fills out form
   ReactApp->>SpringAPI: POST /employees (form data)
   SpringAPI->>MySQL: INSERT INTO employees
   MySQL-->>SpringAPI: OK
-  SpringAPI-->>ReactApp: 201 CREATED (+New employee JSON)
+  SpringAPI-->>ReactApp: New employee JSON
   ReactApp-->>User: Confirmation
-
   Note over User: Edit an employee
   User->>ReactApp: Clicks Edit
   ReactApp->>SpringAPI: PUT /employees/:id (updated data)
@@ -317,14 +575,14 @@ sequenceDiagram
   MySQL-->>SpringAPI: OK
   SpringAPI-->>ReactApp: Updated JSON
   ReactApp-->>User: Show updated data
-
   Note over User: Delete an employee
   User->>ReactApp: Clicks Delete
   ReactApp->>SpringAPI: DELETE /employees/:id
   SpringAPI->>MySQL: DELETE FROM employees WHERE id=...
   MySQL-->>SpringAPI: OK
-  SpringAPI-->>ReactApp: 204 NO CONTENT
+  SpringAPI-->>ReactApp: 200 OK
   ReactApp-->>User: Item removed
+
 
 ```
 
@@ -552,8 +810,6 @@ Features that are buggy / flimsy/not functional yet: -->
 4. [14/07/25] Custom domain for EC2 : for fetching safely from front-end (otherwise error below)
    -> stuck at "Test out your API" : health check failing, need to look at EC2 security group setting again
 
-![console-error-message-from-failed-API-fetching-with-EC2](logs/FE-API-fetching-error.png)
-
 5. [15/07/25] Need to audit API logging and react app fetching for any security holes
 
 ---
@@ -608,44 +864,3 @@ MIT License.
 ### Client App UI
 
 See related documentation for [React Client App](front-end/README.md).
-
-### Documentation habits
-
-```mermaid
-gitGraph
-    commit id: "main"
-    branch dev
-    checkout dev
-    commit id: "setup project"
-
-    %% Feature branches
-    branch feature/create-employee
-    checkout feature/create-employee
-    commit id: "Add backend API"
-    commit id: "Add frontend form"
-    checkout dev
-    merge feature/create-employee
-
-    branch feature/edit-employee
-    checkout feature/edit-employee
-    commit id: "Update backend logic"
-    commit id: "Update frontend UI"
-    checkout dev
-    merge feature/edit-employee
-
-    %% Hybrid long-lived branches for refactors
-    branch refactor/frontend-rewrite
-    checkout refactor/frontend-rewrite
-    commit id: "Rewrite UI structure"
-    checkout dev
-    merge refactor/frontend-rewrite
-
-    branch refactor/backend-cleanup
-    checkout refactor/backend-cleanup
-    commit id: "Refactor controller logic"
-    checkout dev
-    merge refactor/backend-cleanup
-
-    checkout main
-    merge dev
-```
