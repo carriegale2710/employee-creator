@@ -12,6 +12,12 @@ export interface Employee {
   taxFileNumber: string;
 }
 
+export interface EmployeeDTO {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
 export const getAllEmployees = async (): Promise<Employee[]> => {
   const response = await fetch(`${API_URL}/employees`);
   const employees = await response.json();
@@ -25,4 +31,16 @@ export const getEmployeeById = async (id: string): Promise<Employee> => {
   }
   const employee = await response.json();
   return employee;
+};
+
+export const createEmployee = async (formData: EmployeeDTO) => {
+  const response = await fetch(`${API_URL}/employees`, {
+    method: "POST",
+    body: JSON.stringify(formData),
+  });
+  if (!response.ok) {
+    throw new Error("Failed to create employee");
+  }
+  const result = await response.json();
+  return result;
 };
