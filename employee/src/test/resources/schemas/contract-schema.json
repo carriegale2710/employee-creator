@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "id": { "type": "integer" },
+    "employeeId": { "type": "integer" },
+    "departmentId": { "type": "integer" },
+    "contractType": { "type": "string" },
+    "salaryAmount": { "type": "number" },
+    "hoursPerWeek": { "type": "integer" },
+    "startDate": { "type": "string" },
+    "endDate": { "type": "string" }
+  },
+  "required": ["id", "employeeId", "departmentId", "contractType", "startDate"],
+  "additionalProperties": false
+}

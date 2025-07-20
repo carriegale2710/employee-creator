@@ -232,7 +232,7 @@ interface Contract {
   hoursPerWeek?: number;
   startDate: string; // ISO date string
   endDate?: string; // ISO date string or null
-  isActive: boolean;
+  isActive: boolean; //virtual field
 }
 ```
 
