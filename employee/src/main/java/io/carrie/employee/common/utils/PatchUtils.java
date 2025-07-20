@@ -1,5 +1,7 @@
 package io.carrie.employee.common.utils;
 
+import io.carrie.employee.contract.Contract;
+import io.carrie.employee.contract.dtos.UpdateContractDTO;
 import io.carrie.employee.employee.Employee;
 import io.carrie.employee.employee.dtos.UpdateEmployeeDTO;
 
@@ -16,5 +18,9 @@ public class PatchUtils {
         if (source.getEmail() != null) {
             target.setEmail(source.getEmail());
         }
+    }
+
+    public static void patchContract(Contract target, UpdateContractDTO source) {
+
     }
 }
