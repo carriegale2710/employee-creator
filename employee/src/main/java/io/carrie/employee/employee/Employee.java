@@ -24,14 +24,24 @@ public class Employee {
     @Column(unique = true)
     private String email;
 
+    @Column
+    private String phone;
+    // string better to keep original format
+
+    @Column
+    private String address;
+    // can create dto for this later if needed
+
     public Employee() {
 
     }
 
-    public Employee(String firstName, String lastName, String email) {
+    public Employee(String firstName, String lastName, String email, String phone, String address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.phone = phone;
+        this.address = address;
     }
 
     public Integer getId() {
@@ -60,6 +70,22 @@ public class Employee {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
 }
