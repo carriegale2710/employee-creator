@@ -7,8 +7,6 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Optional;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,10 +15,15 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
 
+import io.carrie.employee.employee.dtos.CreateEmployeeDTO;
+import io.carrie.employee.employee.dtos.UpdateEmployeeDTO;
+
 public class EmployeeServiceTest {
 
-    // provide fake implementation for control data comparison (testing logic not
-    // API/repo)
+    // NOTE (just testing the service works properly)
+    // providing fake implementation for control data comparison
+    // the data is not based on dependencies
+    // won't work in e2e tests
 
     @Mock
     private EmployeeRepository employeeRepository;
@@ -32,64 +35,60 @@ public class EmployeeServiceTest {
     @InjectMocks
     private EmployeeService employeeService;
 
-    // setup your mock data for testing
-    @BeforeEach
+    @BeforeEach // setup your mock data for testing
     public void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test // testing findAll()
+    @Test
     public void findAll_CallsFindAllOnRepo() {
         this.employeeService.findAll();
-        // no additional logic, just test it was called at all
         verify(this.employeeRepository).findAll();
     }
 
     @Test
     public void findById_CallsFindByIdOnRepo() {
+        Employee employee = new Employee();
+        when(this.employeeRepository.findById(1)).thenReturn(java.util.Optional.of(employee));
         this.employeeService.findById(1);
         verify(this.employeeRepository).findById(1);
     }
 
     @Test
     public void deleteById_CallsDeleteByIdOnRepo() {
-        doReturn(Optional.of(new Employee())).when(employeeService).findById(1);
-        boolean result = this.employeeService.deleteById(1);
+        doReturn(new Employee()).when(employeeService).findById(1);
+        this.employeeService.deleteById(1);
         verify(this.employeeRepository).deleteById(1);
-        assertEquals(true, result);
     }
 
-    @Test // this will have some logic to check data that gets returned is correct
+    @Test
     public void create_CallsSaveOnRepo() {
-
-        // control data to compare what returned data should look like
-        Employee savedEmployee = new Employee();
-        savedEmployee.setFirstName("Timmy");
-        savedEmployee.setLastName("Turner");
-        savedEmployee.setEmail("timmehhh@example.com");
-
-        // mock data to test if saves properly
+        // Arrange- mock what should return (control vs mock data)
+        Employee employee = new Employee("Timmy", "Turner", "timmehhh@example.com");
         CreateEmployeeDTO data = new CreateEmployeeDTO("Timmy", "Turner", "timmehhh@example.com");
-
-        // NOTE - the data is not based on dependencies, we just tell them what to
-        // return manually (savedEmployee)
-        // why? we are testing that the service is working, not modelMapper/repo
-        // service!!
-
-        // mock what modelMapper returns on map (not actually called, just use it as a
-        // trigger, this won't work in e2e tests)
-        when(this.modelMapper.map(data, Employee.class)).thenReturn(savedEmployee);
-        // mock what repo should return on save
-        when(this.employeeRepository.save(any(Employee.class))).thenReturn(savedEmployee);
-
-        // check that save method called by repo
+        when(this.modelMapper.map(data, Employee.class)).thenReturn(employee);
+        when(this.employeeRepository.save(any(Employee.class))).thenReturn(employee);
+        // Act -run the method
         Employee result = this.employeeService.create(data);
-        verify(this.employeeRepository).save(savedEmployee);
-        // check that returned data is not null
+        // Assert - check save method called by repo
+        verify(this.employeeRepository).save(employee);
+        // Assert -check data
         assertNotNull(result);
-        // check that returned data is correct
-        assertEquals(savedEmployee, result);
-
+        assertEquals(employee, result);
     }
 
+    @Test
+    public void create_CallsUpdateOnRepo() {
+        Employee employee = new Employee("Timmy", "Turner", "timmehhh@example.com");
+        UpdateEmployeeDTO dto = new UpdateEmployeeDTO("Timothy", "Turner", "timothy_turner@example.com");
+        when(this.employeeRepository.findById(1)).thenReturn(java.util.Optional.of(employee));
+        when(this.employeeRepository.save(any(Employee.class))).thenReturn(employee);
+        // Act -run the method
+        Employee result = this.employeeService.updateById(1, dto);
+        // Assert - method call
+        verify(this.employeeRepository).save(employee);
+        // Assert -check data
+        assertNotNull(result);
+        assertEquals(employee, result);
+    }
 }

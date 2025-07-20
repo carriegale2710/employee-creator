@@ -4,7 +4,7 @@
 
 [![Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-### Documentation - Note
+## Documentation - Note
 
 This documentation for this project is split up into backend vs front-end specific locations in the code base. They include more details like build steps, testing and change logs.
 
@@ -114,11 +114,11 @@ Or use your IDE (IntelliJ, VSCode, etc.)
 
 ---
 
-### Endpoints:
+### Endpoints
 
 Once running, your API will be available at:
 
-```
+```text
 http://localhost:8080
 ```
 
@@ -162,7 +162,7 @@ Use [Postman](https://www.postman.com/downloads/) or a browser (for GET requests
 ### Backend decisions
 
 - Included a contracts and departments table with a `one-to-many relationship` for `employees -> contracts` and `departments -> contracts`
-- This allows for flexible, quicker UX when editing of DB records via in FE client app with only minor updates eg. salary, contract dates etc.
+- This allows for flexible, quicker UX when updating of DB records via in FE client app with only minor updates eg. salary, contract dates etc.
 
 ## Database structure
 
@@ -261,7 +261,7 @@ interface Department {
 }
 ```
 
-JSON HTTP 'PUT' Request:
+JSON HTTP 'PATCH' Request:
 
 ```json
 {
@@ -282,7 +282,7 @@ When creating a new employee with an option for initial contract:
 interface CreateEmployeeDTO {
   firstName: string;
   lastName: string;
-  // email: string; get backend to generate
+  email: string; //get backend to generate if empty?
   phoneNumber: string;
   address?: string;
   contract?: ContractDTO; //opt.
@@ -297,7 +297,7 @@ AS `POST` HTTP request (JSON):
   "lastName": "Turner",
   "email": "timmehhh@example.com",
   "phoneNumber": "0400000000",
-  "currentContract": CreateContractDTO //optional on creation?
+  "currentContract": CreateContractDTO //opt
 }
 ```
 
@@ -321,24 +321,26 @@ interface CreateContractDTO {
 }
 ```
 
-#### EditEmployeeDTO
+#### UpdateEmployeeDTO
 
-When editing personal details of existing employee.
+When updating personal details of existing employee.
 
-- As `PUT` HTTP request to update only email (JSON):
+- As `PATCH` HTTP request to update only inputed fields (JSON):
 
 ```json
 {
-  "employee_id": 11, //required
-  "email": "timmy_turner@example.com"
+  "firstName": "Timmy", //opt.
+  "lastName": "Turner", //opt.
+  "email": "timmy_turner@example.com" //opt.
+  "phoneNumber": "0400000000", //opt.
 }
 ```
 
-#### EditContractDTO (bonus)
+#### UpdateContractDTO (bonus)
 
-When editing personal details of existing contract.
+When updating personal details of existing contract.
 
-- As `PUT` HTTP request to update only salary in employee's contract (JSON):
+- As `PATCH` HTTP request to update only salary in employee's contract (JSON):
 
 ```json
 {
@@ -389,13 +391,13 @@ JSON HTTP Response:
 
 ### API Endpoints
 
-| ID  | Method   | Endpoint         | Input                         | Output Data | Success Response |
-| --- | -------- | ---------------- | ----------------------------- | ----------- | ---------------- |
-| 1   | `GET`    | `/employees`     | none                          | DB List     | `200 OK`         |
-| 2   | `GET`    | `/employees/:id` | employee id                   | DB List     | `200 OK`         |
-| 3   | `POST`   | `/employees`     | CreateEmployeeDTO             | DB Record   | `201 Created`    |
-| 4   | `DELETE` | `/employees/:id` | employee id                   | No Content  | `204 No Content` |
-| 5   | `PUT`    | `/employees/:id` | employee id + EditEmployeeDTO | DB Record   | `200 OK`         |
+| ID  | Method   | Endpoint         | Input                           | Output Data | Success Response |
+| --- | -------- | ---------------- | ------------------------------- | ----------- | ---------------- |
+| 1   | `GET`    | `/employees`     | none                            | DB List     | `200 OK`         |
+| 2   | `GET`    | `/employees/:id` | employee id                     | DB List     | `200 OK`         |
+| 3   | `POST`   | `/employees`     | createEmployeeDTO               | DB Record   | `201 Created`    |
+| 4   | `DELETE` | `/employees/:id` | employee id                     | No Content  | `204 No Content` |
+| 5   | `PATCH`  | `/employees/:id` | employee id + updateEmployeeDTO | DB Record   | `200 OK`         |
 
 ### Sequence Diagram
 
@@ -481,6 +483,8 @@ API Test Setup:
 
 ### 19/07/2025 - Error handling
 
+- went back and introduced error handling for backend API
+
 `Delete employee record`:
 
 - Return `BAD REQUEST` if wrong input - fixed, passing
@@ -491,20 +495,40 @@ API Test Setup:
 - Return `BAD REQUEST` if invalid first/last name - passing
 - Return `BAD REQUEST` if invalid duplicate email - passing
 
+### 19/07/2025 - Edit employee feature
+
+- updateById PATCH method : used TDD - wrote tests + function in parallel
+
 ---
 
 ## Agile Board
 
 ### In progress
 
+- pass 2x e2e tests for UpdateEmployeeByIdTests :
+  (passing individually but not when whole test runs)
+  - valid update - getting 404
+  - dealing with duplicate emails - getting 404
+
 ### Sprint
 
-- editById PUT method - TDD - write tests + function in parallel
+- prepare data handling on backend to make front-end just an IO (goal: reduce front-end complexity)
+- extend employee entity to have more fields
 
 ### Backlog - Backend
 
-- go back and introduce error handling for backend API
-- prepare data handling on backend to make front-end just an IO (goal: reduce front-end complexity)
+Contract: (one-to-many relationship: employee can have multiple contracts)
+
+- contract entity
+- contract controller
+- contract service
+- contract repository
+- createContractDTO
+- updateContractDTO
+- implement any custom errors/utils
+- error handling
+- e2e tests
+- service tests
 
 ## QA Checklist
 
@@ -533,7 +557,7 @@ MIT License.
 
 ---
 
-## Related projects, reimplementations, misc.
+## Related projects, reimplementations, misc
 
 ### Client App UI
 

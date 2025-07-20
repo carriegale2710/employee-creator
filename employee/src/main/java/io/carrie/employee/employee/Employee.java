@@ -21,8 +21,18 @@ public class Employee {
     @Column
     private String lastName;
 
-    @Column
+    @Column(unique = true)
     private String email;
+
+    public Employee() {
+
+    }
+
+    public Employee(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
 
     public Integer getId() {
         return id;
