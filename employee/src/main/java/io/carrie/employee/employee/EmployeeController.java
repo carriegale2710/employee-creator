@@ -39,20 +39,14 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Employee> getById(@PathVariable Integer id) throws Exception {
-        Optional<Employee> foundEmployee = this.employeeService.findById(id);
-        if (foundEmployee.isPresent()) {
-            return new ResponseEntity<>(foundEmployee.get(), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        Employee foundEmployee = this.employeeService.findById(id);
+        return new ResponseEntity<>(foundEmployee, HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Integer id) throws Exception {
-        boolean deleted = this.employeeService.deleteById(id);
-        if (deleted) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        this.employeeService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     // @PutMapping

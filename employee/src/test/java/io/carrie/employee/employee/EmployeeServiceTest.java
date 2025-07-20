@@ -7,8 +7,6 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Optional;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -47,16 +45,17 @@ public class EmployeeServiceTest {
 
     @Test
     public void findById_CallsFindByIdOnRepo() {
+        Employee employee = new Employee();
+        when(this.employeeRepository.findById(1)).thenReturn(java.util.Optional.of(employee));
         this.employeeService.findById(1);
         verify(this.employeeRepository).findById(1);
     }
 
     @Test
     public void deleteById_CallsDeleteByIdOnRepo() {
-        doReturn(Optional.of(new Employee())).when(employeeService).findById(1);
-        boolean result = this.employeeService.deleteById(1);
+        doReturn(new Employee()).when(employeeService).findById(1);
+        this.employeeService.deleteById(1);
         verify(this.employeeRepository).deleteById(1);
-        assertEquals(true, result);
     }
 
     @Test // this will have some logic to check data that gets returned is correct

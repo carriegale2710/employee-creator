@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import io.carrie.employee.common.exceptions.NotFoundException;
 
 @Service
 public class EmployeeService {
@@ -21,8 +22,13 @@ public class EmployeeService {
         return this.employeeRepository.findAll();
     }
 
-    public Optional<Employee> findById(Integer id) {
-        return this.employeeRepository.findById(id);
+    public Employee findById(Integer id) throws NotFoundException {
+        Optional<Employee> result = this.employeeRepository.findById(id);
+        if (result.isEmpty()) {
+            throw new NotFoundException("Employee with id " + id + " does not exist");
+        }
+        return result.get();
+
     }
 
     public Employee create(CreateEmployeeDTO data) throws IllegalArgumentException {
@@ -38,10 +44,7 @@ public class EmployeeService {
     }
 
     public boolean deleteById(Integer id) {
-        Optional<Employee> foundEmployee = this.findById(id); // does the book exist?
-        if (foundEmployee.isEmpty()) {
-            return false;
-        }
+        this.findById(id);
         this.employeeRepository.deleteById(id);
         return true;
     }
