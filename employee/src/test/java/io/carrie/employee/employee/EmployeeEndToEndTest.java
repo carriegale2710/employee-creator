@@ -235,21 +235,23 @@ public class EmployeeEndToEndTest {
     @DisplayName("PATCH /employees/{id}")
     class UpdateEmployeeByIdTests {
 
-        private void assertPatch(HashMap<String, String> employeeDto) {
-            assertBadRequest(Method.PATCH, "/employees/1", employeeDto);
-        }
-
         @Test
         public void patchById_ValidData_Created() {
+            Integer existingId = employeeList.get(0).getId();
             given()
                     .contentType(ContentType.JSON)
                     .body(employeeDto)
                     .when()
-                    .patch("/employees/1")
+                    .patch("/employees/" + existingId)
                     .then()
                     .statusCode(HttpStatus.OK.value())
                     .body("firstName", equalTo("Cosmo")); // returns correct data
             // todo - check data was successfully added as new employee in DB
+        }
+
+        private void assertPatch(HashMap<String, String> employeeDto) {
+            Integer existingId = employeeList.get(0).getId();
+            assertBadRequest(Method.PATCH, "/employees/" + existingId, employeeDto);
         }
 
         @Test
@@ -276,6 +278,7 @@ public class EmployeeEndToEndTest {
         public void patchById_InvalidEmail_BadRequest() {
             employeeDto.put("email", "cosmoexample.com"); // invalid email
             assertPatch(employeeDto);
+
         }
 
         @Test
@@ -284,5 +287,6 @@ public class EmployeeEndToEndTest {
             employeeDto.put("email", "timmehhh@example.com");
             assertPatch(employeeDto);
         }
+
     }
 }
