@@ -6,6 +6,9 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import io.carrie.employee.common.exceptions.NotFoundException;
+import io.carrie.employee.common.utils.PatchUtils;
+import io.carrie.employee.employee.dtos.CreateEmployeeDTO;
+import io.carrie.employee.employee.dtos.UpdateEmployeeDTO;
 
 @Service
 public class EmployeeService {
@@ -22,31 +25,38 @@ public class EmployeeService {
         return this.employeeRepository.findAll();
     }
 
-    public Employee findById(Integer id) throws NotFoundException {
-        Optional<Employee> result = this.employeeRepository.findById(id);
-        if (result.isEmpty()) {
-            throw new NotFoundException("Employee with id " + id + " does not exist");
-        }
-        return result.get();
-
-    }
-
-    public Employee create(CreateEmployeeDTO data) throws IllegalArgumentException {
-        // turn CreateEmployeeDTO into a Employee object
-        Employee newEmployee = modelMapper.map(data, Employee.class);
-        String email = newEmployee.getEmail();
-        if (this.employeeRepository.existsByEmail(email)) {
-            throw new IllegalArgumentException("Employee with email already exists");
-            // Throw exceptions in the service class. Handle them in the controller.
-        }
-        Employee savedEmployee = this.employeeRepository.save(newEmployee);
-        return savedEmployee;
+    public Employee create(CreateEmployeeDTO dto) throws IllegalArgumentException {
+        Employee created = modelMapper.map(dto, Employee.class);
+        checkEmail(created.getEmail(), employeeRepository);
+        return this.employeeRepository.save(created);
     }
 
     public boolean deleteById(Integer id) {
         this.findById(id);
         this.employeeRepository.deleteById(id);
         return true;
+    }
+
+    public Employee updateById(Integer id, UpdateEmployeeDTO dto) {
+        Employee found = findById(id);
+        checkEmail(dto.getEmail(), employeeRepository);
+        PatchUtils.patchEmployee(found, dto);
+        return this.employeeRepository.save(found);
+        // you do not need to delete the old record - jpa/spring does it for you
+    }
+
+    public Employee findById(Integer id) throws NotFoundException {
+        Optional<Employee> result = this.employeeRepository.findById(id);
+        if (result.isEmpty()) {
+            throw new NotFoundException("Employee with id " + id + " does not exist");
+        }
+        return result.get();
+    }
+
+    static void checkEmail(String email, EmployeeRepository employeeRepository) {
+        if (email != null && employeeRepository.existsByEmail(email)) {
+            throw new IllegalArgumentException("Employee with email already exists");
+        }
     }
 
 }

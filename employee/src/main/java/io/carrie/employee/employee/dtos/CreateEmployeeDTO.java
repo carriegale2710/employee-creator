@@ -1,4 +1,4 @@
-package io.carrie.employee.employee;
+package io.carrie.employee.employee.dtos;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

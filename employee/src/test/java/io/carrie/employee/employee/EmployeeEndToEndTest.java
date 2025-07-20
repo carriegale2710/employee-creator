@@ -247,9 +247,9 @@ public class EmployeeEndToEndTest {
                     .when()
                     .patch("/employees/1")
                     .then()
-                    .statusCode(HttpStatus.OK.value());
-            // .body("firstName", equalTo("Cosmo")); // returns correct data
-            // // todo - check data was successfully added as new employee in DB
+                    .statusCode(HttpStatus.OK.value())
+                    .body("firstName", equalTo("Cosmo")); // returns correct data
+            // todo - check data was successfully added as new employee in DB
         }
 
         @Test
