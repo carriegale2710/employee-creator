@@ -44,17 +44,19 @@ public class EmployeeEndToEndTest {
         this.employeeList.clear();
 
         // create some employees for testing:
-        Employee employee1 = new Employee("Timmy", "Turner", "timmehhh@example.com");
+        Employee employee1 = new Employee("Timmy", "Turner", "timmehhh@example.com", "0400000000", "123 Fairy Lane");
         this.employeeRepository.save(employee1);
         this.employeeList.add(employee1);
 
-        Employee employee2 = new Employee("Wanda", "Cosmo", "wanda.cosmo@example.com");
+        Employee employee2 = new Employee("Wanda", "Cosmo", "wanda.cosmo@example.com", "0123456789", "123 Fairy Lane");
         this.employeeRepository.save(employee2);
         this.employeeList.add(employee2);
 
         this.employeeDto.put("firstName", "Cosmo");
         this.employeeDto.put("lastName", "Cosma");
         this.employeeDto.put("email", "cosmo@example.com");
+        this.employeeDto.put("phone", "9876543210");
+        this.employeeDto.put("address", "123 Fairy Lane");
     }
 
     // test framework (AAA)
@@ -256,11 +258,11 @@ public class EmployeeEndToEndTest {
 
         @Test
         public void patchById_InvalidFirstName_BadRequest() {
-            employeeDto.put("lastName", "hasPunctuation,,.");
+            employeeDto.put("firstName", "hasPunctuation,,.");
             assertPatch(employeeDto);
-            employeeDto.put("lastName", "hasNumbers3245");
+            employeeDto.put("firstName", "hasNumbers3245");
             assertPatch(employeeDto);
-            employeeDto.put("lastName", "thisisareallyreallyreallylongnamethatistoolong");
+            employeeDto.put("firstName", "thisisareallyreallyreallylongnamethatistoolong");
             assertPatch(employeeDto);
         }
 

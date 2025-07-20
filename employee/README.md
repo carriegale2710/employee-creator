@@ -246,7 +246,7 @@ interface Contract {
   "hoursPerWeek": 38,
   "startDate": "2023-01-10",
   "endDate": null,
-  "isActive": true
+  "isActive": true //virtual field
 }
 ```
 
@@ -301,6 +301,21 @@ AS `POST` HTTP request (JSON):
 }
 ```
 
+#### UpdateEmployeeDTO
+
+When updating personal details of existing employee.
+
+- As `PATCH` HTTP request to update only inputed fields (JSON):
+
+```json
+{
+  "firstName": "Timmy", //opt.
+  "lastName": "Turner", //opt.
+  "email": "timmy_turner@example.com" //opt.
+  "phoneNumber": "0400000000", //opt.
+}
+```
+
 #### CreateContractDTO
 
 ```ts
@@ -318,21 +333,6 @@ interface CreateContractDTO {
   "contractType": "FULL_TIME",
   "startDate": "2023-01-10",
   "department": "ENGINEERING"
-}
-```
-
-#### UpdateEmployeeDTO
-
-When updating personal details of existing employee.
-
-- As `PATCH` HTTP request to update only inputed fields (JSON):
-
-```json
-{
-  "firstName": "Timmy", //opt.
-  "lastName": "Turner", //opt.
-  "email": "timmy_turner@example.com" //opt.
-  "phoneNumber": "0400000000", //opt.
 }
 ```
 
@@ -497,7 +497,9 @@ API Test Setup:
 
 ### 20/07/2025
 
-Edit employee feature
+- Extended employee entity to have more fields (phone number, address)
+
+Edit employee feature:
 
 - updateById PATCH method : used TDD - wrote tests + function in parallel
 - (DONE) pass 2x e2e tests for UpdateEmployeeByIdTests :
@@ -516,6 +518,8 @@ Contracts feature : (one-to-many relationship: employee can have multiple contra
 
 ### In progress
 
+### Sprint
+
 Contract: (one-to-many relationship: employee can have multiple contracts)
 
 - contract entity
@@ -527,12 +531,11 @@ Contract: (one-to-many relationship: employee can have multiple contracts)
 - implement any custom errors/utils
 - error handling
 
-### Sprint
-
-- extend employee entity to have more fields
 - prepare data handling on backend to make front-end just an IO (goal: reduce front-end complexity)
 
 ### Backlog - Backend
+
+- (bonus) Use Google API to validate and search address formats
 
 ## QA Checklist
 
