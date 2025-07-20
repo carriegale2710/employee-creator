@@ -495,27 +495,26 @@ API Test Setup:
 - Return `BAD REQUEST` if invalid first/last name - passing
 - Return `BAD REQUEST` if invalid duplicate email - passing
 
-### 19/07/2025 - Edit employee feature
+### 20/07/2025
+
+Edit employee feature
 
 - updateById PATCH method : used TDD - wrote tests + function in parallel
+- (DONE) pass 2x e2e tests for UpdateEmployeeByIdTests :
+  (passing individually but not when whole test runs)
+  - valid update - getting 404
+  - dealing with duplicate emails - getting 404
+
+Contracts feature : (one-to-many relationship: employee can have multiple contracts)
+
+- used employee feature structure as a base to speed things up
+- e2e + service tests done
 
 ---
 
 ## Agile Board
 
 ### In progress
-
-- pass 2x e2e tests for UpdateEmployeeByIdTests :
-  (passing individually but not when whole test runs)
-  - valid update - getting 404
-  - dealing with duplicate emails - getting 404
-
-### Sprint
-
-- prepare data handling on backend to make front-end just an IO (goal: reduce front-end complexity)
-- extend employee entity to have more fields
-
-### Backlog - Backend
 
 Contract: (one-to-many relationship: employee can have multiple contracts)
 
@@ -527,27 +526,45 @@ Contract: (one-to-many relationship: employee can have multiple contracts)
 - updateContractDTO
 - implement any custom errors/utils
 - error handling
-- e2e tests
-- service tests
+
+### Sprint
+
+- extend employee entity to have more fields
+- prepare data handling on backend to make front-end just an IO (goal: reduce front-end complexity)
+
+### Backlog - Backend
 
 ## QA Checklist
 
 ### 🔧 Backend (Spring Boot)
 
 - [x] App compiles and runs
-- [ ] API has working CRUD endpoints (GET, CREATE, DELETE + EDIT)
-- [x] Unit + end-to-end tests (JUnit, Mockito)
-- [ ] Error handling implemented
 - [x] Logging strategy in place
+- [ ] API has working CRUD endpoints (GET, CREATE, DELETE + EDIT)
+
+  - [x] employees
+  - [ ] contracts
+  - [ ] departments
+
+- [x] Unit + end-to-end tests (JUnit, Mockito)
+
+  - [x] employees
+  - [ ] contracts
+  - [ ] departments
+
+- [ ] Error handling implemented
+  - [x] employees
+  - [ ] contracts
+  - [ ] departments
 
 ### 🚚 Delivery & Deployment
 
 - [x] README includes clear setup steps for both API and Web app (local dev)
-- [x] Hosting link works (Heroku, AWS, Azure, etc.)
-- [ ] Code is clean + well documented
 - [x] App is production-ready
+- [ ] Hosting link works (fix custom domain)
+- [ ] Bug-free and everything compiles + runs as expected
 - [ ] Codebase is understandable and maintainable
-- [x] Bug-free and everything compiles + runs as expected
+- [ ] Code is clean + well documented
 
 ## Licensing Details
 
