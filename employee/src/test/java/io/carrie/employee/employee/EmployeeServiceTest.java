@@ -64,8 +64,9 @@ public class EmployeeServiceTest {
     @Test
     public void create_CallsSaveOnRepo() {
         // Arrange- mock what should return (control vs mock data)
-        Employee employee = new Employee("Timmy", "Turner", "timmehhh@example.com");
-        CreateEmployeeDTO data = new CreateEmployeeDTO("Timmy", "Turner", "timmehhh@example.com");
+        Employee employee = new Employee("Timmy", "Turner", "timmehhh@example.com", "0400000000", "123 Fairy Lane");
+        CreateEmployeeDTO data = new CreateEmployeeDTO("Timmy", "Turner", "timmehhh@example.com", "0400000000",
+                "123 Fairy Lane");
         when(this.modelMapper.map(data, Employee.class)).thenReturn(employee);
         when(this.employeeRepository.save(any(Employee.class))).thenReturn(employee);
         // Act -run the method
@@ -79,8 +80,8 @@ public class EmployeeServiceTest {
 
     @Test
     public void create_CallsUpdateOnRepo() {
-        Employee employee = new Employee("Timmy", "Turner", "timmehhh@example.com");
-        UpdateEmployeeDTO dto = new UpdateEmployeeDTO("Timothy", "Turner", "timothy_turner@example.com");
+        Employee employee = new Employee("Timmy", "Turner", "timmehhh@example.com", "0400000000", "123 Fairy Lane");
+        UpdateEmployeeDTO dto = new UpdateEmployeeDTO("Timothy", "Turner", "timothy_turner@example.com", null, null);
         when(this.employeeRepository.findById(1)).thenReturn(java.util.Optional.of(employee));
         when(this.employeeRepository.save(any(Employee.class))).thenReturn(employee);
         // Act -run the method

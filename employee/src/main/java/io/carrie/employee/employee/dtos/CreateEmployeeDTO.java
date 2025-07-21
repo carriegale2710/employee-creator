@@ -2,57 +2,58 @@ package io.carrie.employee.employee.dtos;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public class CreateEmployeeDTO {
 
     @NotBlank
-    @NotNull
-    @Pattern(regexp = "^[a-zA-Z]{2,30}$", message = "First name must be 2 to 30 characters long and contain only letters.")
+    @Pattern(regexp = "^[a-zA-Z]{2,30}$", message = "Invalid First name.")
     private String firstName;
 
     @NotBlank
-    @NotNull
-    @Pattern(regexp = "^[a-zA-Z]{2,30}$", message = "Last name must be 2 to 30 characters long and contain only letters.")
+    @Pattern(regexp = "^[a-zA-Z]{2,30}$", message = "Invalid Last name.")
     private String lastName;
 
+    @NotBlank
     @Email
-    @NotNull
     private String email;
+
+    @NotBlank
+    @Pattern(regexp = "^\\+?\\d{7,15}$", message = "Invalid phone number.")
+    private String phone;
+
+    private String address;
 
     public CreateEmployeeDTO() {
 
     }
 
-    public CreateEmployeeDTO(String firstName, String lastName, String email) {
+    public CreateEmployeeDTO(String firstName, String lastName, String email, String phone, String address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.phone = phone;
+        this.address = address;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getLastName() {
         return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
 }
