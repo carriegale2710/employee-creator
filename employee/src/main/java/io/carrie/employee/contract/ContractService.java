@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import io.carrie.employee.common.exceptions.NotFoundException;
-import io.carrie.employee.common.utils.PatchUtils;
 import io.carrie.employee.contract.dtos.CreateContractDTO;
 import io.carrie.employee.contract.dtos.UpdateContractDTO;
 
@@ -38,7 +37,7 @@ public class ContractService {
 
     public Contract updateById(Integer id, UpdateContractDTO dto) {
         Contract found = findById(id);
-        PatchUtils.patchContract(found, dto);
+        // modelmapper
         return this.contractRepository.save(found);
         // you do not need to delete the old record - jpa/spring does it for you
     }
