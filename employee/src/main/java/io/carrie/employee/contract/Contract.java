@@ -4,10 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import io.carrie.employee.employee.Employee;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,37 +14,49 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "employees")
+@Table(name = "contracts")
 public class Contract {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "employee_id")
+    @ManyToOne // relationship to employees
+    @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
-    private String department;
+    @Column
+    private String department; // TODO - create Department entity
 
-    // @Enumerated(EnumType.STRING)
-    private String contractType;
+    public enum contractType {
+        // saved as index in DB
+        FULL_TIME,
+        PART_TIME,
+        CASUAL,
+        CONTRACT
+    }
 
+    @Column
+    private contractType contractType;
+
+    @Column
     private BigDecimal salaryAmount;
 
+    @Column
     private Integer hoursPerWeek;
 
+    @Column
     private LocalDate startDate;
 
+    @Column(nullable = true)
     private LocalDate endDate;
 
     public Contract() {
 
     }
 
-    public Contract(Employee employee, String department, String contractType, BigDecimal salaryAmount,
-            Integer hoursPerWeek, LocalDate startDate,
-            LocalDate endDate) {
+    public Contract(Employee employee, String department, contractType contractType, BigDecimal salaryAmount,
+            Integer hoursPerWeek, LocalDate startDate, LocalDate endDate) {
         this.employee = employee;
         this.department = department;
         this.contractType = contractType;
@@ -54,6 +64,11 @@ public class Contract {
         this.hoursPerWeek = hoursPerWeek;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    // virtual filed
+    public boolean isActive() {
+        return this.endDate == null; // or endDate has passed
     }
 
     public Integer getId() {
@@ -76,11 +91,11 @@ public class Contract {
         this.department = department;
     }
 
-    public String getContractType() {
+    public contractType getContractType() {
         return contractType;
     }
 
-    public void setContractType(String contractType) {
+    public void setContractType(contractType contractType) {
         this.contractType = contractType;
     }
 

@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.carrie.employee.contract.dtos.CreateContractDTO;
-import io.carrie.employee.contract.dtos.UpdateContractDTO;
 import jakarta.validation.Valid;
 
 @RestController
@@ -49,12 +47,6 @@ public class ContractController {
     public ResponseEntity<Void> deleteById(@PathVariable Integer id) {
         this.contractService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @PatchMapping("/{id}")
-    public ResponseEntity<Contract> updateById(@PathVariable Integer id, @Valid @RequestBody UpdateContractDTO dto) {
-        Contract editedContract = this.contractService.updateById(id, dto);
-        return new ResponseEntity<>(editedContract, HttpStatus.OK);
     }
 
 }

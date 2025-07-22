@@ -1,4 +1,5 @@
 .env
 application-env.properties
+application-secrets.properties
 assets/refs/
 logs/
