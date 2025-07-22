@@ -1,10 +1,10 @@
 import { useFormStatus } from "react-dom";
-import type { Employee } from "../../services/employees";
 import Button from "../Button/Button";
 import Input from "./ContractInput";
+import type { Contract } from "../../services/contracts";
 
 export interface ContractFormProps {
-  prefilled?: Employee | null;
+  prefilled?: Contract | null;
 }
 
 const ContractForm = ({ prefilled }: ContractFormProps) => {
@@ -19,20 +19,26 @@ const ContractForm = ({ prefilled }: ContractFormProps) => {
     // action={onSubmit}
     >
       <h2>Employee Details</h2>
-      <Input label="firstName" type="text" value={prefilled?.firstName}>
-        First Name
+      <Input label="employeeId" type="number" value={prefilled?.employee.id}>
+        Employee ID
       </Input>
-      <Input label="lastName" type="text" value={prefilled?.lastName}>
-        Last Name
+      <Input label="department" type="select" value={prefilled?.department}>
+        Department
       </Input>
-      <Input label="email" type="email" value={prefilled?.email}>
-        Email
+      <Input label="contractType" type="select" value={prefilled?.contractType}>
+        Contract Type
       </Input>
-      <Input label="phone" type="number" value={prefilled?.phone}>
-        Phone
+      <Input label="salaryAmount" type="number" value={prefilled?.salaryAmount}>
+        Salary Amount
       </Input>
-      <Input label="address" type="search" value={prefilled?.address}>
-        Address
+      <Input label="hoursPerWeek" type="number" value={prefilled?.hoursPerWeek}>
+        Hours per Week
+      </Input>
+      <Input label="startDate" type="date" value={prefilled?.startDate}>
+        Start Date
+      </Input>
+      <Input label="endDate" type="date" value={prefilled?.endDate}>
+        End Date
       </Input>
       <Button type="submit" disabled={pending}>
         {pending ? "Submitting..." : "Submit"}
