@@ -163,17 +163,103 @@ Use [Postman](https://www.postman.com/downloads/) or a browser (for GET requests
 
 - Included a contracts and departments table with a `one-to-many relationship` for `employees -> contracts` and `departments -> contracts`
 - This allows for flexible, quicker UX when updating of DB records via in FE client app with only minor updates eg. salary, contract dates etc.
+- Schema, with a one-to-many relationship with each employee (one employee can have many contracts)
+
+## Features
+
+### API Endpoints
+
+| ID  | Method   | Endpoint         | Input                           | Output Data | Success Response |
+| --- | -------- | ---------------- | ------------------------------- | ----------- | ---------------- |
+| 1   | `GET`    | `/employees`     | none                            | DB List     | `200 OK`         |
+| 2   | `GET`    | `/employees/:id` | employee id                     | DB List     | `200 OK`         |
+| 3   | `POST`   | `/employees`     | createEmployeeDTO               | DB Record   | `201 Created`    |
+| 4   | `DELETE` | `/employees/:id` | employee id                     | No Content  | `204 No Content` |
+| 5   | `PATCH`  | `/employees/:id` | employee id + updateEmployeeDTO | DB Record   | `200 OK`         |
+
+### Sample Employee List Response (GET `/employees`)
+
+Joining the employee with their current contract and department for display.
+
+JSON HTTP Response:
+
+```json
+[
+  {
+    "id": 1,
+    "firstName": "Timmy",
+    "lastName": "Turner",
+    "email": "timmehhh@example.com",
+    "currentContract": {
+      //virtual field
+      "contractType": "FULL_TIME",
+      "startDate": "2023-01-10",
+      "department": "ENGINEERING"
+    }
+  },
+  {
+    "id": 2,
+    "firstName": "Cosmo",
+    "lastName": "Cosma",
+    "email": "cosmo@example.com",
+    "currentContract": {
+      //virtual field
+      "contractType": "PART_TIME",
+      "startDate": "2022-04-12",
+      "department": "HUMAN_RESOURCES"
+    }
+  }
+]
+```
+
+[Employees](assets/diagrams/sequence/sequence-diagram.md)
+
+```mermaid
+
+---
+config:
+  theme: redux-dark-color
+---
+sequenceDiagram
+  actor User
+  participant ReactApp as React App
+  participant SpringAPI as Spring Boot API
+  participant MySQL as MySQL Database
+  Note over User: View all employees
+  User->>ReactApp: Opens Employee List
+  ReactApp->>SpringAPI: GET /employees
+  SpringAPI->>MySQL: SELECT * FROM employees
+  MySQL-->>SpringAPI: Rows (employee list)
+  SpringAPI-->>ReactApp: JSON response
+  ReactApp-->>User: Display list
+  Note over User: Add a new employee
+  User->>ReactApp: Fills out form
+  ReactApp->>SpringAPI: POST /employees (form data)
+  SpringAPI->>MySQL: INSERT INTO employees
+  MySQL-->>SpringAPI: OK
+  SpringAPI-->>ReactApp: New employee JSON
+  ReactApp-->>User: Confirmation
+  Note over User: Edit an employee
+  User->>ReactApp: Clicks Edit
+  ReactApp->>SpringAPI: PUT /employees/:id (updated data)
+  SpringAPI->>MySQL: UPDATE employees WHERE id=...
+  MySQL-->>SpringAPI: OK
+  SpringAPI-->>ReactApp: Updated JSON
+  ReactApp-->>User: Show updated data
+  Note over User: Delete an employee
+  User->>ReactApp: Clicks Delete
+  ReactApp->>SpringAPI: DELETE /employees/:id
+  SpringAPI->>MySQL: DELETE FROM employees WHERE id=...
+  MySQL-->>SpringAPI: OK
+  SpringAPI-->>ReactApp: 200 OK
+  ReactApp-->>User: Item removed
+
+
+```
 
 ## Database structure
 
-### Entity Relationship Diagram (ERD)
-
-[ERD Diagram (DBML)](assets/diagrams/erd/erd.md)
-![diagram of one-to-many class between employee and contracts tables in database](assets/diagrams/erd/erd.png)
-
-#### Summary
-
-| What                       | Relationship            | Why we did this                                                    |
+| What                       | Relationship            | Why                                                                |
 | -------------------------- | ----------------------- | ------------------------------------------------------------------ |
 | **Employees table**        | Has personal info only  | Department can change → so not stored here                         |
 | **Contracts table**        | Has job info per period | Stores department, salary, hours, type, dates for each role/period |
@@ -185,6 +271,9 @@ Use [Postman](https://www.postman.com/downloads/) or a browser (for GET requests
 - In `Contract`:`@ManyToOne`
 - In `Contract`:`@ManyToOne`
 - In `Department`:`@OneToMany(mappedBy = "department")` (optional) -->
+
+[ERD Diagram (DBML)](assets/diagrams/erd/erd.md)
+![diagram of one-to-many class between employee and contracts tables in database](assets/diagrams/erd/erd.png)
 
 ---
 
@@ -352,58 +441,6 @@ When updating personal details of existing contract.
 
 ---
 
-### Sample Employee List Response (GET `/employees`)
-
-Joining the employee with their current contract and department for display.
-
-JSON HTTP Response:
-
-```json
-[
-  {
-    "id": 1,
-    "firstName": "Timmy",
-    "lastName": "Turner",
-    "email": "timmehhh@example.com",
-    "currentContract": {
-      //virtual field
-      "contractType": "FULL_TIME",
-      "startDate": "2023-01-10",
-      "department": "ENGINEERING"
-    }
-  },
-  {
-    "id": 2,
-    "firstName": "Cosmo",
-    "lastName": "Cosma",
-    "email": "cosmo@example.com",
-    "currentContract": {
-      //virtual field
-      "contractType": "PART_TIME",
-      "startDate": "2022-04-12",
-      "department": "HUMAN_RESOURCES"
-    }
-  }
-]
-```
-
----
-
-### API Endpoints
-
-| ID  | Method   | Endpoint         | Input                           | Output Data | Success Response |
-| --- | -------- | ---------------- | ------------------------------- | ----------- | ---------------- |
-| 1   | `GET`    | `/employees`     | none                            | DB List     | `200 OK`         |
-| 2   | `GET`    | `/employees/:id` | employee id                     | DB List     | `200 OK`         |
-| 3   | `POST`   | `/employees`     | createEmployeeDTO               | DB Record   | `201 Created`    |
-| 4   | `DELETE` | `/employees/:id` | employee id                     | No Content  | `204 No Content` |
-| 5   | `PATCH`  | `/employees/:id` | employee id + updateEmployeeDTO | DB Record   | `200 OK`         |
-
-### Sequence Diagram
-
-[Sequence Diagram](assets/diagrams/sequence/sequence-diagram.md)
-![Sequence Diagram](assets/diagrams/sequence/sequence-diagram.png)
-
 ---
 
 ## Change logs
@@ -514,11 +551,9 @@ Contracts feature : (one-to-many relationship: employee can have multiple contra
 
 ---
 
-## Agile Board
+## Agile Board (Backend)
 
 ### In progress
-
-### Sprint
 
 Contract: (one-to-many relationship: employee can have multiple contracts)
 
@@ -531,9 +566,11 @@ Contract: (one-to-many relationship: employee can have multiple contracts)
 - implement any custom errors/utils
 - error handling
 
+### Sprint
+
 - prepare data handling on backend to make front-end just an IO (goal: reduce front-end complexity)
 
-### Backlog - Backend
+### Backlog
 
 - (bonus) Use Google API to validate and search address formats
 
