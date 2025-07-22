@@ -74,7 +74,7 @@ public class EmployeeEndToEndTest {
                     .when().get("/employees")
                     .then().statusCode(HttpStatus.OK.value())
                     .body("$", hasSize(2)) // should return 2 records in list
-                    .body(matchesJsonSchemaInClasspath("schemas/employee-list-schema.json"));
+                    .body(matchesJsonSchemaInClasspath("schemas/employees/employee-list-schema.json"));
         }
 
         @Test
@@ -110,7 +110,7 @@ public class EmployeeEndToEndTest {
                     .body("firstName", equalTo("Wanda"))
                     .body("lastName", equalTo("Cosmo"))
                     .body("email", equalTo("wanda.cosmo@example.com"))
-                    .body(matchesJsonSchemaInClasspath("schemas/employee-schema.json"));
+                    .body(matchesJsonSchemaInClasspath("schemas/employees/employee-schema.json"));
         }
 
         @Test
