@@ -25,7 +25,7 @@ describe("CreateEmployeeForm", () => {
     await user.type(screen.getByLabelText(/email/i), employee1.email);
     // await user.type(
     //   screen.getByLabelText(/phone number/i),
-    //   employee1.phoneNumber
+    //   employee1.phone
     // );
     // await user.type(screen.getByLabelText(/address/i), employee1.address);
     // await user.type(
