@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import io.carrie.employee.employee.Employee;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,10 +26,20 @@ public class Contract {
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
-    @Column
-    private String department; // TODO - create Department entity
+    public enum Department {
+        // saved as index in DB
+        ENGINEERING,
+        SALES,
+        DESIGN,
+        MARKETING,
+        WHOLESALE
+    }
 
-    public enum contractType {
+    @Column
+    @Enumerated
+    private Department department; // TODO - create Department entity
+
+    public enum ContractType {
         // saved as index in DB
         FULL_TIME,
         PART_TIME,
@@ -37,7 +48,8 @@ public class Contract {
     }
 
     @Column
-    private contractType contractType;
+    @Enumerated
+    private ContractType contractType;
 
     @Column
     private BigDecimal salaryAmount;
@@ -48,14 +60,14 @@ public class Contract {
     @Column
     private LocalDate startDate;
 
-    @Column(nullable = true)
+    @Column
     private LocalDate endDate;
 
     public Contract() {
 
     }
 
-    public Contract(Employee employee, String department, contractType contractType, BigDecimal salaryAmount,
+    public Contract(Employee employee, Department department, ContractType contractType, BigDecimal salaryAmount,
             Integer hoursPerWeek, LocalDate startDate, LocalDate endDate) {
         this.employee = employee;
         this.department = department;
@@ -66,9 +78,9 @@ public class Contract {
         this.endDate = endDate;
     }
 
-    // virtual filed
+    // virtual field indicating if the contract is currently active
     public boolean isActive() {
-        return this.endDate == null; // or endDate has passed
+        return this.endDate == null || this.endDate.isAfter(LocalDate.now());
     }
 
     public Integer getId() {
@@ -83,19 +95,19 @@ public class Contract {
         this.employee = employee;
     }
 
-    public String getDepartment() {
+    public Department getDepartment() {
         return department;
     }
 
-    public void setDepartment(String department) {
+    public void setDepartment(Department department) {
         this.department = department;
     }
 
-    public contractType getContractType() {
+    public ContractType getContractType() {
         return contractType;
     }
 
-    public void setContractType(contractType contractType) {
+    public void setContractType(ContractType contractType) {
         this.contractType = contractType;
     }
 
