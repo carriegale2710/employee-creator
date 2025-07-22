@@ -8,14 +8,14 @@ export interface Employee {
   email: string;
   phoneNumber?: string;
   address?: string;
-  dateOfBirth?: string; // ISO date string
-  taxFileNumber: string;
 }
 
 export interface EmployeeDTO {
   firstName: string;
   lastName: string;
   email: string;
+  phoneNumber: string;
+  address?: string;
 }
 
 export const getAllEmployees = async (): Promise<Employee[]> => {
