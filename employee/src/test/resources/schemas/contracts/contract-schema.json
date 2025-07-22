@@ -3,7 +3,7 @@
   "$id": "contract.schema.json",
   "type": "object",
   "properties": {
-    "employee": { "$ref": "../employees/employee.schema.json" },
+    "employee": { "$ref": "../employees/employee-schema.json" },
     "department": { "type": "string" },
     "contractType": { "type": "string" },
     "salaryAmount": { "type": "number" },
