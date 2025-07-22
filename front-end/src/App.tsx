@@ -6,6 +6,7 @@ import CreatePage from "./pages/CreatePage";
 import EditPage from "./pages/EditPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import "./App.scss";
+import CreateContract from "./pages/CreateContract";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/employees" element={<ListPage />} />
         <Route path="/employees/:id/edit" element={<EditPage />} />
         <Route path="/employees/new" element={<CreatePage />} />
+        <Route path="/employees/new/contract" element={<CreateContract />} />
         <Route path="/*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
