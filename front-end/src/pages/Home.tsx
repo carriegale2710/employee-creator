@@ -6,7 +6,9 @@ const Home = () => {
     <>
       <h1>Home</h1>
       <NavLink to="/employees">View Employees</NavLink>
-      <Button>Register an Employee</Button>
+      <NavLink to="/employees/new">
+        <Button>Register an Employee</Button>
+      </NavLink>
     </>
   );
 };
