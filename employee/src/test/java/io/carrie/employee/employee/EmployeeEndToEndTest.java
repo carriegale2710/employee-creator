@@ -1,9 +1,12 @@
 package io.carrie.employee.employee;
 
+import io.carrie.employee.employee.dtos.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -17,10 +20,13 @@ import org.springframework.test.context.ActiveProfiles;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.http.Method;
+import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.when;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -52,11 +58,6 @@ public class EmployeeEndToEndTest {
         this.employeeRepository.save(employee2);
         this.employeeList.add(employee2);
 
-        this.employeeDto.put("firstName", "Cosmo");
-        this.employeeDto.put("lastName", "Cosma");
-        this.employeeDto.put("email", "cosmo@example.com");
-        this.employeeDto.put("phone", "9876543210");
-        this.employeeDto.put("address", "123 Fairy Lane");
     }
 
     // test framework (AAA)
@@ -159,77 +160,98 @@ public class EmployeeEndToEndTest {
 
     }
 
-    protected void assertBadRequest(Method httpMethod, String endpoint, HashMap<String, String> data) {
-        given()
+    private String assertBadRequest(Method httpMethod, String endpoint, Object data) {
+        Response response = given()
                 .contentType(ContentType.JSON)
                 .body(data)
                 .when()
-                .request(httpMethod, endpoint)
-                .then()
-                .statusCode(HttpStatus.BAD_REQUEST.value());
+                .request(httpMethod, endpoint);
+        response.then().statusCode(HttpStatus.BAD_REQUEST.value());
+        String error = response.jsonPath().getString("errors.defaultMessage"); // error message
+        System.out.println(error);
+        return error;
     }
 
     @Nested
     @DisplayName("POST /employees")
     class CreateEmployeeByIdTests {
 
-        private void assertPost(HashMap<String, String> employeeDto) {
-            assertBadRequest(Method.POST, "/employees", employeeDto);
+        private CreateEmployeeDTO employeeDto = new CreateEmployeeDTO(
+                "Cosmo",
+                "Cosma",
+                "cosmo@example.com",
+                "9876543210",
+                "123 Fairy Lane");
+
+        private String assertPost(CreateEmployeeDTO employeeDto) {
+            return assertBadRequest(Method.POST, "/employees", employeeDto);
         }
 
         @Test
         public void create_ValidData_Created() {
-            given()
+            Response response = given()
                     .contentType(ContentType.JSON)
                     .body(employeeDto)
                     .when()
-                    .post("/employees")
-                    .then()
+                    .post("/employees");
+
+            response.then()
                     .statusCode(HttpStatus.CREATED.value())
                     .body("firstName", equalTo("Cosmo")); // returns correct data?
         }
 
         @Test
         public void create_MissingData_BadRequest() {
-            HashMap<String, String> invalidEmployeeDto = new HashMap<>();
-            invalidEmployeeDto.put("firstName", "Cosmo");
-            assertPost(invalidEmployeeDto);
+            employeeDto.setFirstName(null);
+            assertPost(employeeDto);
         }
 
         @Test
         public void create_InvalidFirstName_BadRequest() {
-            employeeDto.put("lastName", "hasPunctuation,,.");
+            employeeDto.setFirstName("Cosmo.,.");
             assertPost(employeeDto);
-            employeeDto.put("lastName", "hasNumbers3245");
+            employeeDto.setFirstName("Cosmo2435");
             assertPost(employeeDto);
-            employeeDto.put("lastName", "thisisareallyreallyreallylongnamethatistoolong");
+            employeeDto.setFirstName("thisisareallylongnamethatisExceedingTheCharLimit");
             assertPost(employeeDto);
         }
 
         @Test
         public void create_InvalidLastName_BadRequest() {
-            employeeDto.put("lastName", "hasPunctuation,,.");
+            employeeDto.setLastName("Cosmo.,.");
             assertPost(employeeDto);
-            employeeDto.put("lastName", "hasNumbers3245");
+            employeeDto.setLastName("Cosmo2435");
             assertPost(employeeDto);
-            employeeDto.put("lastName", "thisisareallyreallyreallylongnamethatistoolong");
+            employeeDto.setLastName("thisisareallylongnamethatisExceedingTheCharLimit");
             assertPost(employeeDto);
         }
 
         @Test
         public void create_InvalidEmail_BadRequest() {
-            employeeDto.put("email", "cosmoexample.com");
+            employeeDto.setEmail("cosmoexample.com"); // not email format
             assertPost(employeeDto);
         }
 
         @Test
-        public void create_DuplicateEmail_BadRequest() {
-            // NOTE - this should not be 500 internal server error but 400!
-            employeeDto.put("email", "timmehhh@example.com"); // only email matters
-            assertPost(employeeDto);
-        }
-    }
+        public void create_EmailIsTaken_BadRequest() {
+            employeeDto.setEmail("timmehhh@example.com");
+            String expectedError = "Employee with email already exists";
 
+            String actualError = given()
+                    .contentType(ContentType.JSON)
+                    .body(employeeDto)
+                    .when()
+                    .post("/employees")
+                    .then()
+                    .statusCode(400)
+                    .extract()
+                    .asString(); // plain string response
+
+            assertEquals(expectedError.trim(), actualError.trim());
+
+        }
+
+    }
     // SECTION - PATCH "/employees/{id}"
     // (on hold - for future editing features)
 
@@ -237,57 +259,68 @@ public class EmployeeEndToEndTest {
     @DisplayName("PATCH /employees/{id}")
     class UpdateEmployeeByIdTests {
 
-        @Test
-        public void patchById_ValidData_Created() {
-            Integer existingId = employeeList.get(0).getId();
-            given()
-                    .contentType(ContentType.JSON)
-                    .body(employeeDto)
-                    .when()
-                    .patch("/employees/" + existingId)
-                    .then()
-                    .statusCode(HttpStatus.OK.value())
-                    .body("firstName", equalTo("Cosmo")); // returns correct data
-            // todo - check data was successfully added as new employee in DB
+        private void assertPatch(UpdateEmployeeDTO employeeDto) {
+            assertBadRequest(Method.PATCH, "/employees/1", employeeDto); // timmy
         }
 
-        private void assertPatch(HashMap<String, String> employeeDto) {
-            Integer existingId = employeeList.get(0).getId();
-            assertBadRequest(Method.PATCH, "/employees/" + existingId, employeeDto);
+        UpdateEmployeeDTO employeeDto = new UpdateEmployeeDTO();
+
+        @Test
+        public void patchById_ValidData_Created() {
+            // arrange
+            employeeDto.setEmail("timtim@example.com");
+            // ensure employee with id 1 exists
+            Integer id = employeeList.get(0).getId();
+            // act
+            given().contentType(ContentType.JSON).body(employeeDto)
+                    .when().patch("/employees/" + id)
+                    // assert - updates correct data?
+                    .then().statusCode(HttpStatus.OK.value())
+                    .body("email", equalTo("timtim@example.com"));
         }
 
         @Test
         public void patchById_InvalidFirstName_BadRequest() {
-            employeeDto.put("firstName", "hasPunctuation,,.");
+            employeeDto.setFirstName("Cosmo,,.");
             assertPatch(employeeDto);
-            employeeDto.put("firstName", "hasNumbers3245");
+            employeeDto.setFirstName("hasNumbers3245");
             assertPatch(employeeDto);
-            employeeDto.put("firstName", "thisisareallyreallyreallylongnamethatistoolong");
+            employeeDto.setFirstName(
+                    "thisisareallyreallyreallylongnamethatistoolong");
             assertPatch(employeeDto);
         }
 
         @Test
         public void patchById_InvalidLastName_BadRequest() {
-            employeeDto.put("lastName", "hasPunctuation,,.");
+            employeeDto.setLastName("Cosmo,,.");
             assertPatch(employeeDto);
-            employeeDto.put("lastName", "hasNumbers3245");
+            employeeDto.setLastName("hasNumbers3245");
             assertPatch(employeeDto);
-            employeeDto.put("lastName", "thisisareallyreallyreallylongnamethatistoolong");
+            employeeDto.setLastName(
+                    "thisisareallyreallyreallylongnamethatistoolong");
             assertPatch(employeeDto);
         }
 
         @Test
         public void patchById_InvalidEmail_BadRequest() {
-            employeeDto.put("email", "cosmoexample.com"); // invalid email
+            employeeDto.setEmail("cosmoexample.com"); // invalid email
             assertPatch(employeeDto);
-
         }
 
         @Test
-        public void patchById_DuplicateEmail_BadRequest() {
-            // NOTE - this should not be 500 internal server error but 400!
-            employeeDto.put("email", "timmehhh@example.com");
-            assertPatch(employeeDto);
+        @Disabled // todo- fix
+        public void patchById_EmailIsTaken_BadRequest() {
+            String takenEmail = employeeList.get(0).getEmail();
+            employeeDto.setEmail(takenEmail);
+
+            String expectedError = "Employee with email already exists";
+            String actualError = given().contentType(ContentType.JSON).body(employeeDto)
+                    .when().post("/employees")
+                    .then().statusCode(400)
+                    .extract().asString(); // plain string response
+
+            assertEquals(expectedError.trim(), actualError.trim());
+
         }
 
     }

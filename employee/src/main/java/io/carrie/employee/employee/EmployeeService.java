@@ -14,10 +14,12 @@ public class EmployeeService {
 
     private EmployeeRepository employeeRepository;
     private ModelMapper modelMapper;
+    private ModelMapper updateModelMapper;
 
-    EmployeeService(EmployeeRepository employeeRepository, ModelMapper modelMapper) {
+    EmployeeService(EmployeeRepository employeeRepository, ModelMapper modelMapper, ModelMapper updateModelMapper) {
         this.employeeRepository = employeeRepository;
         this.modelMapper = modelMapper;
+        this.updateModelMapper = updateModelMapper;
     }
 
     public List<Employee> findAll() {
@@ -38,8 +40,8 @@ public class EmployeeService {
 
     public Employee updateById(Integer id, UpdateEmployeeDTO dto) {
         Employee found = findById(id);
+        this.updateModelMapper.map(dto, found);
         checkEmail(dto.getEmail(), employeeRepository);
-        this.modelMapper.map(dto, found);
         return this.employeeRepository.save(found);
     }
 
