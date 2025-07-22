@@ -3,7 +3,6 @@ package io.carrie.employee.contract;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import io.carrie.employee.department.Department;
 import io.carrie.employee.employee.Employee;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -24,15 +23,13 @@ public class Contract {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    @ManyToOne(fetch = FetchType.LAZY) // avoids loading unless needed
-    @JoinColumn(name = "department_id", nullable = false) // Sets required foreign key columns
-    private Department department;
+    private String department;
 
-    @Enumerated(EnumType.STRING)
+    // @Enumerated(EnumType.STRING)
     private String contractType;
 
     private BigDecimal salaryAmount;
@@ -47,7 +44,7 @@ public class Contract {
 
     }
 
-    public Contract(Employee employee, Department department, String contractType, BigDecimal salaryAmount,
+    public Contract(Employee employee, String department, String contractType, BigDecimal salaryAmount,
             Integer hoursPerWeek, LocalDate startDate,
             LocalDate endDate) {
         this.employee = employee;
@@ -71,11 +68,11 @@ public class Contract {
         this.employee = employee;
     }
 
-    public Department getDepartment() {
+    public String getDepartment() {
         return department;
     }
 
-    public void setDepartment(Department department) {
+    public void setDepartment(String department) {
         this.department = department;
     }
 

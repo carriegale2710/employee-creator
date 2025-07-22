@@ -1,15 +1,10 @@
 package io.carrie.employee.contract.dtos;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
@@ -20,8 +15,7 @@ public class CreateContractDTO {
     @NotNull(message = "Employee ID is required")
     private Long employeeId;
 
-    @NotNull(message = "Department ID is required")
-    private Long departmentId;
+    private String department;
 
     @NotBlank(message = "Contract type is required")
     private String contractType;
@@ -46,6 +40,34 @@ public class CreateContractDTO {
 
     public CreateContractDTO() {
 
+    }
+
+    public Long getEmployeeId() {
+        return employeeId;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public String getContractType() {
+        return contractType;
+    }
+
+    public BigDecimal getSalaryAmount() {
+        return salaryAmount;
+    }
+
+    public Integer getHoursPerWeek() {
+        return hoursPerWeek;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
     }
 
 }
