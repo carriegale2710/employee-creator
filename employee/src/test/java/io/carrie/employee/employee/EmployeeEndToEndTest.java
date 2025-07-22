@@ -36,7 +36,7 @@ public class EmployeeEndToEndTest {
     private HashMap<String, String> employeeDto = new HashMap<>();
 
     @BeforeEach // set up data and save in db
-    public void setUp() {
+    public void setUpEmployees() {
         RestAssured.port = this.port;
 
         // clear the data in mock DB before each test
