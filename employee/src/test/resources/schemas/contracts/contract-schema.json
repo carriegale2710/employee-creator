@@ -1,16 +1,22 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "contract.schema.json",
   "type": "object",
   "properties": {
-    "id": { "type": "integer" },
-    "employeeId": { "type": "integer" },
-    "departmentId": { "type": "integer" },
+    "employee": { "$ref": "../employees/employee.schema.json" },
+    "department": { "type": "string" },
     "contractType": { "type": "string" },
     "salaryAmount": { "type": "number" },
-    "hoursPerWeek": { "type": "integer" },
-    "startDate": { "type": "string" },
-    "endDate": { "type": "string" }
+    "hoursPerWeek": { "type": "integer", "maximum": 50 },
+    "startDate": { "type": "string", "format": "date" },
+    "endDate": { "type": ["string", "null"], "format": "date" }
   },
-  "required": ["id", "employeeId", "departmentId", "contractType", "startDate"],
-  "additionalProperties": false
+  "required": [
+    "id",
+    "employee",
+    "contractType",
+    "salaryAmount",
+    "hoursPerWeek",
+    "startDate"
+  ]
 }
