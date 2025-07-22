@@ -1,11 +1,12 @@
-import Form from "../components/Form/Form";
-const CreatePage = () => {
+import ContractForm from "../components/ContractForm/ContractForm";
+
+const CreateContract = () => {
   return (
     <>
       <h1>New Contract</h1>
-      <Form />
+      <ContractForm />
     </>
   );
 };
 
-export default CreatePage;
+export default CreateContract;
