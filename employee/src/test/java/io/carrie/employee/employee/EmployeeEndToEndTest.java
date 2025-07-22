@@ -40,7 +40,7 @@ public class EmployeeEndToEndTest {
     private ArrayList<Employee> employeeList = new ArrayList<>();
 
     @BeforeEach // set up data and save in db
-    public void setUp() {
+    public void setUpEmployees() {
         RestAssured.port = this.port;
 
         // clear the data in mock DB before each test

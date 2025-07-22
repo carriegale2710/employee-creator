@@ -1,5 +1,7 @@
 package io.carrie.employee.contract;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -14,6 +16,11 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 
+import io.carrie.employee.contract.Contract.ContractType;
+import io.carrie.employee.contract.Contract.Department;
+import io.carrie.employee.contract.dtos.CreateContractDTO;
+import io.carrie.employee.employee.Employee;
+import io.carrie.employee.employee.EmployeeRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.http.Method;
@@ -21,6 +28,8 @@ import io.restassured.http.Method;
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.*;
+
+import io.carrie.employee.employee.EmployeeEndToEndTest;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -31,9 +40,15 @@ public class ContractEndToEndTest {
     private int port;
 
     @Autowired
+    private EmployeeRepository employeeRepository;
+    private ArrayList<Employee> employeeList = new ArrayList<>();
     private ContractRepository contractRepository;
     private ArrayList<Contract> contractList = new ArrayList<>();
     private HashMap<String, String> contractDto = new HashMap<>();
+
+    @BeforeEach // set up data and save in db
+    // create some employees for testing:
+    setUpEmployees();
 
     @BeforeEach // set up data and save in db
     public void setUp() {
@@ -44,17 +59,20 @@ public class ContractEndToEndTest {
         this.contractList.clear();
 
         // create some contracts for testing:
-        Contract contract1 = new Contract();
+        BigDecimal salary1 = new BigDecimal("65000.00");
+        LocalDate startDate1 = LocalDate.of(2007, 5, 15);
+        LocalDate endDate1 = LocalDate.of(2013, 5, 15);
+
+        Contract contract1 = new Contract(employee1, Department.MARKETING, ContractType.PART_TIME,
+                salary1, 20, startDate1, endDate1);
         this.contractRepository.save(contract1);
         this.contractList.add(contract1);
 
-        Contract contract2 = new Contract();
+        Contract contract2 = new Contract(employee2, Department.SALES, ContractType.FULL_TIME, salary1,
+                38, startDate1, endDate1);
         this.contractRepository.save(contract2);
         this.contractList.add(contract2);
 
-        this.contractDto.put("firstName", "Cosmo");
-        this.contractDto.put("lastName", "Cosma");
-        this.contractDto.put("email", "cosmo@example.com");
     }
 
     // test framework (AAA)
@@ -157,7 +175,8 @@ public class ContractEndToEndTest {
 
     }
 
-    protected void assertBadRequest(Method httpMethod, String endpoint, HashMap<String, String> data) {
+    protected void assertBadRequest(Method httpMethod, String endpoint,
+            HashMap<String, String> data) {
         given()
                 .contentType(ContentType.JSON)
                 .body(data)
@@ -177,116 +196,55 @@ public class ContractEndToEndTest {
 
         @Test
         public void create_ValidData_Created() {
+
+            CreateContractDTO validDto = new CreateContractDTO(
+                    1,
+                    "SALES",
+                    "FULL_TIME",
+                    75000.50,
+                    38,
+                    "2025-01-01",
+                    "2026-01-01");
+
             given()
                     .contentType(ContentType.JSON)
-                    .body(contractDto)
+                    .body(validDto)
                     .when()
                     .post("/contracts")
                     .then()
                     .statusCode(HttpStatus.CREATED.value())
-                    .body("firstName", equalTo("Cosmo")); // returns correct data?
+                    .body("department", equalTo("SALES")) // returns correct data?
+                    .body("contractType", equalTo("FULL_TIME"));
         }
 
         @Test
         public void create_MissingData_BadRequest() {
             HashMap<String, String> invalidContractDto = new HashMap<>();
-            invalidContractDto.put("firstName", "Cosmo");
+            invalidContractDto.put("department", "SALESSSSSS");
             assertPost(invalidContractDto);
         }
 
         @Test
-        public void create_InvalidFirstName_BadRequest() {
-            contractDto.put("lastName", "hasPunctuation,,.");
+        public void create_InvalidPhone_BadRequest() {
+            contractDto.put("phone", "not-a-phone-number");
             assertPost(contractDto);
-            contractDto.put("lastName", "hasNumbers3245");
+            contractDto.put("phone", "12345678901234567890"); // too long
             assertPost(contractDto);
-            contractDto.put("lastName", "thisisareallyreallyreallylongnamethatistoolong");
-            assertPost(contractDto);
-        }
-
-        @Test
-        public void create_InvalidLastName_BadRequest() {
-            contractDto.put("lastName", "hasPunctuation,,.");
-            assertPost(contractDto);
-            contractDto.put("lastName", "hasNumbers3245");
-            assertPost(contractDto);
-            contractDto.put("lastName", "thisisareallyreallyreallylongnamethatistoolong");
+            contractDto.put("phone", "1234567"); // too short
             assertPost(contractDto);
         }
 
         @Test
-        public void create_InvalidEmail_BadRequest() {
-            contractDto.put("email", "cosmoexample.com");
+        public void create_InvalidDepartment_BadRequest() {
+            contractDto.put("department", "invalid-department");
             assertPost(contractDto);
         }
 
         @Test
-        public void create_DuplicateEmail_BadRequest() {
-            // NOTE - this should not be 500 internal server error but 400!
-            contractDto.put("email", "timmehhh@example.com"); // only email matters
+        public void create_InvalidAddress_BadRequest() {
+            contractDto.put("address", "a");
             assertPost(contractDto);
         }
     }
 
-    // SECTION - PATCH "/contracts/{id}"
-    // (on hold - for future editing features)
-
-    @Nested
-    @DisplayName("PATCH /contracts/{id}")
-    class UpdateContractByIdTests {
-
-        @Test
-        public void patchById_ValidData_Created() {
-            Integer existingId = contractList.get(0).getId();
-            given()
-                    .contentType(ContentType.JSON)
-                    .body(contractDto)
-                    .when()
-                    .patch("/contracts/" + existingId)
-                    .then()
-                    .statusCode(HttpStatus.OK.value())
-                    .body("firstName", equalTo("Cosmo")); // returns correct data
-            // todo - check data was successfully added as new contract in DB
-        }
-
-        private void assertPatch(HashMap<String, String> contractDto) {
-            Integer existingId = contractList.get(0).getId();
-            assertBadRequest(Method.PATCH, "/contracts/" + existingId, contractDto);
-        }
-
-        @Test
-        public void patchById_InvalidFirstName_BadRequest() {
-            contractDto.put("lastName", "hasPunctuation,,.");
-            assertPatch(contractDto);
-            contractDto.put("lastName", "hasNumbers3245");
-            assertPatch(contractDto);
-            contractDto.put("lastName", "thisisareallyreallyreallylongnamethatistoolong");
-            assertPatch(contractDto);
-        }
-
-        @Test
-        public void patchById_InvalidLastName_BadRequest() {
-            contractDto.put("lastName", "hasPunctuation,,.");
-            assertPatch(contractDto);
-            contractDto.put("lastName", "hasNumbers3245");
-            assertPatch(contractDto);
-            contractDto.put("lastName", "thisisareallyreallyreallylongnamethatistoolong");
-            assertPatch(contractDto);
-        }
-
-        @Test
-        public void patchById_InvalidEmail_BadRequest() {
-            contractDto.put("email", "cosmoexample.com"); // invalid email
-            assertPatch(contractDto);
-
-        }
-
-        @Test
-        public void patchById_DuplicateEmail_BadRequest() {
-            // NOTE - this should not be 500 internal server error but 400!
-            contractDto.put("email", "timmehhh@example.com");
-            assertPatch(contractDto);
-        }
-
-    }
 }
