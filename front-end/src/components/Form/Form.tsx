@@ -28,17 +28,11 @@ const Form = ({ prefilled }: FormProps) => {
       <Input label="email" type="email" value={prefilled?.email}>
         Email
       </Input>
-      <Input label="address" type="search" value={prefilled?.address}>
-        Address
-      </Input>
-      <Input label="phone" type="number" value={prefilled?.phoneNumber}>
+      <Input label="phone" type="number" value={prefilled?.phone}>
         Phone
       </Input>
-      <Input label="dob" type="date" value={prefilled?.dateOfBirth}>
-        Date of birth
-      </Input>
-      <Input label="tfn" type="number" value={prefilled?.taxFileNumber}>
-        Tax File Number
+      <Input label="address" type="search" value={prefilled?.address}>
+        Address
       </Input>
       <Button type="submit" disabled={pending}>
         {pending ? "Submitting..." : "Submit"}

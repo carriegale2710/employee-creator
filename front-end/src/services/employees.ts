@@ -6,7 +6,7 @@ export interface Employee {
   firstName: string;
   lastName: string;
   email: string;
-  phoneNumber?: string;
+  phone?: string;
   address?: string;
 }
 
@@ -14,7 +14,7 @@ export interface EmployeeDTO {
   firstName: string;
   lastName: string;
   email: string;
-  phoneNumber: string;
+  phone: string;
   address?: string;
 }
 

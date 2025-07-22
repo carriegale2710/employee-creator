@@ -1,4 +1,4 @@
-import type { Contract, ContractType, Department } from "./contracts";
+import type { Contract } from "./contracts";
 import { employee1, employee2 } from "./mockEmployees";
 
 export const contract1: Contract = {

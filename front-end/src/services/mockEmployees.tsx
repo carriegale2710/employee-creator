@@ -5,7 +5,7 @@ export const employee1: Employee = {
   firstName: "Timmy",
   lastName: "Turner",
   email: "timmehhh@example.com",
-  phoneNumber: "0400000000",
+  phone: "0400000000",
   address: "123 Fairy Lane",
 };
 
@@ -14,7 +14,7 @@ export const employee2: Employee = {
   firstName: "Cosmo",
   lastName: "Cosma",
   email: "cosmo@example.com",
-  phoneNumber: "0400043000",
+  phone: "0400043000",
   address: "123 Fairy Lane",
 };
 
