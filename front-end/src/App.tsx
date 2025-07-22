@@ -15,9 +15,13 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/employees" element={<ListPage />} />
-        <Route path="/employees/:id/edit" element={<EditPage />} />
         <Route path="/employees/new" element={<CreatePage />} />
+        <Route path="/employees/:id/edit" element={<EditPage />} />
         <Route path="/employees/new/contract" element={<CreateContract />} />
+        <Route
+          path="/employees/:id/new/contract"
+          element={<CreateContract />}
+        />
         <Route path="/*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

@@ -1,7 +1,7 @@
 import { useFormStatus } from "react-dom";
 import type { Employee } from "../../services/employees";
 import Button from "../Button/Button";
-import Input from "./Input";
+import Input from "../Input/Input";
 
 export interface FormProps {
   prefilled?: Employee | null;
