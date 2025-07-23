@@ -1,7 +1,8 @@
 import type { Employee } from "./employees";
 
-const API_URL = "http://localhost:8080";
-console.log("API:", API_URL);
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
+console.log("API URL:", API_URL);
+console.log("Environment mode:", import.meta.env.MODE);
 
 export type Department =
   | "ENGINEERING"
