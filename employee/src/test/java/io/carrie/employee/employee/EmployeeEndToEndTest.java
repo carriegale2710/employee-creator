@@ -137,7 +137,7 @@ public class EmployeeEndToEndTest {
         public void deleteEmployeeById_EmployeeInDb_SuccessNoContent() {
             Integer existingId = employeeList.get(0).getId();
             given()
-                    .when().delete("employees/" + existingId)
+                    .when().delete("/employees/" + existingId)
                     .then().statusCode(HttpStatus.NO_CONTENT.value());
             // todo - id must be double-checked with data
             // todo - check record was actually deleted from repo
@@ -284,10 +284,18 @@ public class EmployeeEndToEndTest {
         }
 
         @Test
-        public void patchById_DuplicateEmail_BadRequest() {
-            // NOTE - this should not be 500 internal server error but 400!
-            employeeDto.put("email", "timmehhh@example.com");
-            assertPatch(employeeDto);
+        public void patchById_EmailIsTaken_BadRequest() {
+            String takenEmail = employeeList.get(0).getEmail();
+            employeeDto.setEmail(takenEmail);
+
+            String expectedError = "Employee with email already exists";
+            String actualError = given().contentType(ContentType.JSON).body(employeeDto)
+                    .when().post("/employees")
+                    .then().statusCode(400)
+                    .extract().asString(); // plain string response
+
+            assertEquals(expectedError.trim(), actualError.trim());
+
         }
 
     }

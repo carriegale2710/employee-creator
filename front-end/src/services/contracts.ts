@@ -1,6 +1,6 @@
 import type { Employee } from "./employees";
 
-const API_URL = "http://localhost:8080/contracts";
+const API_URL = "http://localhost:8080";
 console.log("API:", API_URL);
 
 export type Department =
@@ -15,15 +15,15 @@ export type ContractType = "FULL_TIME" | "PART_TIME" | "CASUAL" | "CONTRACT";
 export interface Contract {
   id: number;
   employee: Employee;
-  department?: Department;
+  department: Department;
   contractType: ContractType;
-  salaryAmount?: number;
-  hoursPerWeek?: number;
+  salaryAmount: number;
+  hoursPerWeek: number;
   startDate: string; // ISO date string
   endDate?: string; // ISO date string or null
 }
 
-export interface ContractDTO {
+export interface CreateContractDTO {
   employeeId: number;
   department?: string;
   contractType: string;
@@ -48,9 +48,12 @@ export const getContractById = async (id: string): Promise<Contract> => {
   return employee;
 };
 
-export const createContract = async (formData: ContractDTO) => {
+export const createContract = async (formData: CreateContractDTO) => {
   const response = await fetch(`${API_URL}/contracts`, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(formData),
   });
   if (!response.ok) {

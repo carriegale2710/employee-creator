@@ -1,4 +1,4 @@
-import Form from "../components/Form/Form";
+import Form from "../containers/Form/Form";
 import { employee1 } from "../services/mockEmployees";
 
 //needs to preload data from selected employee from Card

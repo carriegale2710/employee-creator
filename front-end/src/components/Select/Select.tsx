@@ -1,42 +1,38 @@
-export interface SelectInputProps {
+import React from "react";
+
+export interface SelectInputProps
+  extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label: string;
   title?: string;
   prefilledValue?: string;
-  type: string;
-  options?: string[];
+  options: string[];
   children: React.ReactNode;
 }
 
-const Select = ({
-  label,
-  title,
-  prefilledValue,
-  type,
-  options,
-  children,
-}: SelectInputProps) => {
-  return (
-    <div>
+const Select = React.forwardRef<HTMLSelectElement, SelectInputProps>(
+  ({ label, title, prefilledValue = "", options, children, ...rest }, ref) => (
+    <>
       <label htmlFor={label}>{children}</label>
       <br />
       <select
-        typeof={type}
         name={label}
         id={label}
-        value={prefilledValue ? prefilledValue : ""}
+        defaultValue={prefilledValue}
+        ref={ref}
+        {...rest}
       >
-        <option value="" disabled selected>
-          Select {title || "Option"}
+        <option value="" disabled>
+          Select {title || ""}
         </option>
-        {options?.map((option) => (
+        {options.map((option) => (
           <option key={option} value={option}>
             {option}
           </option>
         ))}
       </select>
       <br />
-    </div>
-  );
-};
+    </>
+  )
+);
 
 export default Select;
