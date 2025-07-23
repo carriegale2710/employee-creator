@@ -24,7 +24,7 @@ export interface Contract {
   endDate?: string; // ISO date string or null
 }
 
-export interface CreateContractDTO {
+export interface ContractDTO {
   employeeId: number;
   department?: string;
   contractType: string;
@@ -33,12 +33,6 @@ export interface CreateContractDTO {
   startDate: string; // ISO date string
   endDate?: string; // ISO date string or null
 }
-
-export const getAllContracts = async (): Promise<Contract[]> => {
-  const response = await fetch(`${API_URL}/contracts`);
-  const contracts = await response.json();
-  return contracts;
-};
 
 export const getContractById = async (id: string): Promise<Contract> => {
   const response = await fetch(`${API_URL}/contracts/${id}`);
@@ -49,7 +43,7 @@ export const getContractById = async (id: string): Promise<Contract> => {
   return employee;
 };
 
-export const createContract = async (formData: CreateContractDTO) => {
+export const createContract = async (formData: ContractDTO) => {
   const response = await fetch(`${API_URL}/contracts`, {
     method: "POST",
     headers: {

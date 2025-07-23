@@ -1,4 +1,4 @@
-import Form from "../containers/Form/Form";
+import Form from "../containers/EmployeeForm/EmployeeForm";
 const CreateEmployee = () => {
   return (
     <>

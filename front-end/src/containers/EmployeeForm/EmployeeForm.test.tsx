@@ -3,10 +3,10 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import Form from "./Form"; // adjust path as needed
+import Form from "./EmployeeForm"; // adjust path as needed
 import { employee1 } from "../../services/mockEmployees";
 
-describe("CreateEmployeeForm", () => {
+describe("EmployeeForm", () => {
   it("renders required input fields", () => {
     render(<Form />);
     expect(screen.getByLabelText(/first name/i)).toBeInTheDocument();
