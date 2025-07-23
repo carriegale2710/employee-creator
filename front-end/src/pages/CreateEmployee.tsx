@@ -1,5 +1,5 @@
 import Form from "../containers/Form/Form";
-const CreatePage = () => {
+const CreateEmployee = () => {
   return (
     <>
       <h1>Register Employee</h1>
@@ -8,4 +8,4 @@ const CreatePage = () => {
   );
 };
 
-export default CreatePage;
+export default CreateEmployee;

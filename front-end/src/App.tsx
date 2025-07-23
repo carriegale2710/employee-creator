@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import NavBar from "./components/NavBar/NavBar";
 import Home from "./pages/Home";
 import ListPage from "./pages/ListPage";
-import CreatePage from "./pages/CreatePage";
+import CreateEmployee from "./pages/CreateEmployee";
 import EditPage from "./pages/EditPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import "./App.scss";
@@ -15,7 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/employees" element={<ListPage />} />
-        <Route path="/employees/new" element={<CreatePage />} />
+        <Route path="/employees/new" element={<CreateEmployee />} />
         <Route path="/employees/:id/edit" element={<EditPage />} />
         <Route path="/employees/new/contract" element={<CreateContract />} />
         <Route
