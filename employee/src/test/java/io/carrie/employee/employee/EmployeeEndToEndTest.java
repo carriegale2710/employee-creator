@@ -136,7 +136,7 @@ public class EmployeeEndToEndTest {
         public void deleteEmployeeById_EmployeeInDb_SuccessNoContent() {
             Integer existingId = employeeList.get(0).getId();
             given()
-                    .when().delete("employees/" + existingId)
+                    .when().delete("/employees/" + existingId)
                     .then().statusCode(HttpStatus.NO_CONTENT.value());
             // todo - id must be double-checked with data
             // todo - check record was actually deleted from repo
@@ -316,7 +316,7 @@ public class EmployeeEndToEndTest {
                     .then().statusCode(400)
                     .extract().asString(); // plain string response
 
-            // assertEquals(expectedError.trim(), actualError.trim()); // todo- fix
+            assertEquals(expectedError.trim(), actualError.trim());
 
         }
 
