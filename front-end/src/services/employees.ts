@@ -73,7 +73,7 @@ export const deleteEmployee = async (id: number) => {
     method: "DELETE",
   });
   if (!response.ok) {
-    throw new Error("Failed to delete employee");
+    throw new Error("delete fetch failed for employee ID " + id);
   }
   return true; // Return true on successful deletion
 };

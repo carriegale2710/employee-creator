@@ -3,7 +3,13 @@ package io.carrie.employee.contract;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import io.carrie.employee.employee.Employee;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
@@ -22,10 +28,11 @@ public class Contract {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-
-    @ManyToOne // relationship to employees
+    @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Employee employee;
+    // NOTE - if the employee is deleted, contracts will also be deleted
 
     public enum Department {
         // saved as index in DB
@@ -67,7 +74,6 @@ public class Contract {
     public Contract() {
 
     }
-
 
     public Contract(Employee employee, Department department, ContractType contractType, BigDecimal salaryAmount,
             Integer hoursPerWeek, LocalDate startDate, LocalDate endDate) {

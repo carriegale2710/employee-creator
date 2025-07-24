@@ -31,7 +31,7 @@ public class ContractService {
         return this.contractRepository.save(created);
     }
 
-    public boolean deleteById(Integer id) {
+    public boolean deleteContractById(Integer id) {
         this.findById(id);
         this.contractRepository.deleteById(id);
         return true;
