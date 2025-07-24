@@ -4,9 +4,7 @@ import Input from "../../components/Input/Input";
 import {
   createContract,
   type Contract,
-  type ContractDTO,
-  DEPARTMENTS,
-  CONTRACT_TYPES,
+  type CreateContractDTO,
 } from "../../services/contracts";
 import { useState } from "react";
 import Select from "../../components/Select/Select";
@@ -20,13 +18,13 @@ const ContractForm = ({ prevContract }: ContractFormProps) => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<ContractDTO>();
+  } = useForm<CreateContractDTO>();
 
-  // console.log("Errors:", errors); //check if not submitting properly
+  // console.log("Errors:", errors); // Add this to see if validation is blocking submit
 
   const [usingTemplate, setUsingTemplate] = useState(false);
 
-  const onSubmit = async (formData: ContractDTO) => {
+  const onSubmit = async (formData: CreateContractDTO) => {
     // Handle form submission, e.g., send data to backend
     try {
       console.log("Form Data:", formData);
@@ -41,22 +39,16 @@ const ContractForm = ({ prevContract }: ContractFormProps) => {
   return (
     <>
       <h2>Contract Form</h2>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {/* Prefilled Values Button if previous contract exists for this employee */}
+        {prevContract && (
+          <Button
+            onClick={() => prevContract && setUsingTemplate((prev) => !prev)}
+          >
+            {usingTemplate ? "Use Blank Form" : "Use Template"}
+          </Button>
+        )}
 
-      {/* Prefilled Values Button if previous contract exists for this employee */}
-      {prevContract && (
-        <Button
-          onClick={() => prevContract && setUsingTemplate((prev) => !prev)}
-        >
-          {usingTemplate ? "Use Blank Form" : "Use Template"}
-        </Button>
-      )}
-
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="contract-form"
-        autoComplete="off"
-        style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
-      >
         <Input
           label="employeeId"
           type="number"
@@ -74,7 +66,7 @@ const ContractForm = ({ prevContract }: ContractFormProps) => {
         <Select
           label="department"
           title="Department"
-          options={Object.values(DEPARTMENTS) as string[]}
+          options={["ENGINEERING", "SALES", "MARKETING", "DESIGN"]}
           prefilledValue={usingTemplate ? prevContract?.department ?? "" : ""}
           {...register("department", { required: true })}
         >
@@ -87,7 +79,7 @@ const ContractForm = ({ prevContract }: ContractFormProps) => {
         <Select
           label="contractType"
           title="Contract Type"
-          options={Object.values(CONTRACT_TYPES) as string[]}
+          options={["FULL TIME", "PART TIME", "CASUAL", "CONTRACT"]}
           prefilledValue={usingTemplate ? prevContract?.contractType : ""}
           {...register("contractType", { required: true })}
         >
@@ -145,7 +137,6 @@ const ContractForm = ({ prevContract }: ContractFormProps) => {
         >
           End Date
         </Input>
-        <br />
 
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Submitting..." : "Submit"}

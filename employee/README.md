@@ -396,7 +396,7 @@ When updating personal details of existing employee.
 
 - As `PATCH` HTTP request to update only inputed fields (JSON):
 
-```json
+````json
 {
   "firstName": "Timmy", //opt.
   "lastName": "Turner", //opt.
@@ -414,7 +414,7 @@ interface CreateContractDTO {
   salaryAmount?: number;
   hoursPerWeek?: number;
 }
-```
+````
 
 ```json
 {

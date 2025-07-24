@@ -23,83 +23,83 @@ import io.carrie.employee.employee.EmployeeService;
 @Disabled("Temporarily disabled while fixing contract functionality")
 public class ContractServiceTest {
 
-    // NOTE (just testing the service works properly)
-    // providing fake implementation for control data comparison
-    // the data is not based on dependencies
-    // won't work in e2e tests
+        // NOTE (just testing the service works properly)
+        // providing fake implementation for control data comparison
+        // the data is not based on dependencies
+        // won't work in e2e tests
 
-    @Mock
-    private EmployeeService employeeService;
+        @Mock
+        private EmployeeService employeeService;
 
-    @Mock
-    private ContractRepository contractRepository;
+        @Mock
+        private ContractRepository contractRepository;
 
-    @Mock
-    private ModelMapper modelMapper;
+        @Mock
+        private ModelMapper modelMapper;
 
-    @Spy // call existing or mock
-    @InjectMocks
-    private ContractService contractService;
+        @Spy // call existing or mock
+        @InjectMocks
+        private ContractService contractService;
 
-    @BeforeEach // setup your mock data for testing
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-    }
+        @BeforeEach // setup your mock data for testing
+        public void setup() {
+                MockitoAnnotations.openMocks(this);
+        }
 
-    @Test
-    public void findAll_CallsFindAllOnRepo() {
-        this.contractService.findAll();
-        verify(this.contractRepository).findAll();
-    }
+        @Test
+        public void findAll_CallsFindAllOnRepo() {
+                this.contractService.findAll();
+                verify(this.contractRepository).findAll();
+        }
 
-    @Test
-    public void findById_CallsFindByIdOnRepo() {
-        Contract contract = new Contract();
+        @Test
+        public void findById_CallsFindByIdOnRepo() {
+                Contract contract = new Contract();
 
-        when(this.contractRepository.findById(1))
-                .thenReturn(java.util.Optional.of(contract));
+                when(this.contractRepository.findById(1))
+                                .thenReturn(java.util.Optional.of(contract));
 
-        this.contractService.findById(1);
-        verify(this.contractRepository).findById(1);
-    }
+                this.contractService.findById(1);
+                verify(this.contractRepository).findById(1);
+        }
 
-    @Test
-    public void deleteById_CallsDeleteByIdOnRepo() {
-        doReturn(new Contract())
-                .when(contractService).findById(1);
+        @Test
+        public void deleteById_CallsDeleteByIdOnRepo() {
+                doReturn(new Contract())
+                                .when(contractService).findById(1);
 
-        this.contractService.deleteById(1);
+                this.contractService.deleteById(1);
 
-        verify(this.contractRepository).deleteById(1);
-    }
+                verify(this.contractRepository).deleteById(1);
+        }
 
-    @Test
-    public void create_CallsSaveOnRepo() {
-        // Arrange- mock what should return (control vs mock data)
-        Employee employee = new Employee();
-        Contract contract = new Contract();
-        CreateContractDTO dto = new CreateContractDTO(); // Date strings
+        @Test
+        public void create_CallsSaveOnRepo() {
+                // Arrange- mock what should return (control vs mock data)
+                Employee employee = new Employee();
+                Contract contract = new Contract();
+                CreateContractDTO dto = new CreateContractDTO(); // Date strings
 
-        when(this.employeeService
-                .findById(employee.getId()))
-                .thenReturn(employee);
+                when(this.employeeService
+                                .findById(employee.getId()))
+                                .thenReturn(employee);
 
-        when(this.modelMapper
-                .map(dto, Contract.class))
-                .thenReturn(contract);
+                when(this.modelMapper
+                                .map(dto, Contract.class))
+                                .thenReturn(contract);
 
-        when(this.contractRepository
-                .save(any(Contract.class)))
-                .thenReturn(contract);
+                when(this.contractRepository
+                                .save(any(Contract.class)))
+                                .thenReturn(contract);
 
-        // Act - call the method
-        Contract result = this.contractService.create(dto);
+                // Act - call the method
+                Contract result = this.contractService.create(dto);
 
-        // Assert - verify save was called
-        verify(this.contractRepository).save(contract);
+                // Assert - verify save was called
+                verify(this.contractRepository).save(contract);
 
-        // Assert - check returned contract
-        assertNotNull(result);
-        assertEquals(contract, result);
-    }
+                // Assert - check returned contract
+                assertNotNull(result);
+                assertEquals(contract, result);
+        }
 }

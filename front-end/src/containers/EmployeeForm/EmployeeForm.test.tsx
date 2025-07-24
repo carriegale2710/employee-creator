@@ -12,8 +12,8 @@ describe("EmployeeForm", () => {
     expect(screen.getByLabelText(/first name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/last name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    // expect(screen.getByLabelText(/phone number/i)).toBeInTheDocument();
-    // expect(screen.getByLabelText(/address/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/phone/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/address/i)).toBeInTheDocument();
   });
 
   it("allows user to fill out required fields and submit", async () => {
@@ -23,15 +23,8 @@ describe("EmployeeForm", () => {
     await user.type(screen.getByLabelText(/first name/i), employee1.firstName);
     await user.type(screen.getByLabelText(/last name/i), employee1.lastName);
     await user.type(screen.getByLabelText(/email/i), employee1.email);
-    // await user.type(
-    //   screen.getByLabelText(/phone number/i),
-    //   employee1.phone
-    // );
-    // await user.type(screen.getByLabelText(/address/i), employee1.address);
-    // await user.type(
-    //   screen.getByLabelText(/date of birth/i),
-    //   employee1.dateOfBirth
-    // );
+    await user.type(screen.getByLabelText(/phone/i), employee1.phone);
+    await user.type(screen.getByLabelText(/address/i), employee1.address ?? "");
 
     const submitButton = screen.getByRole("button", { name: /submit/i });
     expect(submitButton).toBeEnabled();

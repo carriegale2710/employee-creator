@@ -17,7 +17,8 @@ public class ContractService {
     private ContractRepository contractRepository;
     private ModelMapper modelMapper;
 
-    ContractService(ContractRepository contractRepository, EmployeeService employeeService, ModelMapper modelMapper) {
+    public ContractService(ContractRepository contractRepository, EmployeeService employeeService,
+            ModelMapper modelMapper) {
         this.contractRepository = contractRepository;
         this.employeeService = employeeService;
         this.modelMapper = modelMapper;

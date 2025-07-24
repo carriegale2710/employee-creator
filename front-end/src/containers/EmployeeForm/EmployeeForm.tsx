@@ -21,7 +21,7 @@ const EmployeeForm = ({ prefilled }: EmployeeFormProps) => {
     formState: { errors, isSubmitting },
   } = useForm<EmployeeDTO>();
 
-  console.log("Errors:", errors); //check
+  // console.log("Errors:", errors); //check
 
   const onSubmit = async (formData: EmployeeDTO) => {
     // Handle form submission, e.g., send data to backend
