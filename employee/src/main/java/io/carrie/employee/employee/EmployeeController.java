@@ -54,6 +54,7 @@ public class EmployeeController {
     @PatchMapping("/{id}")
     public ResponseEntity<Employee> updateById(@PathVariable Integer id, @Valid @RequestBody UpdateEmployeeDTO dto) {
         Employee edited = this.employeeService.updateById(id, dto);
+
         return new ResponseEntity<>(edited, HttpStatus.OK);
     }
 

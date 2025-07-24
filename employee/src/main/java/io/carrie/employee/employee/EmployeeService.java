@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import io.carrie.employee.common.exceptions.EmailAlreadyExistsException;
 import io.carrie.employee.common.exceptions.NotFoundException;
 import io.carrie.employee.contract.ContractRepository;
 import io.carrie.employee.employee.dtos.CreateEmployeeDTO;
@@ -19,9 +20,20 @@ public class EmployeeService {
     private ModelMapper updateModelMapper;
     private ContractRepository contractRepository;
 
-    private void checkEmail(String email, EmployeeRepository employeeRepository) throws IllegalArgumentException {
+    private void checkEmail(String email, EmployeeRepository employeeRepository) throws EmailAlreadyExistsException {
         if (email != null && employeeRepository.existsByEmail(email)) {
-            throw new IllegalArgumentException(String.format("Employee with email '%s' already exists", email));
+            throw new EmailAlreadyExistsException(String.format("Employee with email '%s' already exists", email));
+        }
+    }
+
+    private void checkEmailForUpdate(String email, Integer currentEmployeeId, EmployeeRepository employeeRepository)
+            throws EmailAlreadyExistsException {
+        if (email != null && employeeRepository.existsByEmail(email)) {
+            // Check if the email belongs to a different employee
+            Employee existingEmployee = employeeRepository.findByEmail(email);
+            if (existingEmployee != null && !existingEmployee.getId().equals(currentEmployeeId)) {
+                throw new EmailAlreadyExistsException("Employee with email already exists");
+            }
         }
     }
 
@@ -37,7 +49,7 @@ public class EmployeeService {
         return this.employeeRepository.findAll();
     }
 
-    public Employee create(CreateEmployeeDTO dto) {
+    public Employee create(CreateEmployeeDTO dto) throws EmailAlreadyExistsException {
         Employee created = modelMapper.map(dto, Employee.class);
         checkEmail(created.getEmail(), employeeRepository);
         return this.employeeRepository.save(created);
@@ -50,10 +62,10 @@ public class EmployeeService {
         this.employeeRepository.deleteById(id); // safely delete the employee
     }
 
-    public Employee updateById(Integer id, UpdateEmployeeDTO dto) {
+    public Employee updateById(Integer id, UpdateEmployeeDTO dto) throws EmailAlreadyExistsException {
         Employee found = findById(id);
         this.updateModelMapper.map(dto, found);
-        checkEmail(dto.getEmail(), employeeRepository);
+        checkEmailForUpdate(dto.getEmail(), id, employeeRepository);
         return this.employeeRepository.save(found);
     }
 
