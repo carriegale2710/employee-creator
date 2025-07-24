@@ -15,8 +15,6 @@ Elements (div, p, header)
 Universal selector (*) - Lowest priority
 */
 
-@import "./normalize.scss";
-
 * {
   box-sizing: border-box;
 }

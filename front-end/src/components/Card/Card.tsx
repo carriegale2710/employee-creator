@@ -11,22 +11,19 @@ const Card = ({ employee }: CardProps) => {
   return (
     <div className="card" data-testid="card" id="card">
       <div>
-        <p>
+        <p id="employee-name" style={{ fontWeight: "bold", fontSize: "1.2em" }}>
           {employee.firstName} {employee.lastName}
         </p>
-        <p>{employee.email} </p>
+        <p id="employee-email">{employee.email} </p>
+        <p id="employee-phone">{employee.phone || ""}</p>
+        <p id="employee-address">{employee.address || ""}</p>
       </div>
-      <span className="row">
+      <span className="buttons">
         <NavLink to={`/employees/${employee.id}/edit`}>
           <Button>Edit</Button>
         </NavLink>
         <Button>Delete</Button>
         <br />
-        <NavLink to={`/employees/new/contract`}>
-          <Button>New Contract</Button>
-        </NavLink>
-      </span>
-      <span className="row">
         <NavLink to={`/employees/new/contract`}>
           <Button>New Contract</Button>
         </NavLink>
