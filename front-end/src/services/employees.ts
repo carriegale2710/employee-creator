@@ -28,7 +28,7 @@ export const getAllEmployees = async (): Promise<Employee[]> => {
   return employees;
 };
 
-export const getEmployeeById = async (id: string): Promise<Employee> => {
+export const getEmployeeById = async (id: number): Promise<Employee> => {
   const response = await fetch(`${API_URL}/employees/${id}`);
   if (!response.ok) {
     throw new Error("Could not get data for id " + id);

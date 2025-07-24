@@ -12,26 +12,30 @@ import {
 // you come here on Edit Button
 
 const EditPage = () => {
+  const { id } = useParams(); //get the employee ID from the URL parameters
+
   const [deleteWarningVisible, setDeleteWarningVisible] = useState(false);
   const [employeeData, setEmployeeData] = useState<Employee | null>(null);
-  const navigate = useNavigate();
-  const { id } = useParams();
+  const navigate = useNavigate(); //nav back to list page after action
 
   useEffect(() => {
     // Fetch employee data when component mounts or id changes
-    if (!id) {
-      throw new Error("Employee ID is required for editing");
-    }
-    const fetchEmployee = async () => {
-      const data = await getEmployeeById(id);
-      setEmployeeData(data);
-    };
-    fetchEmployee();
-  }, [id]); //WARNING - will run infinitely if empty!
+
+    console.log("Fetching employee data for ID:", id);
+    getEmployeeById(Number(id))
+      .then(setEmployeeData)
+      .catch((error) => {
+        console.error("Error fetching employee data:", error);
+      });
+
+    // Uncomment the following line for debugging only:
+    // if (process.env.NODE_ENV === "development") console.log("Employee data fetched:", employeeData);
+  }, [id]);
 
   const onDelete = (id: number) => {
     console.log("Deleting Employee ID:", id);
     console.log("with form data:", employeeData);
+
     deleteEmployee(id)
       .then(() => {
         console.log("Employee deleted successfully");
@@ -51,7 +55,11 @@ const EditPage = () => {
       </header>
       <main>
         <NavLink to="/employees">Go back to Employees</NavLink>
-        <EmployeeForm prefilled={employeeData} />
+        {employeeData ? (
+          <EmployeeForm prefilled={employeeData} />
+        ) : (
+          <p>Loading employee data...</p>
+        )}
         <br />
         <p style={{ color: "red", fontWeight: "bold" }}>Danger Zone</p>
 
