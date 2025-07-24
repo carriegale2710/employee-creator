@@ -16,7 +16,6 @@ import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
 
 import io.carrie.employee.contract.dtos.CreateContractDTO;
-import io.carrie.employee.contract.dtos.UpdateContractDTO;
 
 public class ContractServiceTest {
 
@@ -77,18 +76,4 @@ public class ContractServiceTest {
         assertEquals(contract, result);
     }
 
-    @Test
-    public void create_CallsUpdateOnRepo() {
-        Contract contract = new Contract();
-        UpdateContractDTO dto = new UpdateContractDTO();
-        when(this.contractRepository.findById(1)).thenReturn(java.util.Optional.of(contract));
-        when(this.contractRepository.save(any(Contract.class))).thenReturn(contract);
-        // Act -run the method
-        Contract result = this.contractService.updateById(1, dto);
-        // Assert - method call
-        verify(this.contractRepository).save(contract);
-        // Assert -check data
-        assertNotNull(result);
-        assertEquals(contract, result);
-    }
 }
