@@ -34,6 +34,7 @@ export const getEmployeeById = async (id: string): Promise<Employee> => {
     throw new Error("Could not get data for id " + id);
   }
   const employee = await response.json();
+  console.log("Fetched employee:", employee);
   return employee;
 };
 

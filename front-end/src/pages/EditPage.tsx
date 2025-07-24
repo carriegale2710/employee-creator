@@ -1,33 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "../components/Button/Button";
 import EmployeeForm from "../containers/EmployeeForm/EmployeeForm";
-import { employee1 } from "../services/mockEmployees";
-import { NavLink, useParams } from "react-router-dom";
-import { deleteEmployee } from "../services/employees";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
+import {
+  deleteEmployee,
+  getEmployeeById,
+  type Employee,
+} from "../services/employees";
 
 //needs to preload data from selected employee from Card
 // you come here on Edit Button
 
-const onDelete = (id: number) => {
-  // Logic to handle delete action
-  console.log("Delete Employee button clicked");
-  deleteEmployee(id)
-    .then(() => {
-      console.log("Employee deleted successfully");
-      // Redirect or update state to reflect deletion
-    })
-    .catch((error) => {
-      console.error("Error deleting employee:", error);
-      // Handle error, e.g., show a notification
-    });
-};
-
 const EditPage = () => {
   const [deleteWarningVisible, setDeleteWarningVisible] = useState(false);
+  const [employeeData, setEmployeeData] = useState<Employee | null>(null);
+  const navigate = useNavigate();
   const { id } = useParams();
-  if (!id) {
-    throw new Error("Employee ID is required for editing");
-  }
+
+  useEffect(() => {
+    // Fetch employee data when component mounts or id changes
+    if (!id) {
+      throw new Error("Employee ID is required for editing");
+    }
+    const fetchEmployee = async () => {
+      const data = await getEmployeeById(id);
+      setEmployeeData(data);
+    };
+    fetchEmployee();
+  }, [id]); //WARNING - will run infinitely if empty!
+
+  const onDelete = (id: number) => {
+    console.log("Deleting Employee ID:", id);
+    console.log("with form data:", employeeData);
+    deleteEmployee(id)
+      .then(() => {
+        console.log("Employee deleted successfully");
+        navigate("/employees");
+      })
+      .catch((error) => {
+        console.error("Error deleting employee:", error);
+        // Handle error, e.g., show a notification
+      });
+  };
 
   return (
     <>
@@ -37,7 +51,7 @@ const EditPage = () => {
       </header>
       <main>
         <NavLink to="/employees">Go back to Employees</NavLink>
-        <EmployeeForm prefilled={employee1} />
+        <EmployeeForm prefilled={employeeData} />
         <br />
         <p style={{ color: "red", fontWeight: "bold" }}>Danger Zone</p>
 
