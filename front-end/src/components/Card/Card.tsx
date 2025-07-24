@@ -9,7 +9,7 @@ export interface CardProps {
 
 const Card = ({ employee }: CardProps) => {
   return (
-    <div className="card">
+    <div className="card" data-testid="card" id="card">
       <div>
         <p>
           {employee.firstName} {employee.lastName}

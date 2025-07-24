@@ -1,4 +1,5 @@
-import Form from "../containers/Form/Form";
+import EmployeeForm from "../containers/EmployeeForm/EmployeeForm";
+
 const CreatePage = () => {
   return (
     <>
@@ -7,7 +8,7 @@ const CreatePage = () => {
         <p>Fill out the form below to register a new employee.</p>
       </header>
       <main>
-        <Form />
+        <EmployeeForm />
       </main>
     </>
   );

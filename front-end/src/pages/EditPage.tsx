@@ -1,4 +1,4 @@
-import Form from "../containers/Form/Form";
+import EmployeeForm from "../containers/EmployeeForm/EmployeeForm";
 import { employee1 } from "../services/mockEmployees";
 
 //needs to preload data from selected employee from Card
@@ -12,7 +12,7 @@ const EditPage = () => {
         <p>Fill out the form below to edit the employee details.</p>
       </header>
       <main>
-        <Form prefilled={employee1} />
+        <EmployeeForm prefilled={employee1} />
       </main>
     </>
   );
