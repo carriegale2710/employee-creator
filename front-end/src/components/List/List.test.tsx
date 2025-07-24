@@ -1,20 +1,20 @@
 import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 import List from "./List";
-import type { Employee } from "../../services/employees";
-import { mockEmployee } from "../Card/Card.test";
-
-const mockEmployees: Employee[] = [mockEmployee, mockEmployee];
+import { mockEmployees } from "../../services/mockEmployees";
 
 describe("List", () => {
-  it("checks true", () => {
-    expect(true).toBe(true);
-  });
-
-  it("Renders a Card with text content", () => {
-    render(<List employees={mockEmployees} />);
-    expect(screen.getAllByTestId("card")).toBeInTheDocument();
-    expect(screen.getAllByTestId("card")).not.toBeEmptyDOMElement();
-    expect(screen.getAllByTestId("card")).toHaveTextContent(/\S/);
+  it("Renders a Card with text content", async () => {
+    render(
+      <MemoryRouter>
+        <List employees={mockEmployees} />
+      </MemoryRouter>
+    );
+    const cards = await screen.findAllByTestId("card");
+    expect(cards).toBeTruthy();
+    expect(cards).toHaveLength(mockEmployees.length);
+    expect(cards[0]).toHaveTextContent(/\S/);
+    expect(cards[0]).toHaveTextContent(mockEmployees[0].email);
   });
 });
