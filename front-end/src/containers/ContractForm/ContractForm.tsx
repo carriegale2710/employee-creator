@@ -20,7 +20,7 @@ const ContractForm = ({ prevContract }: ContractFormProps) => {
     formState: { errors, isSubmitting },
   } = useForm<CreateContractDTO>();
 
-  console.log("Errors:", errors); // Add this to see if validation is blocking submit
+  // console.log("Errors:", errors); // Add this to see if validation is blocking submit
 
   const [usingTemplate, setUsingTemplate] = useState(false);
 

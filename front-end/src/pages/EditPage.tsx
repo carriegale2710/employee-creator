@@ -7,8 +7,13 @@ import { employee1 } from "../services/mockEmployees";
 const EditPage = () => {
   return (
     <>
-      <h1>Edit Employee</h1>
-      <Form prefilled={employee1} />
+      <header>
+        <h1>Edit Employee</h1>
+        <p>Fill out the form below to edit the employee details.</p>
+      </header>
+      <main>
+        <Form prefilled={employee1} />
+      </main>
     </>
   );
 };

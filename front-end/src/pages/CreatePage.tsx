@@ -2,8 +2,13 @@ import Form from "../containers/Form/Form";
 const CreatePage = () => {
   return (
     <>
-      <h1>Register Employee</h1>
-      <Form />
+      <header>
+        <h1>Register Employee</h1>
+        <p>Fill out the form below to register a new employee.</p>
+      </header>
+      <main>
+        <Form />
+      </main>
     </>
   );
 };

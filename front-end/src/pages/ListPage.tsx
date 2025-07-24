@@ -18,14 +18,16 @@ function ListPage() {
 
   return (
     <>
-      <h1>Employee List</h1>
-      <div className="intro">
-        <p>Click on "Edit" to see more about each employee.</p>
+      <header>
+        <h1>Employee List</h1>
+        <p>View and manage all employees.</p>
+      </header>
+      <main>
         <NavLink to="/employees/new">
           <Button>Add Employee</Button>
         </NavLink>
-      </div>
-      <List employees={employees} />
+        <List employees={employees} />
+      </main>
     </>
   );
 }

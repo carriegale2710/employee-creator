@@ -10,9 +10,9 @@ import CreateContract from "./pages/CreateContract";
 
 function App() {
   return (
-    <BrowserRouter>
-      <NavBar />
-      <main>
+    <>
+      <BrowserRouter>
+        <NavBar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/employees" element={<ListPage />} />
@@ -25,11 +25,11 @@ function App() {
           />
           <Route path="/*" element={<NotFoundPage />} />
         </Routes>
-      </main>
+      </BrowserRouter>
       <footer>
         <p>&copy; 2025 Carrie Gale. All rights reserved.</p>
       </footer>
-    </BrowserRouter>
+    </>
   );
 }
 
