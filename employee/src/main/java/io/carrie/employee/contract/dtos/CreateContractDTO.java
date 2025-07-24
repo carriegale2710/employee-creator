@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,7 +12,7 @@ import jakarta.validation.constraints.NotNull;
 public class CreateContractDTO {
 
     @NotNull(message = "Employee ID is required")
-    private Long employeeId;
+    private Integer employeeId;
 
     private String department;
 
@@ -21,7 +20,7 @@ public class CreateContractDTO {
     private String contractType;
 
     @DecimalMin(value = "0.0", inclusive = false, message = "Salary must be a positive number")
-    private BigDecimal salaryAmount;
+    private double salaryAmount;
     // instead of double for money for rounding
 
     @Max(value = 50, message = "Hours per week can't exceed 50")
@@ -33,7 +32,6 @@ public class CreateContractDTO {
     @DateTimeFormat
     private String startDate;
 
-    @FutureOrPresent
     @DateTimeFormat
     // @ValidDateRange //TODO - check endDate is not before startDate
     private String endDate;
@@ -42,7 +40,19 @@ public class CreateContractDTO {
 
     }
 
-    public Long getEmployeeId() {
+
+    public CreateContractDTO(Integer employeeId, String department, String contractType, double salaryAmount,
+            Integer hoursPerWeek, String startDate, String endDate) {
+        this.employeeId = employeeId;
+        this.department = department;
+        this.contractType = contractType;
+        this.salaryAmount = salaryAmount;
+        this.hoursPerWeek = hoursPerWeek;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public Integer getEmployeeId() {
         return employeeId;
     }
 

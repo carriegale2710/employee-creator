@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CreateEmployeeDTO",
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "type": "string",
+      "pattern": "^[a-zA-Z]{2,30}$"
+    },
+    "lastName": {
+      "type": "string",
+      "pattern": "^[a-zA-Z]{2,30}$"
+    },
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
+    "phone": {
+      "type": "string",
+      "pattern": "^\\+?\\d{7,15}$"
+    },
+    "address": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": ["firstName", "lastName", "email", "phone", "address"],
+  "additionalProperties": false
+}
