@@ -17,6 +17,8 @@ import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
 
 import io.carrie.employee.contract.dtos.CreateContractDTO;
+import io.carrie.employee.employee.Employee;
+import io.carrie.employee.employee.EmployeeService;
 
 @Disabled("Temporarily disabled while fixing contract functionality")
 public class ContractServiceTest {
@@ -25,6 +27,9 @@ public class ContractServiceTest {
     // providing fake implementation for control data comparison
     // the data is not based on dependencies
     // won't work in e2e tests
+
+    @Mock
+    private EmployeeService employeeService;
 
     @Mock
     private ContractRepository contractRepository;
@@ -50,32 +55,52 @@ public class ContractServiceTest {
     @Test
     public void findById_CallsFindByIdOnRepo() {
         Contract contract = new Contract();
-        when(this.contractRepository.findById(1)).thenReturn(java.util.Optional.of(contract));
+
+        when(this.contractRepository.findById(1))
+                .thenReturn(java.util.Optional.of(contract));
+
         this.contractService.findById(1);
         verify(this.contractRepository).findById(1);
     }
 
     @Test
     public void deleteById_CallsDeleteByIdOnRepo() {
-        doReturn(new Contract()).when(contractService).findById(1);
+        doReturn(new Contract())
+                .when(contractService).findById(1);
+
         this.contractService.deleteById(1);
+
         verify(this.contractRepository).deleteById(1);
     }
 
     @Test
     public void create_CallsSaveOnRepo() {
         // Arrange- mock what should return (control vs mock data)
+        Employee employee = new Employee();
         Contract contract = new Contract();
-        CreateContractDTO data = new CreateContractDTO();
-        when(this.modelMapper.map(data, Contract.class)).thenReturn(contract);
-        when(this.contractRepository.save(any(Contract.class))).thenReturn(contract);
-        // Act -run the method
-        Contract result = this.contractService.create(data);
-        // Assert - check save method called by repo
+        CreateContractDTO dto = new CreateContractDTO(); // Date strings
+
+        when(this.employeeService
+                .findById(employee.getId()))
+                .thenReturn(employee);
+
+        when(this.modelMapper
+                .map(dto, Contract.class))
+                .thenReturn(contract);
+
+        when(this.contractRepository
+                .save(any(Contract.class)))
+                .thenReturn(contract);
+
+        // Act - call the method
+        Contract result = this.contractService.create(dto);
+
+        // Assert - verify save was called
         verify(this.contractRepository).save(contract);
-        // Assert -check data
+
+        // Assert - check returned contract
         assertNotNull(result);
         assertEquals(contract, result);
     }
 
-}
+

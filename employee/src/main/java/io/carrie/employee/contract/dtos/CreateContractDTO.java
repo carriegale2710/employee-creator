@@ -1,5 +1,7 @@
 package io.carrie.employee.contract.dtos;
 
+import java.math.BigDecimal;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.validation.constraints.DecimalMin;
@@ -38,6 +40,7 @@ public class CreateContractDTO {
 
     }
 
+
     public CreateContractDTO(Integer employeeId, String department, String contractType, double salaryAmount,
             Integer hoursPerWeek, String startDate, String endDate) {
         this.employeeId = employeeId;
@@ -61,7 +64,7 @@ public class CreateContractDTO {
         return contractType;
     }
 
-    public double getSalaryAmount() {
+    public BigDecimal getSalaryAmount() {
         return salaryAmount;
     }
 

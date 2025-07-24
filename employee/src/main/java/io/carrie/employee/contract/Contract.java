@@ -22,6 +22,7 @@ public class Contract {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+
     @ManyToOne // relationship to employees
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
@@ -67,8 +68,10 @@ public class Contract {
 
     }
 
+
     public Contract(Employee employee, Department department, ContractType contractType, BigDecimal salaryAmount,
             Integer hoursPerWeek, LocalDate startDate, LocalDate endDate) {
+
         this.employee = employee;
         this.department = department;
         this.contractType = contractType;
@@ -95,11 +98,11 @@ public class Contract {
         this.employee = employee;
     }
 
-    public Department getDepartment() {
+    public String getDepartment() {
         return department;
     }
 
-    public void setDepartment(Department department) {
+    public void setDepartment(String department) {
         this.department = department;
     }
 

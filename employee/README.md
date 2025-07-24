@@ -289,7 +289,7 @@ interface Employee {
   firstName: string;
   lastName: string;
   email: string;
-  phoneNumber?: string;
+  phone?: string;
   address?: string;
 }
 ```
@@ -300,7 +300,7 @@ interface Employee {
   "firstName": "Timmy",
   "lastName": "Turner",
   "email": "timmehhh@example.com",
-  "phoneNumber": "0400000000",
+  "phone": "0400000000",
   "address": "123 Fairy Lane"
 }
 ```
@@ -372,7 +372,7 @@ interface CreateEmployeeDTO {
   firstName: string;
   lastName: string;
   email: string; //get backend to generate if empty?
-  phoneNumber: string;
+  phone: string;
   address?: string;
   contract?: ContractDTO; //opt.
 }
@@ -385,7 +385,7 @@ AS `POST` HTTP request (JSON):
   "firstName": "Timmy",
   "lastName": "Turner",
   "email": "timmehhh@example.com",
-  "phoneNumber": "0400000000",
+  "phone": "0400000000",
   "currentContract": CreateContractDTO //opt
 }
 ```
@@ -401,9 +401,8 @@ When updating personal details of existing employee.
   "firstName": "Timmy", //opt.
   "lastName": "Turner", //opt.
   "email": "timmy_turner@example.com" //opt.
-  "phoneNumber": "0400000000", //opt.
-}
-```
+  "phone": "0400000000", //opt.
+
 
 #### CreateContractDTO
 

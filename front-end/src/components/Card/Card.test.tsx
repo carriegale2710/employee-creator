@@ -24,9 +24,7 @@ describe("Card", () => {
     expect(screen.findByText(employee1.firstName)).toBeInTheDocument();
     expect(screen.findByText(employee1.lastName)).toBeInTheDocument();
     expect(screen.findByText(employee1.email)).toBeInTheDocument();
-    expect(screen.findByText(employee1.dateOfBirth)).toBeInTheDocument();
+    expect(screen.findByText(employee1.phone)).toBeInTheDocument();
     expect(screen.findByText(employee1.address)).toBeInTheDocument();
-    expect(screen.findByText(employee1.taxFileNumber)).toBeInTheDocument();
-    expect(screen.findByText(employee1.phoneNumber)).toBeInTheDocument();
   });
 });

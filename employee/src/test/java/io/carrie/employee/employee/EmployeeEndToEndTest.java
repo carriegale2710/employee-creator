@@ -40,7 +40,7 @@ public class EmployeeEndToEndTest {
     private ArrayList<Employee> employeeList = new ArrayList<>();
 
     @BeforeEach // set up data and save in db
-    public void setUp() {
+    public void setUpEmployees() {
         RestAssured.port = this.port;
 
         // clear the data in mock DB before each test
@@ -136,7 +136,7 @@ public class EmployeeEndToEndTest {
         public void deleteEmployeeById_EmployeeInDb_SuccessNoContent() {
             Integer existingId = employeeList.get(0).getId();
             given()
-                    .when().delete("employees/" + existingId)
+                    .when().delete("/employees/" + existingId)
                     .then().statusCode(HttpStatus.NO_CONTENT.value());
             // todo - id must be double-checked with data
             // todo - check record was actually deleted from repo
