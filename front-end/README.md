@@ -21,15 +21,53 @@
 
 ---
 
-## Setup
+⚒️ Setup
 
-### React Frontend Setup Steps
+Follow these steps to run the React app locally using Vite + TypeScript:
 
-TBA
+1. Clone the Repo
 
-1. Installation
-2. Setup
-3. Running the React App
+git clone https://github.com/carriegale2710/employee-creator.git
+cd employee-creator/front-end
+
+2. Install Dependencies
+
+Make sure you have Node.js v18+ installed.
+
+npm install
+
+3. Set Up Environment Variables
+
+Create a .env file in the root of the front-end folder:
+
+touch .env
+
+Inside .env, add:
+
+VITE_API_KEY=your-api-key-here
+
+> 🔐 Note: All Vite environment variables must be prefixed with VITE_ to be accessible in the frontend code.
+
+You can now access it in your React code using:
+
+const apiKey = import.meta.env.VITE_API_KEY;
+
+
+3. Run the Development Server
+
+npm run dev
+
+The app will be available at http://localhost:5173
+
+4. (Optional) Build for Production
+
+npm run build
+
+5. (Optional) Preview Production Build
+
+npm run preview
+
+
 
 ---
 
@@ -77,32 +115,32 @@ Right now, testing public features only:
 #### 💻 Frontend MVP (React + TypeScript)
 
 - [x] React app compiles and runs (Vite)
-- [ ] Basic CRUD employee functionality works
-- [ ] Form validation added
+- [x] Basic CRUD employee functionality works
+- [x] Form validation added
 - [x] Optional testing included (Vitest/Zod)
-- [ ] UI styled + responsive (SCSS/Tailwind)
+- [x] UI styled + responsive (SCSS/Tailwind)
 
 #### Core Flows
 
 - [x] Page loads with correct data from backend (GET)
-- [ ] Form inputs accept user input
-- [ ] Form submits valid data successfully (POST/PUT)
-- [ ] Item can be deleted (DELETE)
-- [ ] Navigation or redirects work after actions
+- [x] Form inputs accept user input
+- [x] Form submits valid data successfully (POST/PATCH)
+- [x] Item can be deleted (DELETE)
+- [x] Navigation or redirects work after actions
 
 #### Error Handling
 
-- [ ] Required fields show validation error if empty
-- [ ] Invalid input (e.g. bad email) is blocked
+- [x] Required fields show validation error if empty
+- [x] Invalid input (e.g. bad email) is blocked
 - [ ] Backend error (e.g. 400 or 500) shows helpful message
 - [ ] Loading and error states show something visible (e.g. spinner or alert)
 
 #### User Experience
 
-- [ ] Mobile/responsive layout works (test one small screen)
+- [x] Mobile/responsive layout works (test one small screen)
 - [ ] Buttons and links are clickable and have visual feedback
-- [ ] Basic keyboard navigation works (Tab, Enter)
-- [ ] No obvious visual glitches after user actions
+- [x] Basic keyboard navigation works (Tab, Enter)
+- [x] No obvious visual glitches after user actions
 - [ ] Toasts or alerts auto-dismiss after success
 
 ---
@@ -270,7 +308,7 @@ B8 -- No --> C2[Show validation errors] -->B4
 
 | File                   | Purpose                                                  |
 | ---------------------- | -------------------------------------------------------- |
-| `employeeService.js`   | Handles raw API calls (GET, POST, PUT, DELETE)           |
+| `employeeService.js`   | Handles raw API calls (GET, POST, PATCH, DELETE)           |
 | `useEmployees.js`      | Manages local state + calls service + keeps list in sync |
 | `EmployeeListPage.jsx` | Renders the list and uses the hook                       |
 | `EmployeeForm.jsx`     | Reuses hook to trigger updates after submit              |
@@ -305,7 +343,6 @@ Database Schema Updates:
 - Department is no longer stored directly in the Employee schema
 - Start date and department are now part of the Contract entity
 - Employees can have multiple contracts
-- See updated ['Database Structure' README](assets/data/README.md) for more
 
 ### 16/07/2025
 
@@ -317,6 +354,11 @@ Database Schema Updates:
 
 - Mapped user flow diagrams for employee and contract forms
 
+### 24/07/2025
+- Form React UI
+- create : send data POST
+- save formData from both Employee and Contract forms
+
 ---
 
 ## Agile Board
@@ -325,11 +367,7 @@ Database Schema Updates:
 
 ### Sprint
 
-Form React UI for create/edit features:
 
-- create : send data POST
-- save formData from both Employee and Contract forms
-- only fetch until both are collected
 
 User flow
 

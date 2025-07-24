@@ -292,27 +292,41 @@ Other:
 
 ---
 
-## Learning Curves + Research Questions
+## Learning & Challenges
 
-<!-- - What did you struggle with? What? Why? How? -->
+- Setting up **GitHub Actions** was tricky—required many commits to get configs right.
+- Deployment went smoothly, but linking backend & frontend on AWS EC2 with a custom domain took some tweaking of security settings.
+- Maintaining TDD was a challenge under a tight deadline.  Found a middle ground of implementing tests after testing in browser to be more rewarding due to lack of specifications - made writing tests first difficult. 
 
-- Setting up Github Actions was a bit tricky in terms of config. Too many commits to test it.
-- Deployment was straight forward but linking up BE with FE a bit tricky with setting up AWS security settings for custom domain for EC2 server hosting
+## What I Learned
 
-## Retrospective: Lessons + skills learnt from this project
+### Test Driven Development (TDD)
 
-### Practicing Test Driven Development (TDD)
+- Writing end-to-end backend tests helped clarify features and edge cases.
+- Seeing tests pass was motivating and boosted momentum.
+- Reduced time spent debugging during refactors by catching issues early.
 
-- Writing E2E tests for my backend API was super helpful for understanding what exactly my features were.
-- Also helped with motivation seeing green ticks.
-- Better efficiency with regression testing during refactors rather than debugging in browser.
+**Pros:**  
+- Defined project scope early  
+- Increased confidence with regression tests  
+- Motivation from green test ticks  
 
-### Experimenting with more efficient, sustainable project documentation strategies (eg. change logs, mermaid diagrams).
+**Cons:**  
+- Slowed me down as project grew  
+- Felt like overkill for small features  
 
-- I have found that writing a few notes on your progress helped A LOT with project scope definition/creep. Also just better understanding what the project brief is about and thinking earlier about what potential blockers to beware of during production.
-- Before I was using trello before, which was good but not as sustainable for more solo dev work (good for collaboration though). - I have found just writing mini-progress reports in a README file to be simpler and even safer way due to better version history. I don't need to worry about accidently deleting anything as I can go back to older commits.
-- I can also track progress changes overtime, and refresh my brain on what I was working on the day before.
-- Will continue using this method for solo projects.
+### Documentation Strategy
+
+- Mini progress updates in README proved better than Trello for solo work:
+  - Easier version control  
+  - Helps track scope creep and blockers  
+  - Refreshes context after breaks  
+
+### Git & Workflow
+
+- Using **main** + **dev** branches mimicked team workflows — great for practicing merges and resolving conflicts.
+- GitHub Actions for CI/CD and testing was challenging but rewarding.
+- Branching felt a bit overkill for solo work but valuable practice for team projects.
 
 ## Licensing Details
 
