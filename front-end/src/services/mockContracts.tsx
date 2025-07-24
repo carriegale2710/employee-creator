@@ -4,7 +4,7 @@ import { employee1, employee2 } from "./mockEmployees";
 export const contract1: Contract = {
   id: 1,
   employee: employee1,
-  contractType: "FULL_TIME",
+  contractType: "FULL TIME",
   department: "ENGINEERING",
   salaryAmount: 85000.0,
   hoursPerWeek: 38,
@@ -15,7 +15,7 @@ export const contract1: Contract = {
 export const contract2: Contract = {
   id: 1,
   employee: employee2,
-  contractType: "FULL_TIME",
+  contractType: "FULL TIME",
   department: "SALES",
   salaryAmount: 95000.0,
   hoursPerWeek: 38,

@@ -1,11 +1,17 @@
-import Form from "../containers/EmployeeForm/EmployeeForm";
-const CreateEmployee = () => {
+import EmployeeForm from "../containers/EmployeeForm/EmployeeForm";
+
+const CreatePage = () => {
   return (
     <>
-      <h1>Register Employee</h1>
-      <Form />
+      <header>
+        <h1>Register Employee</h1>
+        <p>Fill out the form below to register a new employee.</p>
+      </header>
+      <main>
+        <EmployeeForm />
+      </main>
     </>
   );
 };
 
-export default CreateEmployee;
+export default CreatePage;

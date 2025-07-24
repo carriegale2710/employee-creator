@@ -9,22 +9,21 @@ export interface CardProps {
 
 const Card = ({ employee }: CardProps) => {
   return (
-    <div className="card">
-      <span className="row">
-        <div className="data">
-          <p>
-            {employee.firstName} {employee.lastName}
-          </p>
-          <p>{employee.email} </p>
-        </div>
-        <span className="buttons">
-          <NavLink to={`/employees/${employee.id}/edit`}>
-            <Button>Edit</Button>
-          </NavLink>
-          <Button>Delete</Button>
-        </span>
-      </span>
-      <span className="row">
+    <div className="card" data-testid="card" id="card">
+      <div>
+        <p id="employee-name" style={{ fontWeight: "bold", fontSize: "1.2em" }}>
+          {employee.firstName} {employee.lastName}
+        </p>
+        <p id="employee-email">{employee.email} </p>
+        <p id="employee-phone">{employee.phone || ""}</p>
+        <p id="employee-address">{employee.address || ""}</p>
+      </div>
+      <span className="buttons">
+        <NavLink to={`/employees/${employee.id}/edit`}>
+          <Button>Edit</Button>
+        </NavLink>
+        <Button>Delete</Button>
+        <br />
         <NavLink to={`/employees/new/contract`}>
           <Button>New Contract</Button>
         </NavLink>
