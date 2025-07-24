@@ -7,6 +7,7 @@ import {
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import { useForm } from "react-hook-form";
+import { NavLink } from "react-router-dom";
 
 export interface EmployeeFormProps {
   prefilled?: Employee | null;
@@ -118,14 +119,6 @@ const EmployeeForm = ({ prefilled }: EmployeeFormProps) => {
 
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Submitting..." : "Submit"}
-        </Button>
-
-        <Button
-          style={{ backgroundColor: "lightgray", color: "black" }}
-          type="button"
-          onClick={() => console.log("Cancel button clicked")}
-        >
-          Cancel
         </Button>
       </form>
     </>

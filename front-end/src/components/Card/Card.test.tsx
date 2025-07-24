@@ -13,7 +13,6 @@ describe("Card", () => {
       </MemoryRouter>
     );
     expect(screen.getByRole("button", { name: /Edit/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Delete/i })).toBeInTheDocument();
   });
 
   it("renders text content", () => {

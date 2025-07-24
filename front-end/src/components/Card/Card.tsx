@@ -23,9 +23,6 @@ const Card = ({ employee }: CardProps) => {
         <NavLink to={`/employees/${employee.id}/edit`}>
           <Button>Edit</Button>
         </NavLink>
-        <NavLink to={`/employees/new/contract`}>
-          <Button>New Contract</Button>
-        </NavLink>
       </span>
     </div>
   );

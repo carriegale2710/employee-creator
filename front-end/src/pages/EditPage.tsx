@@ -23,8 +23,8 @@ const EditPage = () => {
         <p>Fill out the form below to edit the employee details.</p>
       </header>
       <main>
+        <NavLink to="/employees">Go back to Employees</NavLink>
         <EmployeeForm prefilled={employee1} />
-
         <br />
         <p style={{ color: "red", fontWeight: "bold" }}>Danger Zone</p>
 
