@@ -22,6 +22,7 @@ public class CreateEmployeeDTO {
     @Pattern(regexp = "^\\+?\\d{7,15}$", message = "Invalid phone number.")
     private String phone;
 
+    @NotBlank
     private String address;
 
     public CreateEmployeeDTO() {
@@ -54,6 +55,26 @@ public class CreateEmployeeDTO {
 
     public String getAddress() {
         return address;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
 }

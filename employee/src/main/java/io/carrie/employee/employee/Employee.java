@@ -2,6 +2,8 @@ package io.carrie.employee.employee;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import io.carrie.employee.contract.Contract;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,6 +39,7 @@ public class Employee {
     // can create dto for this later if needed
 
     @OneToMany(mappedBy = "employee")
+    @JsonIgnoreProperties({ "employee", "contract" })
     private List<Contract> contracts;
 
     public Employee() {
@@ -53,6 +56,10 @@ public class Employee {
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -94,5 +101,11 @@ public class Employee {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public List<Contract> getContracts() {
+        return contracts;
+    }
+
+    // todo - get active (or last active) contract
 
 }

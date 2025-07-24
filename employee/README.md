@@ -314,9 +314,9 @@ Each employee can have multiple contracts across different time periods and depa
 ```ts
 interface Contract {
   id: number;
-  employeeId: number;
-  departmentId?: number;
-  contractType: "FULL_TIME" | "PART_TIME";
+  employee: Employee;
+  department?: string; //
+  contractType: string; //eg. "FULL_TIME" | "PART_TIME";
   salaryAmount?: number;
   hoursPerWeek?: number;
   startDate: string; // ISO date string
@@ -327,9 +327,9 @@ interface Contract {
 
 ```json
 {
-  "id": 101,
-  "employeeId": 1,
-  "departmentId": 1,
+  "id": 1,
+  "employee": timmyTurner,
+  "department": "Talent",
   "contractType": "FULL_TIME",
   "salaryAmount": 80000,
   "hoursPerWeek": 38,

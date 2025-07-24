@@ -7,25 +7,26 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import io.carrie.employee.common.exceptions.NotFoundException;
 import io.carrie.employee.contract.dtos.CreateContractDTO;
-import io.carrie.employee.contract.dtos.UpdateContractDTO;
+import io.carrie.employee.employee.Employee;
+import io.carrie.employee.employee.EmployeeService;
 
 @Service
 public class ContractService {
 
+    private final EmployeeService employeeService;
     private ContractRepository contractRepository;
     private ModelMapper modelMapper;
 
-    ContractService(ContractRepository contractRepository, ModelMapper modelMapper) {
+    ContractService(ContractRepository contractRepository, EmployeeService employeeService, ModelMapper modelMapper) {
         this.contractRepository = contractRepository;
+        this.employeeService = employeeService;
         this.modelMapper = modelMapper;
     }
 
-    public List<Contract> findAll() {
-        return this.contractRepository.findAll();
-    }
-
-    public Contract create(CreateContractDTO dto) throws IllegalArgumentException {
+    public Contract create(CreateContractDTO dto) {
+        Employee employee = employeeService.findById(dto.getEmployeeId());
         Contract created = modelMapper.map(dto, Contract.class);
+        created.setEmployee(employee);
         return this.contractRepository.save(created);
     }
 
@@ -35,19 +36,16 @@ public class ContractService {
         return true;
     }
 
-    public Contract updateById(Integer id, UpdateContractDTO dto) {
-        Contract found = findById(id);
-        // modelmapper
-        return this.contractRepository.save(found);
-        // you do not need to delete the old record - jpa/spring does it for you
-    }
-
     public Contract findById(Integer id) throws NotFoundException {
         Optional<Contract> result = this.contractRepository.findById(id);
         if (result.isEmpty()) {
             throw new NotFoundException("Contract with id " + id + " does not exist");
         }
         return result.get();
+    }
+
+    public List<Contract> findAll() {
+        return this.contractRepository.findAll();
     }
 
 }
