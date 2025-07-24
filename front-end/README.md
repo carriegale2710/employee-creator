@@ -12,6 +12,8 @@
 
 - Used top-down TDD to define backend before connecting to frontend.
 - Write up basic tests before coding to understand functionality, entity shapes & edge cases.
+- Break up app into simplified components.
+- Reuse the same presentational for component for both editing and creation functions.
 
 ### Techstack
 
@@ -21,29 +23,58 @@
 
 ---
 
-## Setup
+⚒️ Setup
 
-### React Frontend Setup Steps
+Follow these steps to run the React app locally using Vite + TypeScript:
 
-TBA
+1. Clone the Repo
 
-1. Installation
-2. Setup
-3. Running the React App
+git clone https://github.com/carriegale2710/employee-creator.git
+cd employee-creator/front-end
+
+2. Install Dependencies
+
+Make sure you have Node.js v18+ installed.
+
+`npm install`
+
+3. Set Up Environment Variables
+
+Create a .env file in the root of the front-end folder:
+
+`touch .env`
+
+Inside .env, add:
+
+`VITE_API_KEY=your-api-key-here`
+
+> 🔐 Note: All Vite environment variables must be prefixed with VITE\_ to be accessible in the frontend code.
+
+You can now access it in your React code using:
+
+`const apiKey = import.meta.env.VITE_API_KEY;`
+
+3. Run the Development Server
+
+`npm run dev`
+
+The app will be available at http://localhost:5173
+
+4. (Optional) Build for Production
+
+`npm run build`
+
+5. (Optional) Preview Production Build
+
+`npm run preview`
 
 ---
 
 ## Testing
 
-The app UI is pretty minimal and straightforward (just CRUD), so I will only test internals/implementation for now in order to speed up production.
-
-More advanced testing like data and fetching should be abstracted to the backend, hence e2e and integration tests will be pushed back until more advanced features like signup/login flows are created.
-
-FE testing will be more for ensuring correct validation/error handling on create/edit features in the Form component, as this is where most unexpected user inputs/interaction may occur.
-
 ### Running tests
 
-Techstack used: Vitest + Zod
+Techstack used: Vitest
 
 ```bash
 npm run test
@@ -77,32 +108,32 @@ Right now, testing public features only:
 #### 💻 Frontend MVP (React + TypeScript)
 
 - [x] React app compiles and runs (Vite)
-- [ ] Basic CRUD employee functionality works
-- [ ] Form validation added
+- [x] Basic CRUD employee functionality works
+- [x] Form validation added
 - [x] Optional testing included (Vitest/Zod)
-- [ ] UI styled + responsive (SCSS/Tailwind)
+- [x] UI styled + responsive (SCSS/Tailwind)
 
 #### Core Flows
 
 - [x] Page loads with correct data from backend (GET)
-- [ ] Form inputs accept user input
-- [ ] Form submits valid data successfully (POST/PUT)
-- [ ] Item can be deleted (DELETE)
-- [ ] Navigation or redirects work after actions
+- [x] Form inputs accept user input
+- [x] Form submits valid data successfully (POST/PATCH)
+- [x] Item can be deleted (DELETE)
+- [x] Navigation or redirects work after actions
 
 #### Error Handling
 
-- [ ] Required fields show validation error if empty
-- [ ] Invalid input (e.g. bad email) is blocked
+- [x] Required fields show validation error if empty
+- [x] Invalid input (e.g. bad email) is blocked
 - [ ] Backend error (e.g. 400 or 500) shows helpful message
 - [ ] Loading and error states show something visible (e.g. spinner or alert)
 
 #### User Experience
 
-- [ ] Mobile/responsive layout works (test one small screen)
+- [x] Mobile/responsive layout works (test one small screen)
 - [ ] Buttons and links are clickable and have visual feedback
-- [ ] Basic keyboard navigation works (Tab, Enter)
-- [ ] No obvious visual glitches after user actions
+- [x] Basic keyboard navigation works (Tab, Enter)
+- [x] No obvious visual glitches after user actions
 - [ ] Toasts or alerts auto-dismiss after success
 
 ---
@@ -125,34 +156,34 @@ Note: \* = MVP (priority)
 
 Each **employee can have multiple contracts**, and contracts are managed separately but linked to employees (like foreign key via `employeeId`).
 
-| ID  | Feature                         | User Wants To...                    | So They Can...                 | User should be able to...                                                            |
-| --- | ------------------------------- | ----------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------ |
-| 1   | `List Contracts`                | See all contracts                   | Review records                 | Click link to view a paginated list of all contracts (with optional employee filter) |
-| 2   | `Create Contract`               | \*Add a new contract                | Register new agreement         | Click button that opens a form to add a new contract linked to an employee           |
-| 3   | `Delete Contract`               | Remove a contract                   | Get rid of outdated info       | Click a delete button to remove a contract from the DB                               |
-| 4   | `Update Contract`               | Edit an existing contract           | Fix terms or extend a contract | Click an edit button to open a form with existing values and update the record       |
-| 5   | `Find Contract by ID`           | \*View a specific contract          | Check specific terms/details   | Enter a contract ID to fetch and display its details                                 |
-| 6   | `List Contracts by Employee ID` | \*View all contracts for 1 employee | Track one employee’s history   | Click from employee page to view all contracts linked to that employee               |
+NOTE - Since contracts are legal documents, we don't want them to be mutable ie. no update contract function.
+
+| ID  | Feature                         | User Wants To...                    | So They Can...               | User should be able to...                                                            |
+| --- | ------------------------------- | ----------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------ |
+| 1   | `List Contracts`                | See all contracts                   | Review records               | Click link to view a paginated list of all contracts (with optional employee filter) |
+| 2   | `Create Contract`               | \*Add a new contract                | Register new agreement       | Click button that opens a form to add a new contract linked to an employee           |
+| 3   | `Delete Contract`               | Remove a contract                   | Get rid of outdated info     | Click a delete button to remove a contract from the DB                               |
+| 4   | `Find Contract by ID`           | \*View a specific contract          | Check specific terms/details | Enter a contract ID to fetch and display its details                                 |
+| 5   | `List Contracts by Employee ID` | \*View all contracts for 1 employee | Track one employee’s history | Click from employee page to view all contracts linked to that employee               |
 
 ---
 
 ## Design Snippets
 
-### Mockups (brief)
+### Mockups
 
-![Employee List Page](/front-end/design-assets/mockups/employee-list.PNG)
-![Employee Edit / Create Form 1](/front-end/design-assets/mockups/form-part-1.PNG)
-![Employee Edit / Create Form 2](/front-end/design-assets/mockups/form-part-2.PNG)
+![home page](design-assets/mockups/image.png)
+![list page](design-assets/mockups/image-1.png)
+![create employee](design-assets/mockups/image-2.png)
+![alt text](design-assets/mockups/image-3.png)
 
-### Wireframes
+![alt text](design-assets/mockups/image-4.png)
+![alt text](design-assets/mockups/image-5.png)
 
-#### List Page
+![alt text](design-assets/mockups/image-6.png)
 
-![List Page Wireframe](/front-end/design-assets/wireframes/ListPage-wireframe.png)
-
-#### Form Page
-
-![Form Page Wireframe](design-assets/wireframes/FormPage-Wireframe.png)
+![alt text](design-assets/mockups/image-7.png)
+![alt text](design-assets/mockups/image-8.png)
 
 #### Component Nesting
 
@@ -188,6 +219,16 @@ flowchart TD
     L2 --> FormPage
 
 ```
+
+### Wireframes
+
+#### List Page
+
+![List Page Wireframe](/front-end/design-assets/wireframes/ListPage-wireframe.png)
+
+#### Form Page
+
+![Form Page Wireframe](design-assets/wireframes/FormPage-Wireframe.png)
 
 ### Flows
 
@@ -265,86 +306,55 @@ B8 -- No --> C2[Show validation errors] -->B4
 
 ---
 
-<!--
-### React Code Structure
+## Sprint Backlog
 
-| File                   | Purpose                                                  |
-| ---------------------- | -------------------------------------------------------- |
-| `employeeService.js`   | Handles raw API calls (GET, POST, PUT, DELETE)           |
-| `useEmployees.js`      | Manages local state + calls service + keeps list in sync |
-| `EmployeeListPage.jsx` | Renders the list and uses the hook                       |
-| `EmployeeForm.jsx`     | Reuses hook to trigger updates after submit              |
- -->
+### Due Aug 1st 10:30am
 
----
+- [ ] ✅ Only show contract creation on task card (remove from homepage)  
+       ⏱️ 0.5 hr
 
-## Change logs
+- [ ] ⚠️ Add “Next: Add contract” in Employee Form wiht pre-filled info
+      ⏱️ 1 hr
 
-### 09/07/2025 - Front-end Planning + Creation
+- [ ] ⚠️ Add Zod validation to Employee and Contract forms  
+       ⏱️ 2 hrs
 
-- deconstruct UI design mockups provided into React components using Figma (+ bonus data flow Mermaid diagram)
-- install Vite + TypeScript + Scss to create React front-end
-- create employee-service.ts to render fetch data from DB
-- create basic React presentational components: List, Card, Button
-- employee services: getAll() , getById()
-- backend: Implemented Webconfig for CORS errors
-- render and pass data from Page -> List -> Card
-- basic scss styling of Card
+- [ ] ⚠️ Build + test full MVP user flow demo: Home > Create > Forms > Toast > List  
+       ⏱️ 3 hrs
 
-### 11/07/2025 - S3 React Deployment
-
-- Deployed React front-end as [static app](https://d3bcyx0s1yb5do.cloudfront.net/) in AWS S3 (Simple Storage Service):
-- Created React build, test and deploy [Github workflow](.github/workflows/react-deploy.yml)
-
-### 15/07/2025
-
-- Deconstructed React components for List and Form pages.
-
-Database Schema Updates:
-
-- Department is no longer stored directly in the Employee schema
-- Start date and department are now part of the Contract entity
-- Employees can have multiple contracts
-- See updated ['Database Structure' README](assets/data/README.md) for more
-
-### 16/07/2025
-
-- Edit feature prefilled form with data from card + added changes
-- Create basic form inputs and submit button
-- Form component tests
-
-### 22/07/2025
-
-- Mapped user flow diagrams for employee and contract forms
+- [ ] ⚡ **Prepare project showcase slideshow** (for mock interview/demo)  
+       ⏱️ 3 hrs  
+       📌 _Include_:  
+       - Overview of app (what it does)  
+       - MVP scope and user flow  
+       - Tech stack + decisions (e.g. Tailwind, TDD, DTOs)  
+       - Obstacles & what you learned (esp. solo dev insight)  
+       - Screenshots or demo video
 
 ---
 
-## Agile Board
+## Future Goals
 
-### In progress
-
-### Sprint
-
-Form React UI for create/edit features:
-
-- create : send data POST
-- save formData from both Employee and Contract forms
-- only fetch until both are collected
-
-User flow
-
-- validation with zod
-
-### Backlog
-
-Form validation
-
-UI styling - Global styling (tailwind)
-
-- install tailwind
-- use tailwind play to preview designs before implementation
-- gather and import any design system assets
-- structure in index and partials/variables: color palette, typography
-- delete any redundant scss files
+| **Section**      | **Frontend Feature**                                               | 🔍 Priority            | ⏱️ Time Estimate |
+| ---------------- | ------------------------------------------------------------------ | ---------------------- | ---------------- |
+| Employee List    | Searchbar for name/ID (query params from form)                     | ⚠️ Med / High Impact   | 2–3 hrs          |
+| Contract Form    | - "Back to employee form" button <br> - Final confirmation step    | ⚠️ Med / Medium Impact | 1–1.5 hrs        |
+| Styling          | Gather/import design system assets (fonts, spacing, etc.)          | 🐘 Med / Low Impact    | 1–2 hrs          |
+| Styling          | Install Tailwind CSS + Use Tailwind Play to preview designs        | 🐘 Med / Low Impact    | 1 hr             |
+| Styling          | Delete redundant SCSS files and refactor to Tailwind               | 🐘 Hard / low Impact   | 2-3 hrs          |
+| Contract History | View contracts per employee (contract history GET /contracts{:id}) | 🐘 Med / Low Impact    | 1–2 hrs          |
+| Contract Drafts  | View/edit saved drafts (GET /contracts/{:id}/drafts)               | 🐘 Hard / low Impact   | 3–4 hrs          |
+| Contract Form    | Dropdown: 5 recent employees (last_updated + created timestamps)   | 🐘 Hard / High Impact  | 2–4 hrs          |
 
 ---
+
+## Resources
+
+- https://react.dev/learn/thinking-in-react
+- https://react.dev/learn/reusing-logic-with-custom-hooks
+
+---
+
+## Change Log
+
+For detailed development history and feature updates, see [CHANGELOG.md](CHANGELOG.md).
