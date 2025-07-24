@@ -20,7 +20,7 @@ public class CreateContractDTO {
     private String contractType;
 
     @DecimalMin(value = "0.0", inclusive = false, message = "Salary must be a positive number")
-    private double salaryAmount;
+    private BigDecimal salaryAmount;
     // instead of double for money for rounding
 
     @Max(value = 50, message = "Hours per week can't exceed 50")
@@ -40,8 +40,7 @@ public class CreateContractDTO {
 
     }
 
-
-    public CreateContractDTO(Integer employeeId, String department, String contractType, double salaryAmount,
+    public CreateContractDTO(Integer employeeId, String department, String contractType, BigDecimal salaryAmount,
             Integer hoursPerWeek, String startDate, String endDate) {
         this.employeeId = employeeId;
         this.department = department;

@@ -102,5 +102,4 @@ public class ContractServiceTest {
         assertNotNull(result);
         assertEquals(contract, result);
     }
-
-
+}
