@@ -11,7 +11,22 @@ export type Department =
   | "MARKETING"
   | "WHOLESALE";
 
-export type ContractType = "FULL_TIME" | "PART_TIME" | "CASUAL" | "CONTRACT";
+export const DEPARTMENTS: Department[] = [
+  "ENGINEERING",
+  "SALES",
+  "DESIGN",
+  "MARKETING",
+  "WHOLESALE",
+];
+
+export type ContractType = "FULL TIME" | "PART TIME" | "CASUAL" | "CONTRACT";
+
+export const CONTRACT_TYPES: ContractType[] = [
+  "FULL TIME",
+  "PART TIME",
+  "CASUAL",
+  "CONTRACT",
+];
 
 export interface Contract {
   id: number;

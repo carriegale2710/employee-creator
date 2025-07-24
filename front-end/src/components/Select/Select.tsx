@@ -12,8 +12,9 @@ export interface SelectInputProps
 const Select = React.forwardRef<HTMLSelectElement, SelectInputProps>(
   ({ label, title, prefilledValue = "", options, children, ...rest }, ref) => (
     <>
-      <label htmlFor={label}>{children}</label>
       <br />
+
+      <label htmlFor={label}>{children}</label>
       <select
         name={label}
         id={label}
@@ -30,7 +31,6 @@ const Select = React.forwardRef<HTMLSelectElement, SelectInputProps>(
           </option>
         ))}
       </select>
-      <br />
     </>
   )
 );

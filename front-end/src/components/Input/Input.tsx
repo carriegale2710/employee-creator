@@ -10,9 +10,9 @@ export interface TextInputProps
 
 const Input = React.forwardRef<HTMLInputElement, TextInputProps>(
   ({ label, type, prefilledValue = "", children, ...rest }, ref) => (
-    <div>
-      <label htmlFor={label}>{children}</label>
+    <>
       <br />
+      <label htmlFor={label}>{children}</label>
       <input
         name={label}
         id={label}
@@ -21,8 +21,7 @@ const Input = React.forwardRef<HTMLInputElement, TextInputProps>(
         ref={ref}
         {...rest}
       />
-      <br />
-    </div>
+    </>
   )
 );
 
