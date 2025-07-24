@@ -179,33 +179,53 @@ Why did you implement this the way you did? -->
 
 ---
 
-## Features
+## Backend Design Goals / Approach
 
-<!-- | Icon | Meaning              |
-| ---- | -------------------- |
-| ⬜️  | To Do (not started)  |
-| 🔄   | In Progress          |
-| ⛔️  | Blocked / Needs Help |
-| ✅   | Done (completed)     |
-| 🧪   | Needs Testing        |
-| 📦   | Deployed / Delivered | -->
+<!-- Why did you implement this the way you did? -->
 
-| ID  | Feature         | Description                              | MVP? | BE  | FE  |
-| --- | --------------- | ---------------------------------------- | :--: | :-: | :-: |
-| F1  | List Employees  | View a paginated list of all employees   | yes  | ✅  | 🧪  |
-| F2  | Create Employee | Submit a form to add a new employee      | yes  |     | 🔄  |
-| F3  | Delete Employee | Remove an employee from the system       | yes  | 🔄  | 🔄  |
-| F5  | View Employee   | View details of one employee in DB       |      |     |     |
-| F6  | Create Contract | Add a new contract for existing employee |      |     |     |
-| F7  | Edit Contract   | View details of one contract in DB       |      |     |     |
+### Backend decisions
 
-### Legend
+- Included a contracts and departments table with a `one-to-many relationship` for `employees -> contracts` and `departments -> contracts`
+- This allows for flexible, quicker UX when updating of DB records via in FE client app with only minor updates eg. salary, contract dates etc.
 
-- ✅ = Done
-- 🔄 = In Progress
-- 🧪 = Testing
-- Blank = Not started
-- **MVP** = Minimum Viable Product feature
+### Front-end decisions
+
+- Used top-down TDD to define backend before connecting to frontend.
+- Write up basic tests before coding to understand functionality, entity shapes & edge cases.
+
+### Features
+
+Note: \* = MVP (priority)
+
+#### 👩‍🏭 Employee Maker
+
+| BE  | FE  | Feature                            | User Wants To...                  | So They Can...            | User should be able to...                                                        |
+| --- | --- | ---------------------------------- | --------------------------------- | ------------------------- | -------------------------------------------------------------------------------- |
+| x   | x   | \*`List Employees`                 | See all employees                 | Review records            | Click link to view a paginated list of all employee records                      |
+| x   |     | \*`Create Employee`                | Add a new employee                | Register new hire         | Click button that opens a form to add a new employee as a new record in DB       |
+| x   |     | \*`Delete Employee`                | Delete employee                   | Remove old record         | Click a button to delete a record of an existing employee in DB                  |
+| x   |     | \*`Update Employee`                | Edit existing employee            | Fix errors or update info | Click an edit button that opens a form pre-filled with data to update the record |
+| x   |     | `Find Employee by ID/name`         | Search specific employee          | View or confirm details   | Enter an ID/name in a search box and fetch/display the record if it exists       |
+|     |     | `Filter List of current Employees` | See all employees currently hired | Review records            | Click link to view a paginated list of all employee records                      |
+
+#### 📄 Contract Maker
+
+Each **employee can have multiple contracts**, and contracts are managed separately but linked to employees (like foreign key via `employeeId`).
+
+| BE  | FE  | Feature                                   | User Wants To...         | So They Can...               | User should be able to...                                                  |
+| --- | --- | ----------------------------------------- | ------------------------ | ---------------------------- | -------------------------------------------------------------------------- |
+|     |     | \*`Submit a new Contract` (complete form) | Add a new contract       | Register new agreement       | Click button that opens a form to add a new contract linked to an employee |
+|     |     | \*`View Current Contract of an Employee`  | View a specific contract | Check specific terms/details | Enter a contract ID to fetch and display its details                       |
+
+<!-- ### 🏢 Department Features
+
+| BE  | FE  | Feature                    | Front-End Responsibilities                                              | Back-End Responsibilities                                                    |
+| --- | --- | -------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+|     |     | `Create Department`        | - Form UI for department name input<br>- Submit button                  | - POST `/departments` endpoint<br>- Validate & save to DB                    |
+|     |     | `Update Department`        | - Edit form pre-filled with dept name<br>- Submit updates               | - PUT `/departments/{id}` endpoint<br>- Validate & update in DB              |
+|     |     | `List/Search Departments`  | - Table or list UI<br>- Search/filter input field                       | - GET `/departments` endpoint<br>- Support query params for filtering        |
+|     |     | `Delete Department`        | - Delete button (with confirmation)<br>- Refresh list on success        | - DELETE `/departments/{id}` endpoint<br>- Remove from DB                    |
+|     |     | `View Department Details`  | - Department details page or modal<br>- Show list of assigned employees | - GET `/departments/{id}` endpoint<br>- Include related employees/contracts  | -->
 
 ## QA Checklist
 
@@ -242,13 +262,12 @@ Why did you implement this the way you did? -->
 
 Features that are buggy / flimsy/not functional yet: -->
 
-1. Delete by employee id not working in BE.
-2. Front-end app is not switching the VITE api key according to env (dev vs production mode).
-3. Duplicate data (for email) posting needs to return BAD_REQUEST status code.
-4. [14/07/25] Custom domain for EC2 : for fetching safely from front-end (otherwise error below)
-   -> stuck at "Test out your API" : health check failing, need to look at EC2 security group setting again
+- Front-end app is not switching the VITE api key according to env (dev vs production mode).
+- Duplicate data (for email) posting needs to return BAD_REQUEST status code.
+- [14/07/25] Custom domain for EC2 : for fetching safely from front-end (otherwise error below)
+  -> stuck at AWS security settings : health check failing, need to look at EC2 security group setting again
 
-5. [15/07/25] Need to audit API logging and react app fetching for any security holes
+- [15/07/25] Need to audit API logging and react app fetching for any security holes
 
 ---
 
@@ -256,12 +275,19 @@ Features that are buggy / flimsy/not functional yet: -->
 
 <!-- What are the immediate features you'd add given more time / ideas parking lot: -->
 
+Employees:
+
+- [Employee Search Bar](employee/assets/diagrams/flows/Searchbar.md) with employee id or first/last name find by name match with query params)
+
+Contracts:
+
+- `Find all past Contracts of an Employee` | View all contracts for 1 employee | Track one employee’s history | Click from employee page to view all contracts linked to that employee |
+- `Save a draft Contract` (incomplete form) | Edit an existing contract | Fix terms or extend a contract | Click an edit button to open a form with existing values and update the record |
+- `Find all saved drafts of an Employee` | View all contracts for 1 employee | Track one employee’s history | Click from employee page to view all contracts linked to that employee |
+
+Other:
+
 - Add API Pagination (with findAll(Pageable pageable) from JpaRepository)
-- Contracts: Implement a contracts table schema, with a one-to-many relationship with each employee (one employee can have many contracts)
-
-Maybes:
-
-- Search Bar (find by name match with query params)
 - Login and authentication service/security (for admin access only) - Context API for frontend?
 
 ---

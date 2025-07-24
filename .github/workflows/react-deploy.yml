@@ -1,7 +1,10 @@
+name: Deploy React App to AWS S3 and CloudFront
+
 on:
   push:
     branches: ["main"]
-    paths: ["front-end/**"] # Only run if something in back-end changes
+    paths: ["front-end/**"] # Only run if something in front-end changes
+
   pull_request:
     branches: ["main"]
     types: [closed]
@@ -16,6 +19,11 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./front-end # React app folder
+
     steps:
       # Checks out the repository code to the runner machine
       - name: Checkout source

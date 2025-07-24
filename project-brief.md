@@ -16,7 +16,7 @@ Demonstrates an understanding of:
 - We need a web application to manage employees:
   - [x] create
   - [x] list
-  - [ ] modify
+  - [x] modify
   - [x] delete
 - The schema for the employee is left to the criteria of the candidate.
 
@@ -83,7 +83,7 @@ Frontend
   - [ ] Or just use Tailwind
 - [ ] [React Form Hook for form validation & submission](https://react-hook-form.com/get-started)
 - [ ] [Typescript React Cheatsheet](https://react-typescript-cheatsheet.netlify.app/docs/basic/setup)
-- [ ] [React Router for routes](https://reactrouter.com/en/main/start/tutorial)
+- [x] [React Router for routes](https://reactrouter.com/en/main/start/tutorial)
 
 ### Backend
 

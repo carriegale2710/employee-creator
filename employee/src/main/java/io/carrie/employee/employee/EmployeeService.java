@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import io.carrie.employee.common.exceptions.NotFoundException;
-import io.carrie.employee.common.utils.PatchUtils;
 import io.carrie.employee.employee.dtos.CreateEmployeeDTO;
 import io.carrie.employee.employee.dtos.UpdateEmployeeDTO;
 
@@ -15,10 +14,12 @@ public class EmployeeService {
 
     private EmployeeRepository employeeRepository;
     private ModelMapper modelMapper;
+    private ModelMapper updateModelMapper;
 
-    EmployeeService(EmployeeRepository employeeRepository, ModelMapper modelMapper) {
+    EmployeeService(EmployeeRepository employeeRepository, ModelMapper modelMapper, ModelMapper updateModelMapper) {
         this.employeeRepository = employeeRepository;
         this.modelMapper = modelMapper;
+        this.updateModelMapper = updateModelMapper;
     }
 
     public List<Employee> findAll() {
@@ -39,10 +40,9 @@ public class EmployeeService {
 
     public Employee updateById(Integer id, UpdateEmployeeDTO dto) {
         Employee found = findById(id);
+        this.updateModelMapper.map(dto, found);
         checkEmail(dto.getEmail(), employeeRepository);
-        PatchUtils.patchEmployee(found, dto);
         return this.employeeRepository.save(found);
-        // you do not need to delete the old record - jpa/spring does it for you
     }
 
     public Employee findById(Integer id) throws NotFoundException {

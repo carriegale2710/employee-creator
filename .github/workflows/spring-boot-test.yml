@@ -2,9 +2,11 @@ name: Spring Boot Tests
 
 on:
   push:
-    branches: ["main", "dev"]
+    branches: ["main", "dev"] # Run tests on pushes to main or dev branches
+    paths: ["employee/**"] # Only run if something in back-end changes
   pull_request:
-    branches: ["main", "dev"]
+    branches: ["main", "dev"] # Run tests on pull requests to main or dev branches
+    paths: ["employee/**"] # Only run if something in back-end changes
 
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
 
@@ -31,4 +33,4 @@ jobs:
 
       - name: Run tests
         run: mvn clean verify #Builds and runs all your tests (including E2E)
-        working-directory: ./employee
+        working-directory: ./employee # Adjust the working directory to your Spring Boot app folder
