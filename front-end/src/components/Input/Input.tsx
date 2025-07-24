@@ -12,7 +12,6 @@ const Input = React.forwardRef<HTMLInputElement, TextInputProps>(
   ({ label, type, prefilledValue = "", children, ...rest }, ref) => (
     <div>
       <label htmlFor={label}>{children}</label>
-      <br />
       <input
         name={label}
         id={label}

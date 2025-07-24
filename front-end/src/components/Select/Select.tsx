@@ -13,7 +13,6 @@ const Select = React.forwardRef<HTMLSelectElement, SelectInputProps>(
   ({ label, title, prefilledValue = "", options, children, ...rest }, ref) => (
     <>
       <label htmlFor={label}>{children}</label>
-      <br />
       <select
         name={label}
         id={label}
