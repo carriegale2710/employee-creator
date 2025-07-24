@@ -6,6 +6,7 @@
 // import java.util.HashMap;
 
 // import org.junit.jupiter.api.BeforeEach;
+// import org.junit.jupiter.api.Disabled;
 // import org.junit.jupiter.api.DisplayName;
 // import org.junit.jupiter.api.Nested;
 // import org.junit.jupiter.api.Test;
@@ -30,8 +31,7 @@
 // io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 // import static org.hamcrest.Matchers.*;
 
-// import io.carrie.employee.employee.EmployeeEndToEndTest;
-
+// @Disabled("Temporarily disabled while fixing contract functionality")
 // @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 // @ActiveProfiles("test")
 // @TestInstance(TestInstance.Lifecycle.PER_CLASS)

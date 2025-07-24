@@ -7,15 +7,16 @@ export interface Employee {
   firstName: string;
   lastName: string;
   email: string;
-  phone?: string;
+  phone: string;
   address?: string;
+  contracts?: Contract[];
 }
 
 export interface EmployeeDTO {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
   address?: string;
 }
 
@@ -37,10 +38,28 @@ export const getEmployeeById = async (id: string): Promise<Employee> => {
 export const createEmployee = async (formData: EmployeeDTO) => {
   const response = await fetch(`${API_URL}/employees`, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(formData),
   });
   if (!response.ok) {
     throw new Error("Failed to create employee");
+  }
+  const result = await response.json();
+  return result;
+};
+
+export const updateEmployee = async (id: number, formData: EmployeeDTO) => {
+  const response = await fetch(`${API_URL}/employees/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  });
+  if (!response.ok) {
+    throw new Error("Failed to update employee");
   }
   const result = await response.json();
   return result;

@@ -26,6 +26,11 @@ const Card = ({ employee }: CardProps) => {
           <Button>New Contract</Button>
         </NavLink>
       </span>
+      <span className="row">
+        <NavLink to={`/employees/new/contract`}>
+          <Button>New Contract</Button>
+        </NavLink>
+      </span>
     </div>
   );
 };
