@@ -6,7 +6,7 @@ import {
   type Contract,
   type ContractDTO,
 } from "../../services/contracts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "../../components/Select/Select";
 
 export interface ContractFormProps {
@@ -24,10 +24,24 @@ const ContractForm = ({ prevContract }: ContractFormProps) => {
 
   const [usingTemplate, setUsingTemplate] = useState(false);
 
+  useEffect(() => {
+    if (!usingTemplate) {
+      console.log("Using blank form data");
+    }
+    if (usingTemplate && prevContract) {
+      console.log(
+        "Using template from previous contract with ID:",
+        prevContract.id,
+        "with data:",
+        prevContract
+      );
+    }
+  }, [usingTemplate, prevContract]);
+
   const onSubmit = async (formData: ContractDTO) => {
     // Handle form submission, e.g., send data to backend
     try {
-      console.log("Form Data:", formData);
+      console.log("Creating new Contract:", formData);
       const result = await createContract(formData);
       console.log("Contract created:", result);
       return result;
@@ -43,7 +57,8 @@ const ContractForm = ({ prevContract }: ContractFormProps) => {
         {/* Prefilled Values Button if previous contract exists for this employee */}
         {prevContract && (
           <Button
-            onClick={() => prevContract && setUsingTemplate((prev) => !prev)}
+            type="button"
+            onClick={() => prevContract && setUsingTemplate(!usingTemplate)}
           >
             {usingTemplate ? "Use Blank Form" : "Use Template"}
           </Button>
@@ -55,39 +70,44 @@ const ContractForm = ({ prevContract }: ContractFormProps) => {
           prefilledValue={
             usingTemplate ? String(prevContract?.employee?.id ?? "") : ""
           }
-          {...register("employeeId", { required: true })}
+          {...register("employeeId", { required: "Employee ID is required" })}
         >
           Employee ID
+          <br />
+          {errors.employeeId && (
+            <span style={{ color: "red" }}>{errors.employeeId.message}</span>
+          )}
         </Input>
-        {errors.employeeId && (
-          <span style={{ color: "red" }}>Employee ID is required</span>
-        )}
 
         <Select
           label="department"
           title="Department"
           options={["ENGINEERING", "SALES", "MARKETING", "DESIGN"]}
           prefilledValue={usingTemplate ? prevContract?.department ?? "" : ""}
-          {...register("department", { required: true })}
+          {...register("department", { required: "Department is required" })}
         >
           Department
+          <br />
+          {errors.department && (
+            <span style={{ color: "red" }}>{errors.department.message}</span>
+          )}
         </Select>
-        {errors.department && (
-          <span style={{ color: "red" }}>Department is required</span>
-        )}
 
         <Select
           label="contractType"
           title="Contract Type"
           options={["FULL TIME", "PART TIME", "CASUAL", "CONTRACT"]}
           prefilledValue={usingTemplate ? prevContract?.contractType : ""}
-          {...register("contractType", { required: true })}
+          {...register("contractType", {
+            required: "Contract Type is required",
+          })}
         >
           Contract Type
+          <br />
+          {errors.contractType && (
+            <span style={{ color: "red" }}>{errors.contractType.message}</span>
+          )}
         </Select>
-        {errors.contractType && (
-          <span style={{ color: "red" }}>Contract Type is required</span>
-        )}
 
         <Input
           label="salaryAmount"
@@ -95,13 +115,16 @@ const ContractForm = ({ prevContract }: ContractFormProps) => {
           prefilledValue={
             usingTemplate ? String(prevContract?.salaryAmount ?? "") : ""
           }
-          {...register("salaryAmount", { required: true })}
+          {...register("salaryAmount", {
+            required: "Salary Amount is required",
+          })}
         >
           Salary Amount
+          <br />
+          {errors.salaryAmount && (
+            <span style={{ color: "red" }}>{errors.salaryAmount.message}</span>
+          )}
         </Input>
-        {errors.salaryAmount && (
-          <span style={{ color: "red" }}>Salary Amount is required</span>
-        )}
 
         <Input
           label="hoursPerWeek"
@@ -109,25 +132,29 @@ const ContractForm = ({ prevContract }: ContractFormProps) => {
           prefilledValue={
             usingTemplate ? String(prevContract?.hoursPerWeek ?? "") : ""
           }
-          {...register("hoursPerWeek", { required: true })}
+          {...register("hoursPerWeek", {
+            required: "Hours per Week is required",
+          })}
         >
           Hours per Week
+          <br />
+          {errors.hoursPerWeek && (
+            <span style={{ color: "red" }}>{errors.hoursPerWeek.message}</span>
+          )}
         </Input>
-        {errors.hoursPerWeek && (
-          <span style={{ color: "red" }}>Hours per Week is required</span>
-        )}
 
         <Input
           label="startDate"
           type="date"
           prefilledValue={usingTemplate ? prevContract?.startDate ?? "" : ""}
-          {...register("startDate", { required: true })}
+          {...register("startDate", { required: "Start Date is required" })}
         >
           Start Date
+          <br />
+          {errors.startDate && (
+            <span style={{ color: "red" }}>{errors.startDate.message}</span>
+          )}
         </Input>
-        {errors.startDate && (
-          <span style={{ color: "red" }}>Start Date is required</span>
-        )}
 
         <Input
           label="endDate"
@@ -136,6 +163,10 @@ const ContractForm = ({ prevContract }: ContractFormProps) => {
           {...register("endDate", { required: false })} // Optional field
         >
           End Date
+          <br />
+          {errors.endDate && (
+            <span style={{ color: "red" }}>{errors.endDate.message}</span>
+          )}
         </Input>
 
         <Button type="submit" disabled={isSubmitting}>

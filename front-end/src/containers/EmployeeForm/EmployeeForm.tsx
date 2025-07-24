@@ -26,11 +26,25 @@ const EmployeeForm = ({ prefilled }: EmployeeFormProps) => {
   const onSubmit = async (formData: EmployeeDTO) => {
     // Handle form submission, e.g., send data to backend
     try {
-      console.log("Form Data:", formData);
+      if (!prefilled)
+        console.log("Creating employee with form data:", formData);
+      if (prefilled)
+        console.log(
+          "Updating " +
+            prefilled.firstName +
+            " " +
+            prefilled.lastName +
+            " with ID:",
+          prefilled.id,
+          "with data:",
+          formData
+        );
       const result = await (prefilled
         ? updateEmployee(prefilled.id, formData)
         : createEmployee(formData));
       console.log("Employee created:", result);
+      // todo - redirect or show a success message Toast to user
+      // For now, just log the result
       return result;
     } catch (error) {
       console.error(error);
