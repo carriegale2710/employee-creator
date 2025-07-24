@@ -1,16 +1,10 @@
 package io.carrie.employee.employee;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import io.carrie.employee.contract.Contract;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -30,36 +24,18 @@ public class Employee {
     @Column(unique = true)
     private String email;
 
-    @Column
-    private String phone;
-    // string better to keep original format
-
-    @Column
-    private String address;
-    // can create dto for this later if needed
-
-    @OneToMany(mappedBy = "employee")
-    @JsonIgnoreProperties({ "employee", "contract" })
-    private List<Contract> contracts;
-
     public Employee() {
 
     }
 
-    public Employee(String firstName, String lastName, String email, String phone, String address) {
+    public Employee(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.phone = phone;
-        this.address = address;
     }
 
     public Integer getId() {
         return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getFirstName() {
@@ -85,27 +61,5 @@ public class Employee {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public List<Contract> getContracts() {
-        return contracts;
-    }
-
-    // todo - get active (or last active) contract
 
 }

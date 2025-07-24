@@ -29,20 +29,20 @@ public class EmployeeController {
 
     @PostMapping
     public ResponseEntity<Employee> create(@Valid @RequestBody CreateEmployeeDTO dto) {
-        Employee created = this.employeeService.create(dto);
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+        Employee newEmployee = this.employeeService.create(dto);
+        return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<Employee>> getAll() {
-        List<Employee> list = this.employeeService.findAll();
-        return new ResponseEntity<>(list, HttpStatus.OK);
+        List<Employee> allEmployees = this.employeeService.findAll();
+        return new ResponseEntity<>(allEmployees, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Employee> getById(@PathVariable Integer id) {
-        Employee found = this.employeeService.findById(id);
-        return new ResponseEntity<>(found, HttpStatus.OK);
+        Employee foundEmployee = this.employeeService.findById(id);
+        return new ResponseEntity<>(foundEmployee, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -53,8 +53,8 @@ public class EmployeeController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<Employee> updateById(@PathVariable Integer id, @Valid @RequestBody UpdateEmployeeDTO dto) {
-        Employee edited = this.employeeService.updateById(id, dto);
-        return new ResponseEntity<>(edited, HttpStatus.OK);
+        Employee editedEmployee = this.employeeService.updateById(id, dto);
+        return new ResponseEntity<>(editedEmployee, HttpStatus.OK);
     }
 
 }

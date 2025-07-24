@@ -1,84 +1,17 @@
-/* App Container Specific Styles */
-/* This file contains styles specific to the App container */
-
-/* Rules for Specificity:
-1. Same Specificity = Last One Wins
-2. Higher Specificity Always Wins
-  - index.scss (global styles) > App.scss (component styles)
-*/
-
-/* CSS Specificity Rules (Highest to Lowest Priority):
-Inline styles (style="...") - Highest priority
-IDs (#myId)
-Classes (.myClass), attributes, and pseudo-classes
-Elements (div, p, header)
-Universal selector (*) - Lowest priority
-*/
-
 #root {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: #ffffff;
-  align-content: center;
-  justify-content: center;
-}
-
-nav {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  font-size: 1.2rem;
-  padding: 1rem;
-  background-color: #f0f0f0;
-  border-bottom: 1px solid #ccc;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  justify-content: center;
-  width: 100%;
-  margin: 0 0;
-  box-sizing: border-box;
-  padding-left: 2rem;
-  padding-right: 2rem;
-}
-
-header {
-  margin-bottom: 0.5rem;
-  padding: 1rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
   text-align: center;
 }
 
-main {
-  flex: 1;
-  padding: 1rem;
+.card {
+  padding: 2em;
 }
 
-footer {
-  background-color: #34495e;
-  color: white;
-  text-align: center;
-  padding: 0.5rem;
-}
-
-/* Responsive Design */
-@media (max-width: 600px) {
-  main {
-    padding: 1.5rem;
-  }
-  header,
-  footer {
-    padding: 0;
-  }
-}
-@media (min-width: 1000px) {
-  main {
-    padding: 4rem;
-  }
-
-  footer {
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-  }
+.intro {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  border: 1px solid black;
 }

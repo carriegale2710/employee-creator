@@ -16,21 +16,14 @@ public class UpdateEmployeeDTO {
     @Email
     private String email;
 
-    @Pattern(regexp = "^\\+?\\d{7,15}$", message = "Invalid phone number.")
-    private String phone;
-
-    private String address;
-
     public UpdateEmployeeDTO() {
 
     }
 
-    public UpdateEmployeeDTO(String firstName, String lastName, String email, String phone, String address) {
+    public UpdateEmployeeDTO(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.phone = phone;
-        this.address = address;
     }
 
     public String getFirstName() {
@@ -43,34 +36,6 @@ public class UpdateEmployeeDTO {
 
     public String getEmail() {
         return email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
 }

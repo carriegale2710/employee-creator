@@ -72,9 +72,19 @@ Right now, testing public features only:
 
 ---
 
-### Design Goals / QA Checklist
+## UI Design
 
-#### 💻 Frontend MVP (React + TypeScript)
+### User Stories to fufill
+
+| ID  | Feature           | User Wants To...   | So They Can...    | User should be able to...                                                  |
+| --- | ----------------- | ------------------ | ----------------- | -------------------------------------------------------------------------- |
+| 1   | `List Employees`  | See all employees  | Review records    | Click link to view a paginated list of all employee records                |
+| 2   | `Create Employee` | Add a new employee | Register new hire | Click button that opens a form to add a new employee as a new record in DB |
+| 3   | `Delete Employee` | Delete employee    | Remove old record | Click a button to delete a record of an existing employee in DB            |
+
+### QA Checklist
+
+### 💻 Frontend MVP (React + TypeScript)
 
 - [x] React app compiles and runs (Vite)
 - [ ] Basic CRUD employee functionality works
@@ -82,7 +92,7 @@ Right now, testing public features only:
 - [x] Optional testing included (Vitest/Zod)
 - [ ] UI styled + responsive (SCSS/Tailwind)
 
-#### Core Flows
+### Core Flows
 
 - [x] Page loads with correct data from backend (GET)
 - [ ] Form inputs accept user input
@@ -90,14 +100,14 @@ Right now, testing public features only:
 - [ ] Item can be deleted (DELETE)
 - [ ] Navigation or redirects work after actions
 
-#### Error Handling
+### Error Handling
 
 - [ ] Required fields show validation error if empty
 - [ ] Invalid input (e.g. bad email) is blocked
 - [ ] Backend error (e.g. 400 or 500) shows helpful message
 - [ ] Loading and error states show something visible (e.g. spinner or alert)
 
-#### User Experience
+### User Experience
 
 - [ ] Mobile/responsive layout works (test one small screen)
 - [ ] Buttons and links are clickable and have visual feedback
@@ -107,54 +117,26 @@ Right now, testing public features only:
 
 ---
 
-## Features
-
-Note: \* = MVP (priority)
-
-### User Stories
-
-| ID  | Feature               | User Wants To...         | So They Can...            | User should be able to...                                                        |
-| --- | --------------------- | ------------------------ | ------------------------- | -------------------------------------------------------------------------------- |
-| 1   | `List Employees`      | \*See all employees      | Review records            | Click link to view a paginated list of all employee records                      |
-| 2   | `Create Employee`     | \*Add a new employee     | Register new hire         | Click button that opens a form to add a new employee as a new record in DB       |
-| 3   | `Delete Employee`     | \*Delete employee        | Remove old record         | Click a button to delete a record of an existing employee in DB                  |
-| 4   | `Update Employee`     | \*Edit existing employee | Fix errors or update info | Click an edit button that opens a form pre-filled with data to update the record |
-| 5   | `Find Employee by ID` | Search specific employee | View or confirm details   | Enter an ID in a search box and fetch/display the record if it exists            |
-
-### 📄 Contract Features Table
-
-Each **employee can have multiple contracts**, and contracts are managed separately but linked to employees (like foreign key via `employeeId`).
-
-| ID  | Feature                         | User Wants To...                    | So They Can...                 | User should be able to...                                                            |
-| --- | ------------------------------- | ----------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------ |
-| 1   | `List Contracts`                | See all contracts                   | Review records                 | Click link to view a paginated list of all contracts (with optional employee filter) |
-| 2   | `Create Contract`               | \*Add a new contract                | Register new agreement         | Click button that opens a form to add a new contract linked to an employee           |
-| 3   | `Delete Contract`               | Remove a contract                   | Get rid of outdated info       | Click a delete button to remove a contract from the DB                               |
-| 4   | `Update Contract`               | Edit an existing contract           | Fix terms or extend a contract | Click an edit button to open a form with existing values and update the record       |
-| 5   | `Find Contract by ID`           | \*View a specific contract          | Check specific terms/details   | Enter a contract ID to fetch and display its details                                 |
-| 6   | `List Contracts by Employee ID` | \*View all contracts for 1 employee | Track one employee’s history   | Click from employee page to view all contracts linked to that employee               |
-
----
-
-## Design Snippets
-
-### Mockups (brief)
+## Mockups (brief)
 
 ![Employee List Page](/front-end/design-assets/mockups/employee-list.PNG)
 ![Employee Edit / Create Form 1](/front-end/design-assets/mockups/form-part-1.PNG)
 ![Employee Edit / Create Form 2](/front-end/design-assets/mockups/form-part-2.PNG)
 
-### Wireframes
+## Wireframes
 
-#### List Page
-
+List Page
 ![List Page Wireframe](/front-end/design-assets/wireframes/ListPage-wireframe.png)
 
-#### Form Page
-
+Form Page
 ![Form Page Wireframe](design-assets/wireframes/FormPage-Wireframe.png)
 
-#### Component Nesting
+## Flows
+
+CRUD Flow between React components
+![CRUD data flow diagram](design-assets/flows/crud-flow.png)
+
+## React Components
 
 ```mermaid
 ---
@@ -188,82 +170,6 @@ flowchart TD
     L2 --> FormPage
 
 ```
-
-### Flows
-
-#### Data Flow between React components
-
-![CRUD data flow diagram](design-assets/flows/crud-flow.png)
-
-### User Flows
-
-#### Employee Add/Edit Form
-
-```mermaid
-flowchart TD
-
-%% Entry
-A0[User views Employee List]
-  --> A1[Clicks 'Create' or 'Edit']
-  --> A2[Navigates to Employee Form Page]
-  --> A3[Clicks 'Exit'] --> Z2[Back to Employee List]
-
-%% Form Mode Check
-A2 --> A4{New Employee?}
-
-%% Create Flow
-A4 -- Yes --> B1[Render empty form]
-  --> B2[User enters details]
-  --> B3[Clicks Submit]
-  --> B4[POST /employees] --> D2[Loading...]
-
-%% Edit Flow
-A4 -- No --> C1[Render form with pre-filled data]
-  --> C2[User updates details]
-  --> C3[Clicks Submit]
-  --> C4[PATCH /employees/:id] --> D2
-
-%% Result
-D2 --> D3{Success?}
-D3 -- No --> E1[Show validation errors]
-D3 -- Yes --> E2[Show success message]
-
-%% Contract Prompt
-E2 --> G1[Prompt: 'Add/Edit Contract?']
-G1 -->|Yes| Z1[Go to Contract Form]
-G1 -->|No| Z2
-
-```
-
-#### Contract Add/Edit Form
-
-```mermaid
-flowchart TD
-
-%% Entry Points
-
-A1[Entry Point 1: User finishes creating new employee]
---> A2[Prompt: Add Contract Now?]
-A2 -->|No| Z1[Redirect to Employee List]
-A2 -->|Yes| B2
-
-Z1 --> A3[Entry Point 2: User views Employee List]
---> A4[Clicks 'Add Contract' on employee card]
---> B2
-
-%% Contract Creation Flow
-B2[Show empty contract form]
---> B4[User fills out contract form]
---> B5[User clicks submit button]
---> B6[POST /contracts]
---> B7[Loading...]
---> B8{Success?}
-B8 -- Yes --> C1[Show success message] --> Z1
-B8 -- No --> C2[Show validation errors] -->B4
-
-```
-
----
 
 <!--
 ### React Code Structure
@@ -310,12 +216,7 @@ Database Schema Updates:
 ### 16/07/2025
 
 - Edit feature prefilled form with data from card + added changes
-- Create basic form inputs and submit button
-- Form component tests
-
-### 22/07/2025
-
-- Mapped user flow diagrams for employee and contract forms
+- Form tests
 
 ---
 
@@ -323,28 +224,27 @@ Database Schema Updates:
 
 ### In progress
 
+- Create basic form inputs and submit button(use React Form API?)
+
 ### Sprint
 
 Form React UI for create/edit features:
 
 - create : send data POST
-- save formData from both Employee and Contract forms
-- only fetch until both are collected
 
-User flow
-
+- structure in index and partials/variables: color palette, typography
+- write up reusable mixins: eg. flexbox wrappers
 - validation with zod
 
 ### Backlog
 
 Form validation
 
-UI styling - Global styling (tailwind)
+UI styling - Global styling
 
-- install tailwind
-- use tailwind play to preview designs before implementation
-- gather and import any design system assets
-- structure in index and partials/variables: color palette, typography
-- delete any redundant scss files
+- research SCSS vs tailwind styling for React components
+- gather and import design system assets
+
+- explore UI libraries /inspo if time (produce UI MVP ref first)
 
 ---

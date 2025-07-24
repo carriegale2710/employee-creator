@@ -24,7 +24,10 @@ dist-ssr
 *.sw?
 
 .env
+<<<<<<< HEAD
 .env.production
-.env.development
+=======
+.env.production
 
 react-refs/*
+>>>>>>> eb39133 (docs: updates schemas and uploads ERD)

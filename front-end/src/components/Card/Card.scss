@@ -1,18 +1,30 @@
 .card {
+  text-align: left;
+  border: 1px solid black;
+}
+
+.data {
+  min-width: 50%;
+  border: 1px solid black;
+  h2 {
+    margin: 0px;
+  }
+}
+
+.row {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  text-align: left;
+  border: 1px solid black;
   justify-content: space-between;
-  flex-wrap: wrap;
-  background-color: #e8e7e7;
-  padding: 1rem;
-  margin: 0.5rem;
-  border-radius: 4px;
 }
 
 .buttons {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
-  margin-left: 0.5rem;
+  text-align: left;
+  height: fit-content;
+  gap: 5px;
+  font-size: small;
+  border: 1px solid black;
 }

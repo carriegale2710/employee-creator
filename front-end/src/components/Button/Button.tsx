@@ -10,7 +10,7 @@ interface ButtonProps
 }
 
 const Button: React.FC<ButtonProps> = ({
-  type,
+  type = "button",
   altText,
   children,
   ...rest
