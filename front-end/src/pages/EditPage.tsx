@@ -35,6 +35,11 @@ const EditPage = () => {
   const onDelete = (id: number) => {
     console.log("Deleting Employee ID:", id);
     console.log("with form data:", employeeData);
+    //toast message to confirm deletion
+    const confirmation = window.confirm(
+      "Are you sure you want to delete this employee? This action cannot be undone."
+    );
+    if (!confirmation) return;
 
     deleteEmployee(id)
       .then(() => {
