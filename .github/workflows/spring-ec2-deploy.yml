@@ -9,7 +9,7 @@ on:
 
   pull_request:
     branches: ["main"]
-    paths: ["employee/**"]
+    paths: ["employee/**"] # Only run if something in back-end changes
 
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
 
@@ -41,21 +41,27 @@ jobs:
       - name: 📤 Upload jar to EC2
         uses: appleboy/scp-action@v0.1.1
         with:
-          host: ${{ secrets.EC2_HOST }}
+          host: ${{ secrets.EC2_HOST }} # The EC2 instance's public IP or DNS name
           username: ec2-user
-          key: ${{ secrets.EC2_SSH_KEY }}
+          key: ${{ secrets.EC2_SSH_KEY }} # The SSH private key to connect to the EC2 instance
           source: "./target/employee-0.0.1-SNAPSHOT.jar"
           target: "/home/ec2-user"
 
       - name: 🔁 Restart app on EC2
         uses: appleboy/ssh-action@v0.1.5
         with:
-          host: ${{ secrets.EC2_HOST }}
+          host: ${{ secrets.EC2_HOST }} # The EC2 instance's public IP or DNS name
           username: ec2-user
-          key: ${{ secrets.EC2_SSH_KEY }}
+          key: ${{ secrets.EC2_SSH_KEY }} # The SSH private key to connect to the EC2 instance
           script: |
             echo "Stopping any existing app..."
+
             pkill -f employee-0.0.1-SNAPSHOT.jar || true
+            echo "Waiting for the app to stop..."
+            sleep 5 # Wait for the process to stop completely
 
             echo "Starting new app..."
             nohup java -jar employee-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
+            echo "App started successfully."
+            echo "You can check the logs with 'tail -f app.log' to see the output."
+            echo "Deployment complete!"
