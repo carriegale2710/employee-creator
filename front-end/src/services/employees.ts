@@ -66,3 +66,13 @@ export const updateEmployee = async (id: number, formData: EmployeeDTO) => {
   const result = await response.json();
   return result;
 };
+
+export const deleteEmployee = async (id: number) => {
+  const response = await fetch(`${API_URL}/employees/${id}`, {
+    method: "DELETE",
+  });
+  if (!response.ok) {
+    throw new Error("Failed to delete employee");
+  }
+  return true; // Return true on successful deletion
+};

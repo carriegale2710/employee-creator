@@ -119,6 +119,14 @@ const EmployeeForm = ({ prefilled }: EmployeeFormProps) => {
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Submitting..." : "Submit"}
         </Button>
+
+        <Button
+          style={{ backgroundColor: "lightgray", color: "black" }}
+          type="button"
+          onClick={() => console.log("Cancel button clicked")}
+        >
+          Cancel
+        </Button>
       </form>
     </>
   );
