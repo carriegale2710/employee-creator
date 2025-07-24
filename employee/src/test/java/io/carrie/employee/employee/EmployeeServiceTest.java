@@ -15,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
 
+import io.carrie.employee.contract.ContractRepository;
 import io.carrie.employee.employee.dtos.CreateEmployeeDTO;
 import io.carrie.employee.employee.dtos.UpdateEmployeeDTO;
 
@@ -27,6 +28,9 @@ public class EmployeeServiceTest {
 
         @Mock
         private EmployeeRepository employeeRepository;
+
+        @Mock
+        private ContractRepository contractRepository;
 
         @Mock
         private ModelMapper modelMapper;
@@ -60,7 +64,8 @@ public class EmployeeServiceTest {
         @Test
         public void deleteById_CallsDeleteByIdOnRepo() {
                 doReturn(new Employee()).when(employeeService).findById(1);
-                this.employeeService.deleteById(1);
+                this.employeeService.deleteEmployeeById(1);
+                verify(this.contractRepository).deleteAllByEmployeeId(1);
                 verify(this.employeeRepository).deleteById(1);
         }
 

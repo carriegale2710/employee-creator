@@ -7,7 +7,6 @@ import {
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import { useForm } from "react-hook-form";
-import { NavLink } from "react-router-dom";
 
 export interface EmployeeFormProps {
   prefilled?: Employee | null;
@@ -26,6 +25,7 @@ const EmployeeForm = ({ prefilled }: EmployeeFormProps) => {
 
   const onSubmit = async (formData: EmployeeDTO) => {
     // Handle form submission, e.g., send data to backend
+
     try {
       if (!prefilled)
         console.log("Creating employee with form data:", formData);
@@ -43,7 +43,7 @@ const EmployeeForm = ({ prefilled }: EmployeeFormProps) => {
       const result = await (prefilled
         ? updateEmployee(prefilled.id, formData)
         : createEmployee(formData));
-      console.log("Employee created:", result);
+      console.log("Employee successfully created:", result);
       // todo - redirect or show a success message Toast to user
       // For now, just log the result
       return result;
