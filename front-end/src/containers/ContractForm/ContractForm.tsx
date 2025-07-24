@@ -4,7 +4,7 @@ import Input from "../../components/Input/Input";
 import {
   createContract,
   type Contract,
-  type CreateContractDTO,
+  type ContractDTO,
 } from "../../services/contracts";
 import { useState } from "react";
 import Select from "../../components/Select/Select";
@@ -18,13 +18,13 @@ const ContractForm = ({ prevContract }: ContractFormProps) => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<CreateContractDTO>();
+  } = useForm<ContractDTO>();
 
   // console.log("Errors:", errors); // Add this to see if validation is blocking submit
 
   const [usingTemplate, setUsingTemplate] = useState(false);
 
-  const onSubmit = async (formData: CreateContractDTO) => {
+  const onSubmit = async (formData: ContractDTO) => {
     // Handle form submission, e.g., send data to backend
     try {
       console.log("Form Data:", formData);

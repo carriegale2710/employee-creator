@@ -1,3 +1,5 @@
+import type { Contract } from "./contracts";
+
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 console.log("API URL:", API_URL);
 console.log("Environment mode:", import.meta.env.MODE);
