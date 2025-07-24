@@ -2,19 +2,32 @@ import { useState } from "react";
 import Button from "../components/Button/Button";
 import EmployeeForm from "../containers/EmployeeForm/EmployeeForm";
 import { employee1 } from "../services/mockEmployees";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
+import { deleteEmployee } from "../services/employees";
 
 //needs to preload data from selected employee from Card
 // you come here on Edit Button
 
-const onDelete = () => {
+const onDelete = (id: number) => {
   // Logic to handle delete action
   console.log("Delete Employee button clicked");
-  // You can implement the delete functionality here
+  deleteEmployee(id)
+    .then(() => {
+      console.log("Employee deleted successfully");
+      // Redirect or update state to reflect deletion
+    })
+    .catch((error) => {
+      console.error("Error deleting employee:", error);
+      // Handle error, e.g., show a notification
+    });
 };
 
 const EditPage = () => {
   const [deleteWarningVisible, setDeleteWarningVisible] = useState(false);
+  const { id } = useParams();
+  if (!id) {
+    throw new Error("Employee ID is required for editing");
+  }
 
   return (
     <>
@@ -31,7 +44,7 @@ const EditPage = () => {
         <Button
           style={{ backgroundColor: "red" }}
           type="button"
-          onClick={onDelete}
+          onClick={() => onDelete(Number(id))}
           onMouseOver={() => {
             setDeleteWarningVisible(true);
           }}
