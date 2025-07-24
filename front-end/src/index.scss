@@ -72,6 +72,28 @@ a:hover {
   text-decoration: underline;
 }
 
+/* Global Navigation Styles */
+nav {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  font-size: 1.2rem;
+  padding: 1rem;
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
 /* Global Form Elements */
 label {
   display: block;
