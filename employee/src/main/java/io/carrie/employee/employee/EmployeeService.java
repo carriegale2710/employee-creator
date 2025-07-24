@@ -19,9 +19,9 @@ public class EmployeeService {
     private ModelMapper updateModelMapper;
     private ContractRepository contractRepository;
 
-    private void checkEmail(String email, EmployeeRepository employeeRepository) {
+    private void checkEmail(String email, EmployeeRepository employeeRepository) throws IllegalArgumentException {
         if (email != null && employeeRepository.existsByEmail(email)) {
-            throw new IllegalArgumentException(String.format("Employee with email %s already exists", email));
+            throw new IllegalArgumentException(String.format("Employee with email '%s' already exists", email));
         }
     }
 
@@ -37,7 +37,7 @@ public class EmployeeService {
         return this.employeeRepository.findAll();
     }
 
-    public Employee create(CreateEmployeeDTO dto) throws IllegalArgumentException {
+    public Employee create(CreateEmployeeDTO dto) {
         Employee created = modelMapper.map(dto, Employee.class);
         checkEmail(created.getEmail(), employeeRepository);
         return this.employeeRepository.save(created);

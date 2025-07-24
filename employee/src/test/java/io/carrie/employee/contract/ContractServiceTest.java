@@ -68,7 +68,7 @@ public class ContractServiceTest {
                 doReturn(new Contract())
                                 .when(contractService).findById(1);
 
-                this.contractService.deleteById(1);
+                this.contractService.deleteContractById(1);
 
                 verify(this.contractRepository).deleteById(1);
         }
