@@ -316,6 +316,20 @@ Database Schema Updates:
 ### 22/07/2025
 
 - Mapped user flow diagrams for employee and contract forms
+- create : send data POST
+- save formData from both Employee and Contract forms
+- fixing e2e tests
+
+### 23/07/2025
+
+- Front-end app is not switching the VITE api key according to env (dev vs production mode).
+- Minimalism themed global scss styling for clean look
+
+### 24/07/2025
+
+- Duplicate data (for email) posting needs to return BAD_REQUEST status code.
+- Added warnings and confirmations to prevent accidental permanent employee deletions
+- Deleting an employee also deletes any associated contracts by default to declutter system.
 
 ---
 
@@ -323,23 +337,15 @@ Database Schema Updates:
 
 ### In progress
 
+Form validation
+
 ### Sprint
-
-Form React UI for create/edit features:
-
-- create : send data POST
-- save formData from both Employee and Contract forms
-- only fetch until both are collected
-
-User flow
-
-- validation with zod
 
 ### Backlog
 
-Form validation
+- validation with zod
 
-UI styling - Global styling (tailwind)
+UI styling - Advanced styling (tailwind)
 
 - install tailwind
 - use tailwind play to preview designs before implementation

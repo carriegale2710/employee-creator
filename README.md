@@ -199,14 +199,15 @@ Note: \* = MVP (priority)
 
 #### 👩‍🏭 Employee Maker
 
-| BE  | FE  | Feature                            | User Wants To...                  | So They Can...            | User should be able to...                                                        |
-| --- | --- | ---------------------------------- | --------------------------------- | ------------------------- | -------------------------------------------------------------------------------- |
-| x   | x   | \*`List Employees`                 | See all employees                 | Review records            | Click link to view a paginated list of all employee records                      |
-| x   |     | \*`Create Employee`                | Add a new employee                | Register new hire         | Click button that opens a form to add a new employee as a new record in DB       |
-| x   |     | \*`Delete Employee`                | Delete employee                   | Remove old record         | Click a button to delete a record of an existing employee in DB                  |
-| x   |     | \*`Update Employee`                | Edit existing employee            | Fix errors or update info | Click an edit button that opens a form pre-filled with data to update the record |
-| x   |     | `Find Employee by ID/name`         | Search specific employee          | View or confirm details   | Enter an ID/name in a search box and fetch/display the record if it exists       |
-|     |     | `Filter List of current Employees` | See all employees currently hired | Review records            | Click link to view a paginated list of all employee records                      |
+| BE  | FE  | Feature             | User Wants To...       | So They Can...            | User should be able to...                                                        |
+| --- | --- | ------------------- | ---------------------- | ------------------------- | -------------------------------------------------------------------------------- |
+| x   | x   | \*`List Employees`  | See all employees      | Review records            | Click link to view a paginated list of all employee records                      |
+| x   |     | \*`Create Employee` | Add a new employee     | Register new hire         | Click button that opens a form to add a new employee as a new record in DB       |
+| x   |     | \*`Delete Employee` | Delete employee        | Remove old record         | Click a button to delete a record of an existing employee in DB                  |
+| x   |     | \*`Update Employee` | Edit existing employee | Fix errors or update info | Click an edit button that opens a form pre-filled with data to update the record |
+
+| x | | `Find Employee by ID/name` | Search specific employee | View or confirm details | Enter an ID/name in a search box and fetch/display the record if it exists |
+| | | `Filter List of current Employees` | See all employees currently hired | Review records | Click link to view a paginated list of all employee records |
 
 #### 📄 Contract Maker
 
@@ -262,8 +263,6 @@ Each **employee can have multiple contracts**, and contracts are managed separat
 
 Features that are buggy / flimsy/not functional yet: -->
 
-- Front-end app is not switching the VITE api key according to env (dev vs production mode).
-- Duplicate data (for email) posting needs to return BAD_REQUEST status code.
 - [14/07/25] Custom domain for EC2 : for fetching safely from front-end (otherwise error below)
   -> stuck at AWS security settings : health check failing, need to look at EC2 security group setting again
 
@@ -298,6 +297,8 @@ Other:
 
 - Setting up Github Actions was a bit tricky in terms of config. Too many commits to test it.
 - Deployment was straight forward but linking up BE with FE a bit tricky with setting up AWS security settings for custom domain for EC2 server hosting
+- Maintaining a cleaner git commit history and merging with multiple branches
+- Best strategies / protocol for pushing new features to production eg. pull request, workflows
 
 ## Retrospective: Lessons + skills learnt from this project
 
