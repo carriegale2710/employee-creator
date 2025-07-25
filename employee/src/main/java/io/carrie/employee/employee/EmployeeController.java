@@ -47,13 +47,14 @@ public class EmployeeController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Integer id) {
-        this.employeeService.deleteById(id);
+        this.employeeService.deleteEmployeeById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<Employee> updateById(@PathVariable Integer id, @Valid @RequestBody UpdateEmployeeDTO dto) {
         Employee edited = this.employeeService.updateById(id, dto);
+
         return new ResponseEntity<>(edited, HttpStatus.OK);
     }
 

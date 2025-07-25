@@ -45,7 +45,7 @@ public class ContractController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Integer id) {
-        this.contractService.deleteById(id);
+        this.contractService.deleteContractById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

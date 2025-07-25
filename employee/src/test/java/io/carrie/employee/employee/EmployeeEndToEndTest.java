@@ -232,7 +232,7 @@ public class EmployeeEndToEndTest {
         @Test
         public void create_EmailIsTaken_BadRequest() {
             employeeDto.setEmail("timmehhh@example.com");
-            String expectedError = "Employee with email already exists";
+            String expectedError = "Employee with email 'timmehhh@example.com' already exists";
 
             String actualError = given()
                     .contentType(ContentType.JSON)
@@ -307,15 +307,16 @@ public class EmployeeEndToEndTest {
         @Test
         public void patchById_EmailIsTaken_BadRequest() {
             String takenEmail = employeeList.get(0).getEmail();
+            Integer differentEmployeeId = employeeList.get(1).getId(); // Use a different employee
             employeeDto.setEmail(takenEmail);
 
             String expectedError = "Employee with email already exists";
             String actualError = given().contentType(ContentType.JSON).body(employeeDto)
-                    .when().post("/employees")
+                    .when().patch("/employees/" + differentEmployeeId)
                     .then().statusCode(400)
                     .extract().asString(); // plain string response
 
-            // assertEquals(expectedError.trim(), actualError.trim()); // todo- fix
+            assertEquals(expectedError.trim(), actualError.trim()); // todo- fix
 
         }
 

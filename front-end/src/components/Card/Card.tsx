@@ -14,18 +14,14 @@ const Card = ({ employee }: CardProps) => {
         <p id="employee-name" style={{ fontWeight: "bold", fontSize: "1.2em" }}>
           {employee.firstName} {employee.lastName}
         </p>
-        <p id="employee-email">{employee.email} </p>
-        <p id="employee-phone">{employee.phone || ""}</p>
-        <p id="employee-address">{employee.address || ""}</p>
+        <p>Employee ID: {employee.id}</p>
+        <p id="employee-email">Email: {employee.email} </p>
+        <p id="employee-phone">Phone: {employee.phone || ""}</p>
+        <p id="employee-address">Address: {employee.address || ""}</p>
       </div>
       <span className="buttons">
         <NavLink to={`/employees/${employee.id}/edit`}>
           <Button>Edit</Button>
-        </NavLink>
-        <Button>Delete</Button>
-        <br />
-        <NavLink to={`/employees/new/contract`}>
-          <Button>New Contract</Button>
         </NavLink>
       </span>
     </div>

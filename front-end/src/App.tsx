@@ -10,21 +10,26 @@ import CreateContract from "./pages/CreateContract";
 
 function App() {
   return (
-    <BrowserRouter>
-      <NavBar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/employees" element={<ListPage />} />
-        <Route path="/employees/new" element={<CreateEmployee />} />
-        <Route path="/employees/:id/edit" element={<EditPage />} />
-        <Route path="/employees/new/contract" element={<CreateContract />} />
-        <Route
-          path="/employees/:id/new/contract"
-          element={<CreateContract />}
-        />
-        <Route path="/*" element={<NotFoundPage />} />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/employees" element={<ListPage />} />
+          <Route path="/employees/new" element={<CreateEmployee />} />
+          <Route path="/employees/:id/edit" element={<EditPage />} />
+          <Route path="/employees/new/contract" element={<CreateContract />} />
+          <Route
+            path="/employees/:id/new/contract"
+            element={<CreateContract />}
+          />
+          <Route path="/*" element={<NotFoundPage />} />
+        </Routes>
+      </BrowserRouter>
+      <footer>
+        <p>&copy; 2023 Employee Management System</p>
+      </footer>
+    </>
   );
 }
 

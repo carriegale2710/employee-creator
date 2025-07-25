@@ -1,4 +1,6 @@
+import { NavLink } from "react-router-dom";
 import EmployeeForm from "../containers/EmployeeForm/EmployeeForm";
+import Button from "../components/Button/Button";
 
 const CreatePage = () => {
   return (
@@ -9,6 +11,16 @@ const CreatePage = () => {
       </header>
       <main>
         <EmployeeForm />
+
+        <NavLink to="/employees">
+          <Button
+            style={{ backgroundColor: "lightgray", color: "black" }}
+            type="button"
+            onClick={() => console.log("Cancel button clicked")}
+          >
+            Cancel
+          </Button>
+        </NavLink>
       </main>
     </>
   );
