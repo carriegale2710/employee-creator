@@ -331,7 +331,7 @@ B8 -- No --> C2[Show validation errors] -->B4
        - Obstacles & what you learned (esp. solo dev insight)  
        - Screenshots or demo video
 
----
+### 23/07/2025
 
 ## Future Goals
 
@@ -353,7 +353,6 @@ B8 -- No --> C2[Show validation errors] -->B4
 - https://react.dev/learn/thinking-in-react
 - https://react.dev/learn/reusing-logic-with-custom-hooks
 
----
 
 ## Change Log
 
