@@ -272,6 +272,7 @@ An aim of this project was to understand best practices used in business setting
 - Using **main** + **dev** branches mimicked team workflows — great for practicing merges and resolving conflicts.
 - GitHub Actions for CI/CD and testing was challenging but rewarding.
 - Branching for each feature felt a bit overkill for solo work but valuable production protocol practice for team projects.
+- Learning advanced Git commands like rebase and [squashing commits](https://www.datacamp.com/tutorial/git-squash-commits) was helpful for clean up merge histories
 
 Example:
 
@@ -333,7 +334,3 @@ gitGraph
 MIT License.
 
 ---
-
-## Helpful Resources
-
-- [What is a monorepo](https://monorepo.tools/#what-is-a-monorepo)
