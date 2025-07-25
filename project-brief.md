@@ -24,8 +24,8 @@ Also code should be:
 
 - [x] Production ready.
   - [ ] (except for custom domain - healthcheck)
-- [ ] Understandable and maintainable by other developers.
-- [ ] Robust and handle error situations.
+- [x] Understandable and maintainable by other developers.
+- [x] Robust and handle error situations.
 - [x] Bug free, compile and work.
 - [x] Include instructions to compile and run the API and the Web app in localhost.
 - [x] Hosting (Heroku, AWS, Azure, etc.) is required.
@@ -37,7 +37,7 @@ Also code should be:
 
 - [ ] React Redux middlewear is recommended like thunks or epics to handle async actions.
 - [x] Typescript is recommended.
-- [ ] React hooks are recommended.
+- [x] React hooks are recommended.
 - [ ] You can include any other open source NPM library.
 - [x] Feel free to use your favorite CSS framework.
   - [ ] Tailwind is a good choice
@@ -45,10 +45,10 @@ Also code should be:
   - [ ] input required
   - [ ] input max length
 - Reccomended:
-  - [ ] React Hook Form
+  - [x] React Hook Form
   - [ ] Zod are reccomended
 - The site should be responsive.
-  - [ ] media queries
+  - [x] media queries
   - [x] flexbox
 
 ### RESTful API hints
@@ -57,7 +57,7 @@ Also code should be:
   - [x] MySQL is reccomended
 - Implementing an API logging strategy.
   - [x] Log2j **highly** reccomended
-- [/] Implementing error handling strategy.
+- [x] Implementing error handling strategy.
 - At least 3 endpoints are required:
   - [x] To create an employee
   - [x] To get a list of existing employees
@@ -81,8 +81,8 @@ Frontend
 - [x] Vite with `react-ts`
 - [x] Use SCSS instead of CSS, `npm install sass`
   - [ ] Or just use Tailwind
-- [ ] [React Form Hook for form validation & submission](https://react-hook-form.com/get-started)
-- [ ] [Typescript React Cheatsheet](https://react-typescript-cheatsheet.netlify.app/docs/basic/setup)
+- [x] [React Form Hook for form validation & submission](https://react-hook-form.com/get-started)
+- [x] [Typescript React Cheatsheet](https://react-typescript-cheatsheet.netlify.app/docs/basic/setup)
 - [x] [React Router for routes](https://reactrouter.com/en/main/start/tutorial)
 
 ### Backend
