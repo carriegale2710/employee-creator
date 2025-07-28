@@ -228,7 +228,8 @@ Backend:
 - Setting up **GitHub Actions** was tricky—required many commits to get configs right.
 - Deployment went smoothly, but linking backend & frontend on AWS EC2 with a custom domain took some tweaking of security settings.
 - Maintaining TDD was a challenge under a tight deadline. Found a middle ground of implementing tests after testing in browser to be more rewarding due to lack of specifications - made writing tests first difficult.
-
+- Setting up Github Actions was a bit tricky in terms of config. Too many commits to test it.
+- Maintaining a cleaner git commit history and merging with multiple branches
 ---
 
 ## What I Learned
@@ -310,12 +311,12 @@ gitGraph
     commit id: "Refactor controller logic"
     checkout dev
     merge refactor/backend-cleanup
-
     checkout main
     merge dev
 ```
 
-#### Documentaion Strategy: READMEs + Changelogs
+
+#### Documentation Strategy: READMEs + Changelogs
 
 - Split up documentation between back-end and front-end, and having changelogs helps keptp it readable and focused. This follows [monorepo](https://monorepo.tools/#what-is-a-monorepo) patterns often used in big tech industries.
 

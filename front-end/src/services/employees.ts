@@ -1,8 +1,9 @@
 import type { Contract } from "./contracts";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
+
 console.log("API URL:", API_URL);
-console.log("Environment mode:", import.meta.env.MODE);
+console.log("Environment mode (employees):", import.meta.env.MODE);
 
 export interface Employee {
   id: number;
@@ -73,7 +74,7 @@ export const deleteEmployee = async (id: number) => {
     method: "DELETE",
   });
   if (!response.ok) {
-    throw new Error("delete fetch failed for employee ID " + id);
+    throw new Error("Delete fetch failed for employee ID " + id);
   }
   return true; // Return true on successful deletion
 };

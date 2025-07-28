@@ -1,8 +1,7 @@
 import type { Employee } from "./employees";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
-console.log("API URL:", API_URL);
-console.log("Environment mode:", import.meta.env.MODE);
+console.log("API URL (contracts):", API_URL);
 
 export type Department =
   | "ENGINEERING"
@@ -67,7 +66,7 @@ export const createContract = async (formData: ContractDTO) => {
     body: JSON.stringify(formData),
   });
   if (!response.ok) {
-    throw new Error("Failed to create employee");
+    throw new Error("Failed to create contract");
   }
   const result = await response.json();
   return result;
