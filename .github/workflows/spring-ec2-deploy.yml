@@ -54,14 +54,19 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }} # The SSH private key to connect to the EC2 instance
           script: |
-            echo "Stopping any existing app..."
-
-            pkill -f employee-0.0.1-SNAPSHOT.jar || true
             echo "Waiting for the app to stop..."
+            pkill -f employee-0.0.1-SNAPSHOT.jar || true
             sleep 5 # Wait for the process to stop completely
+            echo "App stopped successfully."
+
+            echo "Setting up environment variables..."
+            export DB_NAME=${{ secrets.DB_NAME }}
+            export MYSQL_USER=${{ secrets.MYSQL_USER }}
+            export MYSQL_PASS=${{ secrets.MYSQL_PASS }}
 
             echo "Starting new app..."
             nohup java -jar employee-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
             echo "App started successfully."
+
             echo "You can check the logs with 'tail -f app.log' to see the output."
             echo "Deployment complete!"
