@@ -1,4 +1,6 @@
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+# For more information see:
+# https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+# https://www.baeldung.com/ops/github-actions-deploy-ec2
 
 name: Spring App EC2 Deploy
 
@@ -9,59 +11,128 @@ on:
 
   pull_request:
     branches: ["main"]
-    paths: ["employee/**"] # Only run if something in back-end changes
+    paths: ["employee/**"]
 
-  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 permissions:
-  id-token: write # Allows the workflow to obtain an ID token to authenticate with AWS securely
-  contents: read # Grants permission to read the repository content (useful for actions like checking out code)
+  contents: read
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest # The job runs on the latest Ubuntu environment provided by GitHub Actions
-    defaults:
-      run:
-        working-directory: ./employee # Spring app folder
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source
+      - name: 📥 Checkout source
         uses: actions/checkout@v4
 
-      - name: Set up JDK 21
+      - name: ☕ Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: "21"
           distribution: "temurin"
-          cache: maven # cache dependencies to speed up workflow runs
+          cache: maven
 
-      - name: Build Spring Boot app on local env
-        run: mvn clean install -DskipTests
+      - name: 🔨 Build Spring Boot application
+        run: |
+          cd employee
+          mvn clean install
+          echo "✅ Build completed successfully"
+          ls -lh target/employee-0.0.1-SNAPSHOT.jar
 
-      - name: 📤 Upload jar to EC2
-        uses: appleboy/scp-action@v0.1.1
-        with:
-          host: ${{ secrets.EC2_HOST }} # The EC2 instance's public IP or DNS name
-          username: ec2-user
-          key: ${{ secrets.EC2_SSH_KEY }} # The SSH private key to connect to the EC2 instance
-          source: "./target/employee-0.0.1-SNAPSHOT.jar"
-          target: "/home/ec2-user"
+      - name: 🚀 Deploy to EC2 via SSH
+        env:
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ec2-user
+          DB_NAME: ${{ secrets.DB_NAME }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASS: ${{ secrets.MYSQL_PASS }}
+        run: |
+          # Save SSH key to file and set permissions
+          echo "$EC2_SSH_KEY" > ec2-key.pem
+          chmod 600 ec2-key.pem
 
-      - name: 🔁 Restart app on EC2
-        uses: appleboy/ssh-action@v0.1.5
-        with:
-          host: ${{ secrets.EC2_HOST }} # The EC2 instance's public IP or DNS name
-          username: ec2-user
-          key: ${{ secrets.EC2_SSH_KEY }} # The SSH private key to connect to the EC2 instance
-          script: |
-            echo "Stopping any existing app..."
+          # Test network connectivity first
+          echo "🔍 Testing network connectivity to EC2 instance..."
+          echo "EC2_HOST: $EC2_HOST"
+          ping -c 3 $EC2_HOST || echo "⚠️ Ping failed, but SSH might still work"
 
+          # Test SSH connectivity with timeout
+          echo "🔐 Testing SSH connectivity..."
+          timeout 30 ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o ServerAliveInterval=5 -o ServerAliveCountMax=3 -i ec2-key.pem ${EC2_USER}@${EC2_HOST} "echo 'SSH connection successful'" || {
+            echo "❌ SSH connection failed!"
+            echo "Troubleshooting information:"
+            echo "- Check if EC2 instance is running"
+            echo "- Verify security group allows SSH (port 22) from GitHub Actions IPs"
+            echo "- Confirm EC2_HOST and EC2_SSH_KEY secrets are correct"
+            exit 1
+          }
+
+          # Upload JAR file using SCP with retry logic
+          echo "📦 Uploading JAR file to EC2..."
+          for attempt in 1 2 3; do
+            echo "Upload attempt $attempt/3..."
+            if timeout 120 scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o ServerAliveInterval=5 -o ServerAliveCountMax=3 -i ec2-key.pem \
+              employee/target/employee-0.0.1-SNAPSHOT.jar \
+              ${EC2_USER}@${EC2_HOST}:~/employee-0.0.1-SNAPSHOT.jar; then
+              echo "✅ JAR file uploaded successfully on attempt $attempt"
+              break
+            else
+              echo "❌ Upload attempt $attempt failed"
+              if [ $attempt -eq 3 ]; then
+                echo "❌ All upload attempts failed!"
+                exit 1
+              fi
+              echo "⏳ Waiting 10 seconds before retry..."
+              sleep 10
+            fi
+          done
+
+          # Deploy and start application via SSH
+          echo "🚀 Deploying application on EC2..."
+          timeout 180 ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o ServerAliveInterval=5 -o ServerAliveCountMax=3 -i ec2-key.pem ${EC2_USER}@${EC2_HOST} << 'EOF'
+            echo "🛑 Stopping existing Spring Boot application..."
             pkill -f employee-0.0.1-SNAPSHOT.jar || true
-            echo "Waiting for the app to stop..."
-            sleep 5 # Wait for the process to stop completely
-
-            echo "Starting new app..."
+            
+            echo "⏳ Waiting for process to terminate..."
+            sleep 5
+            
+            echo "✅ Verifying JAR file upload..."
+            if [ -f "employee-0.0.1-SNAPSHOT.jar" ]; then
+              echo "✅ JAR file found: $(ls -lh employee-0.0.1-SNAPSHOT.jar)"
+            else
+              echo "❌ JAR file not found after upload!"
+              exit 1
+            fi
+            
+            echo "🚀 Starting new Spring Boot application..."
+            export DB_NAME="${{ secrets.DB_NAME }}"
+            export MYSQL_USER="${{ secrets.MYSQL_USER }}"
+            export MYSQL_PASS="${{ secrets.MYSQL_PASS }}"
+            
             nohup java -jar employee-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
-            echo "App started successfully."
-            echo "You can check the logs with 'tail -f app.log' to see the output."
-            echo "Deployment complete!"
+            echo "📝 Application started in background, PID: $!"
+            
+            echo "⏳ Waiting for application to initialize..."
+            sleep 15
+            
+            echo "🔍 Checking if application is running..."
+            if pgrep -f employee-0.0.1-SNAPSHOT.jar > /dev/null; then
+              echo "✅ Application is running successfully!"
+              echo "📊 Process details:"
+              pgrep -f employee-0.0.1-SNAPSHOT.jar | head -5
+            else
+              echo "❌ Application failed to start!"
+              echo "📋 Last 20 lines of application log:"
+              tail -20 app.log || echo "No log file found"
+              exit 1
+            fi
+            
+            echo "🎉 Deployment completed successfully!"
+            echo "📄 Check logs with: tail -f app.log"
+            echo "🔍 Monitor process with: ps aux | grep employee"
+          EOF
+
+          # Clean up SSH key
+          rm -f ec2-key.pem
