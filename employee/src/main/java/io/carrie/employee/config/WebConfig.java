@@ -9,8 +9,25 @@ import org.springframework.lang.NonNull;
 public class WebConfig implements WebMvcConfigurer {
 
     public void addCorsMappings(@NonNull CorsRegistry registry) {
-        String[] allowedOrigins = { "http://localhost:5173/", "http://120.0.0.1:5173/" };
-        registry.addMapping("/**").allowedOrigins(allowedOrigins).allowedMethods("*").allowedHeaders("*");
-    }
 
+        // Define allowed origins for CORS
+        // Note: Adjust these origins based on your deployment and development needs
+        String[] allowedOrigins = {
+                "http://localhost:5173",
+                "http://120.0.0.1:5173",
+                "http://localhost:4173",
+                "http://120.0.0.1:4173",
+                "https://d3bcyx0s1yb5do.cloudfront.net",
+                "https://d3bcyx0s1yb5do.cloudfront.net/employees",
+                "https://d3bcyx0s1yb5do.cloudfront.net/contracts",
+                "https://d3bcyx0s1yb5do.cloudfront.net/departments",
+                "https://employeecreator.my" };
+
+        // Configure CORS mapping
+        // This allows all methods and headers from the specified origins
+        registry.addMapping("/**")
+                .allowedOrigins(allowedOrigins)
+                .allowedMethods("*")
+                .allowedHeaders("*");
+    }
 }

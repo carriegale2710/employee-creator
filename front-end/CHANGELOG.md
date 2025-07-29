@@ -1,5 +1,14 @@
 # Employee Creator Frontend - Change Log
 
+## 28/07/2025 - Dev vs Prod. Mode API Configuration
+
+- **Configuration Consistency:** Aligned development configurations across different environments.
+
+**Impact:** Improved developer experience, better build processes.
+**Related backend changes:** See [Web Configuration](../employee/CHANGELOG.md#28072025)
+
+---
+
 ## 25/07/2025 - TypeScript Configuration & Testing Setup
 
 ### Frontend
