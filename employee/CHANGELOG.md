@@ -1,5 +1,14 @@
 # Employee Creator Backend - Change Log
 
+## 28/07/2025 - Web Configuration
+
+- **Configuration Improvements:** Fixes CORS errors for both development and production application build modes. Works with dev, preview and deployed front-ends.
+
+**Impact:** Improved system reliability, enhanced developer experience.
+**Related backend changes:** See [Dev vs Prod. Mode API Configuration](../front-end/CHANGELOG.md#28072025)
+
+---
+
 ## 25/07/2025 - Service Layer Error Handling
 
 - Implemented custom exception handling in service layer
