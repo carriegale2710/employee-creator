@@ -5,7 +5,10 @@ import java.time.LocalDate;
 
 import org.hibernate.annotations.*;
 
+import io.carrie.employee.contract.enums.ContractType;
+import io.carrie.employee.contract.enums.Department;
 import io.carrie.employee.employee.Employee;
+
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.*;
@@ -33,26 +36,9 @@ public class Contract {
     @OnDelete(action = OnDeleteAction.CASCADE) // NOTE - if the employee is deleted, contracts will also be deleted
     private Employee employee;
 
-    public enum Department {
-        // saved as index in DB
-        ENGINEERING,
-        SALES,
-        DESIGN,
-        MARKETING,
-        WHOLESALE
-    }
-
     @Column
     @Enumerated
     private Department department; // TODO - create Department entity
-
-    public enum ContractType {
-        // saved as index in DB
-        FULL_TIME,
-        PART_TIME,
-        CASUAL,
-        CONTRACT
-    }
 
     @Column
     @Enumerated
