@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 
 import io.carrie.employee.contract.enums.ContractType;
-import io.carrie.employee.contract.enums.Department;
+import io.carrie.employee.department.Department;
 import io.carrie.employee.contract.dtos.CreateContractDTO;
 import io.carrie.employee.employee.Employee;
 import io.carrie.employee.employee.EmployeeRepository;
@@ -65,7 +65,7 @@ public class ContractEndToEndTest {
 
         Contract contract1 = Contract.builder()
                 .employee(employee1)
-                .department(Department.MARKETING)
+                .department(new Department("MARKETING"))
                 .contractType(ContractType.PART_TIME)
                 .salaryAmount(salary1)
                 .hoursPerWeek(20)
@@ -77,7 +77,7 @@ public class ContractEndToEndTest {
 
         Contract contract2 = Contract.builder()
                 .employee(employee2)
-                .department(Department.SALES)
+                .department(new Department("SALES"))
                 .contractType(ContractType.FULL_TIME)
                 .salaryAmount(salary1)
                 .hoursPerWeek(38)
