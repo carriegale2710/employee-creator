@@ -136,3 +136,4 @@ jobs:
 
           # Clean up SSH key
           rm -f ec2-key.pem
+
