@@ -5,17 +5,16 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import io.carrie.employee.common.exceptions.NotFoundException;
-import io.carrie.employee.contract.dtos.CreateContractDTO;
+import io.carrie.employee.common.exceptions.*;
+import io.carrie.employee.contract.dtos.*;
 import io.carrie.employee.employee.Employee;
 import io.carrie.employee.employee.EmployeeService;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class ContractService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ContractService.class);
     private final EmployeeService employeeService;
     private ContractRepository contractRepository;
     private ModelMapper modelMapper;
@@ -29,34 +28,35 @@ public class ContractService {
 
     public Contract create(CreateContractDTO dto) {
         Employee employee = employeeService.findById(dto.getEmployeeId());
-        logger.debug("Creating contract for employee: {} {}", employee.getFirstName(), employee.getLastName());
+        log.debug("Creating contract for employee: {} {}", employee.getFirstName(), employee.getLastName());
 
         Contract created = modelMapper.map(dto, Contract.class);
+        if (created.getStartDate().isAfter(created.getEndDate())) {
+            throw new IllegalArgumentException("Start date cannot be after end date");
+        }
+
         created.setEmployee(employee);
         Contract saved = this.contractRepository.save(created);
-        logger.info("Contract saved to database with ID: {}", saved.getId());
+        log.debug("Successfully saved new contract: {}", saved);
         return saved;
     }
 
     public boolean deleteContractById(Integer id) {
         this.findById(id);
         this.contractRepository.deleteById(id);
-        logger.info("Contract deleted from database with ID: {}", id);
         return true;
     }
 
     public Contract findById(Integer id) throws NotFoundException {
         Optional<Contract> result = this.contractRepository.findById(id);
-        if (result.isEmpty()) {
-            logger.warn("Contract not found with ID: {}", id);
+        if (result.isEmpty())
             throw new NotFoundException("Contract with id " + id + " does not exist");
-        }
+        log.debug("Found contract: {}", result.get());
         return result.get();
     }
 
     public List<Contract> findAll() {
         List<Contract> contracts = this.contractRepository.findAll();
-        logger.debug("Retrieved {} contracts from database", contracts.size());
         return contracts;
     }
 
