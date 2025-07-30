@@ -10,28 +10,23 @@ import io.carrie.employee.contract.dtos.*;
 import io.carrie.employee.employee.Employee;
 import io.carrie.employee.employee.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ContractService {
 
     private final EmployeeService employeeService;
-    private ContractRepository contractRepository;
-    private ModelMapper modelMapper;
-
-    public ContractService(ContractRepository contractRepository, EmployeeService employeeService,
-            ModelMapper modelMapper) {
-        this.contractRepository = contractRepository;
-        this.employeeService = employeeService;
-        this.modelMapper = modelMapper;
-    }
+    private final ContractRepository contractRepository;
+    private final ModelMapper modelMapper;
 
     public Contract create(CreateContractDTO dto) {
         Employee employee = employeeService.findById(dto.getEmployeeId());
         log.debug("Creating contract for employee: {} {}", employee.getFirstName(), employee.getLastName());
 
         Contract created = modelMapper.map(dto, Contract.class);
-        if (created.getStartDate().isAfter(created.getEndDate())) {
+        if (created.getEndDate() != null && created.getStartDate().isAfter(created.getEndDate())) {
             throw new IllegalArgumentException("Start date cannot be after end date");
         }
 
