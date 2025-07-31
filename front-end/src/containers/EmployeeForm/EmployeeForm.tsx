@@ -27,26 +27,26 @@ const EmployeeForm = ({ prefilled }: EmployeeFormProps) => {
     // Handle form submission, e.g., send data to backend
 
     try {
-      if (!prefilled)
+      //creating employee
+      if (!prefilled) {
         console.log("Creating employee with form data:", formData);
-      if (prefilled)
-        console.log(
-          "Updating " +
-            prefilled.firstName +
-            " " +
-            prefilled.lastName +
-            " with ID:",
-          prefilled.id,
-          "with data:",
-          formData
-        );
-      const result = await (prefilled
-        ? updateEmployee(prefilled.id, formData)
-        : createEmployee(formData));
-      console.log("Employee successfully created:", result);
+        const result = await createEmployee(formData);
+        console.log("Employee successfully created:", result);
+        return result;
+      }
+      //updating employee
+      if (prefilled) {
+        console.log(`Updating Employee ID: ${prefilled.id}`);
+        console.log("With form data:", formData);
+
+        // Check if formData has any changes - backend will handle this
+        // If no changes, return message to user
+
+        const result = await updateEmployee(prefilled.id, formData);
+        console.log("Employee successfully updated:", result);
+        return result;
+      }
       // todo - redirect or show a success message Toast to user
-      // For now, just log the result
-      return result;
     } catch (error) {
       console.error(error);
     }

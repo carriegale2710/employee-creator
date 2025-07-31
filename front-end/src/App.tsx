@@ -3,10 +3,11 @@ import NavBar from "./components/NavBar/NavBar";
 import Home from "./pages/Home";
 import ListPage from "./pages/ListPage";
 import CreateEmployee from "./pages/CreateEmployee";
-import EditPage from "./pages/EditPage";
+import EditEmployee from "./pages/EditEmployee";
 import NotFoundPage from "./pages/NotFoundPage";
 import "./App.scss";
 import CreateContract from "./pages/CreateContract";
+import EmployeePage from "./pages/EmployeePage";
 
 function App() {
   return (
@@ -15,19 +16,20 @@ function App() {
         <NavBar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/*" element={<NotFoundPage />} />
           <Route path="/employees" element={<ListPage />} />
           <Route path="/employees/new" element={<CreateEmployee />} />
-          <Route path="/employees/:id/edit" element={<EditPage />} />
-          <Route path="/employees/new/contract" element={<CreateContract />} />
+          <Route path="/employees/:id" element={<EmployeePage />} />
+          <Route path="/employees/:id/edit" element={<EditEmployee />} />
+          <Route path="/employees/:id/contracts" element={<ListPage />} />
           <Route
-            path="/employees/:id/new/contract"
+            path="/employees/:id/contracts/new"
             element={<CreateContract />}
           />
-          <Route path="/*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
       <footer>
-        <p>&copy; 2023 Employee Management System</p>
+        <p>&copy; 2025 Company Name Inc.</p>
       </footer>
     </>
   );

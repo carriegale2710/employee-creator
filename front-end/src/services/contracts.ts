@@ -1,7 +1,5 @@
 import type { Employee } from "./employees";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
-console.log("API URL (contracts):", API_URL);
+import { apiCall } from "./api";
 
 export type Department =
   | "ENGINEERING"
@@ -49,25 +47,18 @@ export interface ContractDTO {
 }
 
 export const getContractById = async (id: string): Promise<Contract> => {
-  const response = await fetch(`${API_URL}/contracts/${id}`);
-  if (!response.ok) {
-    throw new Error("Could not get data for id " + id);
-  }
-  const employee = await response.json();
-  return employee;
+  return apiCall<Contract>(
+    `/contracts/${id}`,
+    "Could not get data for id " + id
+  );
 };
 
 export const createContract = async (formData: ContractDTO) => {
-  const response = await fetch(`${API_URL}/contracts`, {
+  return apiCall<Contract>("/contracts", "Failed to create contract", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(formData),
   });
-  if (!response.ok) {
-    throw new Error("Failed to create contract");
-  }
-  const result = await response.json();
-  return result;
 };

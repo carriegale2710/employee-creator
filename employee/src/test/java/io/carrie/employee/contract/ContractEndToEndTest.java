@@ -320,7 +320,7 @@ public class ContractEndToEndTest {
 		@Test
 		public void create_InvalidContractType_BadRequest() {
 			CreateContractDTO contractDto = createContractDto();
-			contractDto.setContractType("INVALID_CONTRACT_TYPE");
+			contractDto.setContractType("INVALID CONTRACT TYPE");
 			assertBadRequestPost(contractDto);
 		}
 

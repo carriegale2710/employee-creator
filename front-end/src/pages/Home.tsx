@@ -7,18 +7,22 @@ const Home = () => {
       <header>
         <h1>Home</h1>
         <p>Welcome to the Employee Management System!</p>
-        <NavLink to="/employees">View all Employees</NavLink>
       </header>
       <main>
         <h2>Get Started</h2>
-        <p>Here you can create employee records and contracts.</p>
-        <p>Click on a button below to get started.</p>
+        <p>
+          {" "}
+          Use the buttons below or navigation links above to navigate the
+          system.
+        </p>
+
         <div style={{ marginTop: "20px" }}>
           <NavLink to="/employees/new">
-            <Button>Register an Employee</Button>
+            <Button>Register New Employee</Button>
           </NavLink>
-          <NavLink to="/employees/new/contract">
-            <Button>Create a New Contract</Button>
+
+          <NavLink to="/employees">
+            <Button>View Current Employees</Button>
           </NavLink>
         </div>
       </main>

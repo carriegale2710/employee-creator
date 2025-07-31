@@ -21,7 +21,7 @@ public class CreateContractDTO {
     private String department;
 
     @NotBlank(message = "Contract type is required")
-    @Pattern(regexp = "FULL_TIME|PART_TIME|CASUAL|CONTRACT", message = "Invalid contract type")
+    @Pattern(regexp = "FULL TIME|PART TIME|CASUAL|CONTRACT", message = "Invalid contract type")
     private String contractType;
 
     @DecimalMin(value = "0.0", inclusive = false, message = "Salary must be a positive number")

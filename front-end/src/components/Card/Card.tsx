@@ -1,13 +1,14 @@
 import type { Employee } from "../../services/employees";
-import { NavLink } from "react-router-dom";
-import Button from "../Button/Button";
 import "./Card.scss";
+
+import type { ReactNode } from "react";
 
 export interface CardProps {
   employee: Employee;
+  buttons?: ReactNode[];
 }
 
-const Card = ({ employee }: CardProps) => {
+const Card = ({ employee, buttons }: CardProps) => {
   return (
     <div className="card" data-testid="card" id="card">
       <div>
@@ -20,9 +21,9 @@ const Card = ({ employee }: CardProps) => {
         <p id="employee-address">Address: {employee.address || ""}</p>
       </div>
       <span className="buttons">
-        <NavLink to={`/employees/${employee.id}/edit`}>
-          <Button>Edit</Button>
-        </NavLink>
+        {buttons?.map((button, idx) => (
+          <span key={idx}>{button}</span>
+        ))}
       </span>
     </div>
   );

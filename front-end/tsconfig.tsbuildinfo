@@ -1,1 +1,33 @@
-{"root":["./src/app.test.tsx","./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/button/button.test.tsx","./src/components/button/button.tsx","./src/components/card/card.test.tsx","./src/components/card/card.tsx","./src/components/input/input.tsx","./src/components/list/list.test.tsx","./src/components/list/list.tsx","./src/components/navbar/navbar.tsx","./src/components/select/select.tsx","./src/containers/contractform/contractform.tsx","./src/containers/employeeform/employeeform.test.tsx","./src/containers/employeeform/employeeform.tsx","./src/pages/createcontract.tsx","./src/pages/createemployee.tsx","./src/pages/editpage.tsx","./src/pages/home.tsx","./src/pages/listpage.tsx","./src/pages/notfoundpage.tsx","./src/services/contracts.ts","./src/services/employees.ts","./src/services/mockcontracts.tsx","./src/services/mockemployees.tsx","./config/test-setup.ts"],"errors":true,"version":"5.8.3"}
+{
+  "root": [
+    "./src/app.test.tsx",
+    "./src/app.tsx",
+    "./src/main.tsx",
+    "./src/vite-env.d.ts",
+    "./src/components/button/button.test.tsx",
+    "./src/components/button/button.tsx",
+    "./src/components/card/card.test.tsx",
+    "./src/components/card/card.tsx",
+    "./src/components/input/input.tsx",
+    "./src/components/list/list.test.tsx",
+    "./src/components/list/list.tsx",
+    "./src/components/navbar/navbar.tsx",
+    "./src/components/select/select.tsx",
+    "./src/containers/contractform/contractform.tsx",
+    "./src/containers/employeeform/employeeform.test.tsx",
+    "./src/containers/employeeform/employeeform.tsx",
+    "./src/pages/createcontract.tsx",
+    "./src/pages/createemployee.tsx",
+    "./src/pages/editemployee.tsx",
+    "./src/pages/home.tsx",
+    "./src/pages/listpage.tsx",
+    "./src/pages/notfoundpage.tsx",
+    "./src/services/contracts.ts",
+    "./src/services/employees.ts",
+    "./src/services/mockcontracts.tsx",
+    "./src/services/mockemployees.tsx",
+    "./config/test-setup.ts"
+  ],
+  "errors": true,
+  "version": "5.8.3"
+}

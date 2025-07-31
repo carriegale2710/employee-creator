@@ -39,12 +39,12 @@ public class Contract {
     // NOTE - if the employee is deleted, contracts will also be deleted
     private Employee employee;
 
-    @Column
-    @Enumerated
+    @Enumerated(EnumType.STRING)
+    @Column(name = "department")
     private Department department;
 
-    @Column
-    @Enumerated
+    @Enumerated(EnumType.STRING)
+    @Column(name = "contract_type")
     private ContractType contractType;
 
     @Column
