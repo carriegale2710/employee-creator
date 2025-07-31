@@ -94,7 +94,7 @@ Refer to 'Build Steps' instructions in these READMEs.
 | Type       | Tools Used       | Status |
 | ---------- | ---------------- | ------ |
 | Unit Tests | JUnit + Mockito  | ✅     |
-| E2E Tests  | REST Assured, H2 | ⏳     |
+| E2E Tests  | REST Assured, H2 | ✅     |
 | Frontend   | Vitest / Zod     | ⏳     |
 
 ```bash
@@ -128,25 +128,25 @@ See [Project Requirements](project-brief.md)
 - [x] App compiles and runs
 - [x] API has working CRUD endpoints (GET, CREATE, DELETE + EDIT)
 - [x] Unit + end-to-end tests (JUnit, Mockito)
-- [ ] Error handling implemented
+- [x] Error handling implemented
 - [x] Logging strategy in place
 
 #### 💻 Frontend (React + TypeScript)
 
 - [x] React app compiles and runs (Vite)
-- [x] Basic CRUD employee functionality works
-- [x] Form validation added
-- [x] Optional testing included (Vitest/Zod)
-- [x] UI styled + responsive (SCSS/Tailwind)
+- [ ] Basic CRUD employee functionality works -testing
+- [ ] Form validation added -testing
+- [ ] Optional testing included (Vitest/Zod) -testing
+- [x] UI styled + responsive (SCSS/Tailwind) - use tailwind
 
 #### 🚚 Delivery & Deployment (Both)
 
 - [x] README includes clear setup steps for both API and Web app (local dev)
-- [ ] Hosting link works (Heroku, AWS, Azure, etc.)
-- [x] Code is clean + well documented
-- [ ] App is production-ready
+- [x] Hosting link works (Heroku, AWS, Azure, etc.)
+- [x] App is production-ready
+- [ ] Code is clean + well documented
 - [ ] Codebase is understandable and maintainable
-- [x] Bug-free and everything compiles + runs as expected
+- [ ] Bug-free and everything compiles + runs as expected
 
 ## Design Approach
 
@@ -206,13 +206,6 @@ Each **employee can have multiple contracts**, and contracts are managed separat
 
 Features that are buggy / flimsy/not functional yet: -->
 
-Deployment and Production
-
-- [14/07/25] Custom domain for EC2 : for fetching safely from front-end (otherwise error below)
-  -> stuck at AWS security settings : health check failing, need to look at EC2 security group setting again
-
-- [15/07/25] Implement API logging for debugging
-
 Front-end:
 
 - [25/07/25] Contract form UX is tedious/misleading (based on feedback):
@@ -230,6 +223,7 @@ Backend:
 - Maintaining TDD was a challenge under a tight deadline. Found a middle ground of implementing tests after testing in browser to be more rewarding due to lack of specifications - made writing tests first difficult.
 - Setting up Github Actions was a bit tricky in terms of config. Too many commits to test it.
 - Maintaining a cleaner git commit history and merging with multiple branches
+
 ---
 
 ## What I Learned
@@ -314,7 +308,6 @@ gitGraph
     checkout main
     merge dev
 ```
-
 
 #### Documentation Strategy: READMEs + Changelogs
 
