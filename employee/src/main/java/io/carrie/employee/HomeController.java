@@ -3,25 +3,23 @@ package io.carrie.employee;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 public class HomeController {
 
-    private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-
     @RequestMapping("/")
     public @ResponseBody String greeting() {
-        logger.info("Home endpoint accessed - serving greeting message");
-        logger.debug("Processing request for root URL '/'");
+        log.info("Home endpoint accessed - serving greeting message");
+        log.debug("Processing request for root URL '/'");
 
         try {
             String message = "Hello, World";
-            logger.info("Successfully served greeting message: '{}'", message);
+            log.info("Successfully served greeting message: '{}'", message);
             return message;
         } catch (Exception e) {
-            logger.error("Error serving home page: {}", e.getMessage(), e);
+            log.error("Error serving home page: {}", e.getMessage(), e);
             return "Error loading page";
         }
     }

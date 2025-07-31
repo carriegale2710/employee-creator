@@ -1,28 +1,30 @@
 package io.carrie.employee;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 public class HealthCheckController {
 
-    private static final Logger logger = LoggerFactory.getLogger(HealthCheckController.class);
-
     @GetMapping("/healthcheck")
-    public String health() {
-        logger.info("Health check endpoint accessed");
-        logger.debug("Performing health check validation");
+    public ResponseEntity<String> health() {
+
+        // This is a simple health check endpoint that can be
+        // used to verify if the application is running.
+        log.info("Health check endpoint accessed");
 
         try {
-            // Basic health check - you can expand this with database checks, etc.
+            log.debug("Performing health check validation");
             String status = "OK";
-            logger.info("Health check completed successfully - Status: {}", status);
-            return status;
+            log.info("Health check completed successfully - Status: {}", status);
+            return ResponseEntity.ok(status);
         } catch (Exception e) {
-            logger.error("Health check failed with error: {}", e.getMessage(), e);
-            return "ERROR";
+            log.error("Health check failed with error: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR");
         }
     }
 }

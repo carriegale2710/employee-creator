@@ -7,20 +7,19 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
+
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-import org.modelmapper.ModelMapper;
 
 import io.carrie.employee.contract.dtos.CreateContractDTO;
 import io.carrie.employee.employee.Employee;
 import io.carrie.employee.employee.EmployeeService;
 
-@Disabled("Temporarily disabled while fixing contract functionality")
 public class ContractServiceTest {
 
         // NOTE (just testing the service works properly)
@@ -33,9 +32,6 @@ public class ContractServiceTest {
 
         @Mock
         private ContractRepository contractRepository;
-
-        @Mock
-        private ModelMapper modelMapper;
 
         @Spy // call existing or mock
         @InjectMocks
@@ -68,7 +64,7 @@ public class ContractServiceTest {
                 doReturn(new Contract())
                                 .when(contractService).findById(1);
 
-                this.contractService.deleteContractById(1);
+                this.contractService.deleteById(1);
 
                 verify(this.contractRepository).deleteById(1);
         }
@@ -77,16 +73,19 @@ public class ContractServiceTest {
         public void create_CallsSaveOnRepo() {
                 // Arrange- mock what should return (control vs mock data)
                 Employee employee = new Employee();
+                employee.setId(1); // Set a valid ID for the employee
                 Contract contract = new Contract();
                 CreateContractDTO dto = new CreateContractDTO(); // Date strings
+
+                dto.setContractType("FULL_TIME");
+                dto.setDepartment("SALES");
+                dto.setHoursPerWeek(40);
+                dto.setSalaryAmount(new BigDecimal("50000.00"));
+                dto.setStartDate("2023-01-01");
 
                 when(this.employeeService
                                 .findById(employee.getId()))
                                 .thenReturn(employee);
-
-                when(this.modelMapper
-                                .map(dto, Contract.class))
-                                .thenReturn(contract);
 
                 when(this.contractRepository
                                 .save(any(Contract.class)))
@@ -94,12 +93,12 @@ public class ContractServiceTest {
 
                 // Act - call the method
                 Contract result = this.contractService.create(dto);
-
                 // Assert - verify save was called
-                verify(this.contractRepository).save(contract);
+                verify(this.contractRepository).save(any(Contract.class));
 
                 // Assert - check returned contract
                 assertNotNull(result);
+                assertEquals(contract, result);
                 assertEquals(contract, result);
         }
 }

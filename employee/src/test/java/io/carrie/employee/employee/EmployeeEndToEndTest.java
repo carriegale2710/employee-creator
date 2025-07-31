@@ -4,11 +4,7 @@ import io.carrie.employee.employee.dtos.*;
 
 import java.util.ArrayList;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -47,11 +43,23 @@ public class EmployeeEndToEndTest {
         this.employeeList.clear();
 
         // create some employees for testing:
-        Employee employee1 = new Employee("Timmy", "Turner", "timmehhh@example.com", "0400000000", "123 Fairy Lane");
+        Employee employee1 = Employee.builder()
+                .firstName("Timmy")
+                .lastName("Turner")
+                .email("timmehhh@example.com")
+                .phone("0400000000")
+                .address("123 Fairy Lane")
+                .build();
         this.employeeRepository.save(employee1);
         this.employeeList.add(employee1);
 
-        Employee employee2 = new Employee("Wanda", "Cosmo", "wanda.cosmo@example.com", "0123456789", "123 Fairy Lane");
+        Employee employee2 = Employee.builder()
+                .firstName("Wanda")
+                .lastName("Cosmo")
+                .email("wanda.cosmo@example.com")
+                .phone("0123456789")
+                .address("123 Fairy Lane")
+                .build();
         this.employeeRepository.save(employee2);
         this.employeeList.add(employee2);
 
