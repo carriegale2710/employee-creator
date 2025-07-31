@@ -1,12 +1,14 @@
 package io.carrie.employee.contract;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import io.carrie.employee.common.exceptions.*;
 import io.carrie.employee.contract.dtos.*;
+import io.carrie.employee.contract.enums.ContractType;
+import io.carrie.employee.contract.enums.Department;
 import io.carrie.employee.employee.Employee;
 import io.carrie.employee.employee.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
@@ -14,32 +16,15 @@ import lombok.RequiredArgsConstructor;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor // replaces constructor
 public class ContractService {
 
     private final EmployeeService employeeService;
     private final ContractRepository contractRepository;
-    private final ModelMapper modelMapper;
 
-    public Contract create(CreateContractDTO dto) {
-        Employee employee = employeeService.findById(dto.getEmployeeId());
-        log.debug("Creating contract for employee: {} {}", employee.getFirstName(), employee.getLastName());
-
-        Contract created = modelMapper.map(dto, Contract.class);
-        if (created.getEndDate() != null && created.getStartDate().isAfter(created.getEndDate())) {
-            throw new IllegalArgumentException("Start date cannot be after end date");
-        }
-
-        created.setEmployee(employee);
-        Contract saved = this.contractRepository.save(created);
-        log.debug("Successfully saved new contract: {}", saved);
-        return saved;
-    }
-
-    public boolean deleteContractById(Integer id) {
-        this.findById(id);
-        this.contractRepository.deleteById(id);
-        return true;
+    public List<Contract> findAll() {
+        List<Contract> contracts = this.contractRepository.findAll();
+        return contracts;
     }
 
     public Contract findById(Integer id) throws NotFoundException {
@@ -50,9 +35,50 @@ public class ContractService {
         return result.get();
     }
 
-    public List<Contract> findAll() {
-        List<Contract> contracts = this.contractRepository.findAll();
-        return contracts;
+    public boolean deleteById(Integer id) {
+        this.findById(id);
+        this.contractRepository.deleteById(id);
+        return true;
+    }
+
+    public Contract create(CreateContractDTO dto) {
+
+        validateDto(dto);
+        Employee foundEmployee = employeeService.findById(dto.getEmployeeId());
+
+        // Manual mapping (more explicit and safe for enums and complex types)
+        Contract created = Contract.builder()
+                .department(Department.valueOf(dto.getDepartment()))
+                .contractType(ContractType.valueOf(dto.getContractType()))
+                .salaryAmount(dto.getSalaryAmount())
+                .hoursPerWeek(dto.getHoursPerWeek())
+                .startDate(LocalDate.parse(dto.getStartDate()))
+                .endDate(dto.getEndDate() != null ? LocalDate.parse(dto.getEndDate()) : null)
+                .employee(foundEmployee)
+                .build();
+
+        return contractRepository.save(created);
+    }
+
+    // SECTION helper methods
+
+    public void validateDto(CreateContractDTO dto) {
+
+        if (dto.getDepartment() == null || dto.getContractType() == null) {
+            throw new IllegalArgumentException("Department and ContractType must not be null");
+        }
+        // (if entered) check that end date is not before start date
+        if (dto.getEndDate() == null) {
+            return;
+        }
+        LocalDate startDate = LocalDate.parse(dto.getStartDate());
+        LocalDate endDate = LocalDate.parse(dto.getEndDate());
+
+        if (endDate.isBefore(startDate)) {
+            throw new IllegalArgumentException(
+                    "End date cannot be before start date");
+        }
+        log.debug("DTO validation passed");
     }
 
 }

@@ -42,7 +42,7 @@ public class ContractController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Integer id) {
-        contractService.deleteContractById(id);
+        contractService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 

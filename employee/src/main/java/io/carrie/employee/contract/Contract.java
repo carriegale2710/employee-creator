@@ -27,18 +27,21 @@ import lombok.Data;
 @Table(name = "contracts")
 public class Contract {
 
+    // Validation goal: Database-level constraints
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE) // NOTE - if the employee is deleted, contracts will also be deleted
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    // NOTE - if the employee is deleted, contracts will also be deleted
     private Employee employee;
 
     @Column
     @Enumerated
-    private Department department; // TODO - create Department entity
+    private Department department;
 
     @Column
     @Enumerated

@@ -11,28 +11,34 @@ import lombok.*;
 @Builder
 public class CreateContractDTO {
 
+    // Validation goal: Format and basic input constraints
+
     @NotNull(message = "Employee ID is required")
     private Integer employeeId;
 
+    @NotBlank(message = "Department is required")
+    @Pattern(regexp = "ENGINEERING|SALES|DESIGN|MARKETING|WHOLESALE", message = "Invalid department")
     private String department;
 
     @NotBlank(message = "Contract type is required")
+    @Pattern(regexp = "FULL_TIME|PART_TIME|CASUAL|CONTRACT", message = "Invalid contract type")
     private String contractType;
 
     @DecimalMin(value = "0.0", inclusive = false, message = "Salary must be a positive number")
     private BigDecimal salaryAmount;
 
-    @Max(value = 50, message = "Hours per week can't exceed 50")
+    @NotNull(message = "Hours per week is required")
+    @Max(value = 40, message = "Hours per week can't exceed 40")
+    @Min(value = 1, message = "Hours per week must be at least 1")
     private Integer hoursPerWeek;
 
-    // Convert local dates from ISO string date
-
-    @NotNull(message = "Start date is required")
-    @DateTimeFormat
+    @NotBlank(message = "Start date cannot be blank")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private String startDate;
 
-    @DateTimeFormat
-    // @ValidDateRange //TODO - check endDate is not before startDate
+    // end date can be null (this will make it an open-ended contract)
+    // endDate cannot be before startDate (check in service layer)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private String endDate;
 
 }
