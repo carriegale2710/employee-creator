@@ -11,6 +11,7 @@ import {
 import Select from "../../components/Select/Select";
 import type { Employee } from "../../services/employees";
 import { useContractTemplate } from "../../hooks/useContractTemplate";
+import { useNavigate } from "react-router-dom";
 
 export interface ContractFormProps {
   employee?: Employee | null; // Optional employee prop for context
@@ -18,10 +19,13 @@ export interface ContractFormProps {
 }
 
 const ContractForm = ({ employee, prevContract }: ContractFormProps) => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     reset,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<ContractDTO>({
     defaultValues: {
@@ -38,10 +42,10 @@ const ContractForm = ({ employee, prevContract }: ContractFormProps) => {
   const onSubmit = async (formData: ContractDTO) => {
     // Handle form submission, e.g., send data to backend
     try {
-      console.log("Creating new Contract:", formData);
+      console.info("Creating new Contract:", formData);
       const result = await createContract(formData);
-      console.log("Contract created:", result);
-      return result;
+      console.info("Contract created:", result);
+      navigate(`/employees/${employee?.id}/contracts`);
     } catch (error) {
       console.error(error);
     }
@@ -51,7 +55,6 @@ const ContractForm = ({ employee, prevContract }: ContractFormProps) => {
     <>
       <h2>Contract Form</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* Template Button if previous contract exists for this employee */}
         {hasTemplate && (
           <Button type="button" onClick={toggleTemplate}>
             {usingTemplate
@@ -64,7 +67,11 @@ const ContractForm = ({ employee, prevContract }: ContractFormProps) => {
           errors={errors.employeeId}
           label="employeeId"
           type="number"
-          {...register("employeeId", { required: "Employee ID is required" })}
+          {...register("employeeId", {
+            required: "Employee ID is required",
+            min: 1,
+            max: 999,
+          })}
         >
           Employee ID
         </Input>
@@ -76,7 +83,7 @@ const ContractForm = ({ employee, prevContract }: ContractFormProps) => {
           options={DEPARTMENTS.map((type) =>
             type.toUpperCase().split("_").join(" ")
           )}
-          {...register("department", { required: "Department is required" })}
+          {...register("department", { required: false })}
         >
           Department
         </Select>
@@ -101,6 +108,8 @@ const ContractForm = ({ employee, prevContract }: ContractFormProps) => {
           type="number"
           {...register("salaryAmount", {
             required: "Salary Amount is required",
+            min: { value: 0, message: "Salary must be positive" },
+            max: { value: 500000, message: "Salary exceeds maximum" },
           })}
         >
           Salary Amount
@@ -111,7 +120,9 @@ const ContractForm = ({ employee, prevContract }: ContractFormProps) => {
           label="hoursPerWeek"
           type="number"
           {...register("hoursPerWeek", {
-            required: "Hours per Week is required",
+            required: false, // Optional field
+            min: { value: 0, message: "Hours must be positive" },
+            max: { value: 40, message: "Cannot exceed 40 hours per week" },
           })}
         >
           Hours per Week
@@ -130,7 +141,16 @@ const ContractForm = ({ employee, prevContract }: ContractFormProps) => {
           errors={errors.endDate}
           label="endDate"
           type="date"
-          {...register("endDate", { required: false })} // Optional field
+          {...register("endDate", {
+            required: false,
+            // Optional field, can be left blank
+            validate: (value) => {
+              if (value && new Date(value) < new Date(getValues("startDate"))) {
+                return "End Date cannot be before Start Date";
+              }
+              return true;
+            },
+          })}
         >
           End Date
         </Input>

@@ -7,6 +7,10 @@ interface ListProps {
   employees: Employee[];
 }
 const List = ({ employees }: ListProps) => {
+  if (!employees || employees.length === 0) {
+    return <p>No employees found.</p>;
+  }
+
   return (
     <>
       {employees &&

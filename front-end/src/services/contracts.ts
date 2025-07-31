@@ -40,7 +40,7 @@ export interface ContractDTO {
   employeeId: number;
   department?: string;
   contractType: string;
-  salaryAmount?: number;
+  salaryAmount: number;
   hoursPerWeek?: number;
   startDate: string; // ISO date string
   endDate?: string; // ISO date string or null

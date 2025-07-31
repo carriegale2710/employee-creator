@@ -15,11 +15,11 @@ export const apiCall = async <T>(
     ...options,
   });
 
-  const content = await response.json();
+  const content = options?.method === "DELETE" ? null : await response.json();
 
   // NOTE - for debugging purposes, we log the API URL and response status
   if (!response.ok) {
-    const errorLogMessage = `API Error: ${userErrorMessage} : "${content.message}" `;
+    const errorLogMessage = `API Error: ${userErrorMessage} : "${content?.message}" `;
     if (import.meta.env.MODE === "development") console.error(errorLogMessage);
     throw new Error(userErrorMessage);
   }

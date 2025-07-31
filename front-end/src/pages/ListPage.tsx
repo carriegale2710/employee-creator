@@ -1,20 +1,10 @@
-import { useEffect, useState } from "react";
-import { getAllEmployees, type Employee } from "../services/employees";
 import Button from "../components/Button/Button";
 import List from "../components/List/List";
 import { NavLink } from "react-router-dom";
+import { useEmployeeList } from "../hooks/useEmployeeList";
 
 function ListPage() {
-  const [employees, setEmployees] = useState<Employee[]>([]);
-
-  useEffect(() => {
-    getAllEmployees()
-      .then((response) => {
-        console.log(response);
-        setEmployees(response);
-      })
-      .catch(console.warn);
-  }, []);
+  const { employees, loading } = useEmployeeList();
 
   return (
     <>
@@ -26,7 +16,7 @@ function ListPage() {
         <NavLink to="/employees/new">
           <Button>Add Employee</Button>
         </NavLink>
-        <List employees={employees} />
+        {loading ? <p>Loading...</p> : <List employees={employees} />}
       </main>
     </>
   );
