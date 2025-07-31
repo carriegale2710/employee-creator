@@ -167,18 +167,15 @@ Use [Postman](https://www.postman.com/downloads/) or a browser (for GET requests
 
   - [x] employees
   - [x] contracts
-  - [ ] departments
 
 - [x] Unit + end-to-end tests (JUnit, Mockito)
 
   - [x] employees
-  - [ ] contracts
-  - [ ] departments
+  - [x] contracts
 
 - [x] Error handling implemented
   - [x] employees
   - [x] contracts
-  - [ ] departments
 
 ## Features
 
@@ -188,18 +185,16 @@ Techstack: mySQL + Spring Boot JBDC
 
 #### Entities
 
-| Entity          | Infomation Stored | Why                                                                |
-| --------------- | ----------------- | ------------------------------------------------------------------ |
-| **Employees**   | Personal info     | Abstract any sensitive details, restrict view access to admins     |
-| **Contracts**   | Job info          | Focus on the job description + legal side, save templates/drafts   |
-| **Departments** | Lookup table      | Ability to rename and update as needed, prevent typos, consistency |
+| Entity        | Infomation Stored | Why                                                              |
+| ------------- | ----------------- | ---------------------------------------------------------------- |
+| **Employees** | Personal info     | Abstract any sensitive details, restrict view access to admins   |
+| **Contracts** | Job info          | Focus on the job description + legal side, save templates/drafts |
 
 #### Relationships
 
-| What                       | Relationship | Why                                                   |
-| -------------------------- | ------------ | ----------------------------------------------------- |
-| **Employee → Contracts**   | One-to-Many  | Each employee can have _multiple contracts over time_ |
-| **Department → Contracts** | One-to-Many  | Each contract is tied to one department at that time  |
+| What                     | Relationship | Why                                                   |
+| ------------------------ | ------------ | ----------------------------------------------------- |
+| **Employee → Contracts** | One-to-Many  | Each employee can have _multiple contracts over time_ |
 
 ![diagram of one-to-many class between employee and contracts tables in database](assets/diagrams/erd/erd.png)
 [ERD Diagram (DBML)](assets/diagrams/erd/erd.md)
@@ -207,6 +202,17 @@ Techstack: mySQL + Spring Boot JBDC
 ---
 
 ### API Endpoints
+
+#### Contracts
+
+| ID  | Method   | Endpoint         | Input             | Output Data | Success Response |
+| --- | -------- | ---------------- | ----------------- | ----------- | ---------------- |
+| 1   | `GET`    | `/contracts`     | none              | DB List     | `200 OK`         |
+| 2   | `GET`    | `/contracts/:id` | contract id       | DB List     | `200 OK`         |
+| 3   | `POST`   | `/contracts`     | createContractDTO | DB Record   | `201 Created`    |
+| 4   | `DELETE` | `/contracts/:id` | contract id       | No Content  | `204 No Content` |
+
+#### Employees
 
 | ID  | Method   | Endpoint         | Input                           | Output Data | Success Response |
 | --- | -------- | ---------------- | ------------------------------- | ----------- | ---------------- |
@@ -316,7 +322,7 @@ Each employee can have multiple contracts across different time periods and depa
 }
 ```
 
-#### Departments
+<!-- #### Departments
 
 Lookup table to keep departments consistent but flexible to be updated later.
 
@@ -326,7 +332,7 @@ Lookup table to keep departments consistent but flexible to be updated later.
   "id": 1, //not needed for POST (create)
   "name": "ENGINEERING" //opt. entered from user input in contract form
 }
-```
+``` -->
 
 ---
 
@@ -350,12 +356,13 @@ For detailed development history and feature updates, see [CHANGELOG.md](CHANGEL
 
 ### Future Goals
 
-| **Section**     | **Backend Feature**                          | 🔍 Priority             | ⏱️ Time Estimate      |
-| --------------- | -------------------------------------------- | ----------------------- | --------------------- |
-| Employee List   | API pagination using `findAll(Pageable)`     | ⚠️ Med / High Impact    | 1–2 hrs               |
-| Contract Form   | Add `createdAt` / `updatedAt` timestamps     | ⚠️ Med / Medium Impact  | 1 hr                  |
-| Contract Form   | Track `createdAt` for recent employees logic | 🐘 Hard / Low Impact    | 1–2 hrs               |
-| Address Search  | Use Google API to validate/search addresses  | 🐘 Hard / Low Impact    | 2–3 hrs (incl. setup) |
-| Contract Drafts | Save incomplete contract drafts              | 🐘 Hard / Medium Impact | 3–4 hrs               |
+| **Section**        | **Backend Feature**                          | 🔍 Priority            | ⏱️ Time Estimate |
+| ------------------ | -------------------------------------------- | ---------------------- | ---------------- |
+| Employee List      | API pagination using `findAll(Pageable)`     | ⚠️ Med / High Impact   | 1–2 hrs          |
+| Contract Form      | Add `createdAt` / `updatedAt` timestamps     | ⚠️ Med / Medium Impact | 1 hr             |
+| Contract Form      | Track `createdAt` for recent employees logic | 🐘 Hard / Low Impact   | 1–2 hrs          |
+| Address Search     | Use Google API to validate/search addresses  | 🐘 Hard / Med Impact   | 2–3 hrs          |
+| Departments Entity | For flexible updates in future               | 🐘 Med / Low Impact    | 1–2 hrs          |
+| Contract Drafts    | Save incomplete contract drafts              | 🐘 Hard / Low Impact   | 3–4 hrs          |
 
 ---
