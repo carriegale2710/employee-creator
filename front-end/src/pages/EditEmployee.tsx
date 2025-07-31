@@ -28,7 +28,7 @@ const EditEmployee = () => {
       <main>
         <NavLink to="/employees">Go back to Employees</NavLink>
         {employeeData ? (
-          <EmployeeForm prefilled={employeeData} />
+          <EmployeeForm defaultValue={employeeData} />
         ) : (
           <p>Loading employee data...</p>
         )}

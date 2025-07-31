@@ -5,26 +5,22 @@ import {
   CONTRACT_TYPES,
   createContract,
   DEPARTMENTS,
-  type Contract,
   type ContractDTO,
 } from "../../services/contracts";
 import Select from "../../components/Select/Select";
 import type { Employee } from "../../services/employees";
-import { useContractTemplate } from "../../hooks/useContractTemplate";
 import { useNavigate } from "react-router-dom";
 
 export interface ContractFormProps {
   employee?: Employee | null; // Optional employee prop for context
-  prevContract?: Contract | null;
 }
 
-const ContractForm = ({ employee, prevContract }: ContractFormProps) => {
+const ContractForm = ({ employee }: ContractFormProps) => {
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
-    reset,
     getValues,
     formState: { errors, isSubmitting },
   } = useForm<ContractDTO>({
@@ -32,12 +28,6 @@ const ContractForm = ({ employee, prevContract }: ContractFormProps) => {
       employeeId: employee?.id || 0,
     },
   });
-
-  const { usingTemplate, toggleTemplate, hasTemplate } = useContractTemplate(
-    reset,
-    employee,
-    prevContract
-  );
 
   const onSubmit = async (formData: ContractDTO) => {
     // Handle form submission, e.g., send data to backend
@@ -55,14 +45,6 @@ const ContractForm = ({ employee, prevContract }: ContractFormProps) => {
     <>
       <h2>Contract Form</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {hasTemplate && (
-          <Button type="button" onClick={toggleTemplate}>
-            {usingTemplate
-              ? "Use Blank Form"
-              : "Duplicate Most Recent Contract"}
-          </Button>
-        )}
-
         <Input
           errors={errors.employeeId}
           label="employeeId"

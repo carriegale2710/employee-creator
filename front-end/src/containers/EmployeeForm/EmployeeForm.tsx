@@ -9,12 +9,12 @@ import Input from "../../components/Input/Input";
 import { useForm } from "react-hook-form";
 
 export interface EmployeeFormProps {
-  prefilled?: Employee | null;
-  //loads in prefilled values if they exist (editing an existing employee)
+  defaultValue?: Employee | null;
+  //loads in defaultValue values if they exist (editing an existing employee)
   //otherwise it is a blank form for creating a new employee
 }
 
-const EmployeeForm = ({ prefilled }: EmployeeFormProps) => {
+const EmployeeForm = ({ defaultValue }: EmployeeFormProps) => {
   const {
     register,
     handleSubmit,
@@ -28,21 +28,18 @@ const EmployeeForm = ({ prefilled }: EmployeeFormProps) => {
 
     try {
       //creating employee
-      if (!prefilled) {
+      if (!defaultValue) {
         console.log("Creating employee with form data:", formData);
         const result = await createEmployee(formData);
         console.log("Employee successfully created:", result);
         return result;
       }
       //updating employee
-      if (prefilled) {
-        console.log(`Updating Employee ID: ${prefilled.id}`);
+      if (defaultValue) {
+        console.log(`Updating Employee ID: ${defaultValue.id}`);
         console.log("With form data:", formData);
 
-        // Check if formData has any changes - backend will handle this
-        // If no changes, return message to user
-
-        const result = await updateEmployee(prefilled.id, formData);
+        const result = await updateEmployee(defaultValue.id, formData);
         console.log("Employee successfully updated:", result);
         return result;
       }
@@ -63,7 +60,7 @@ const EmployeeForm = ({ prefilled }: EmployeeFormProps) => {
         <Input
           label="firstName"
           type="text"
-          prefilledValue={prefilled?.firstName ?? ""}
+          defaultValue={defaultValue?.firstName ?? ""}
           {...register("firstName", { required: true })}
         >
           First Name
@@ -75,7 +72,7 @@ const EmployeeForm = ({ prefilled }: EmployeeFormProps) => {
         <Input
           label="lastName"
           type="text"
-          prefilledValue={prefilled?.lastName ?? ""}
+          defaultValue={defaultValue?.lastName ?? ""}
           {...register("lastName", { required: true })}
         >
           Last Name
@@ -87,7 +84,7 @@ const EmployeeForm = ({ prefilled }: EmployeeFormProps) => {
         <Input
           label="email"
           type="email"
-          prefilledValue={prefilled?.email ?? ""}
+          defaultValue={defaultValue?.email ?? ""}
           {...register("email", { required: true })}
         >
           Email
@@ -99,7 +96,7 @@ const EmployeeForm = ({ prefilled }: EmployeeFormProps) => {
         <Input
           label="phone"
           type="tel"
-          prefilledValue={prefilled?.phone ?? ""}
+          defaultValue={defaultValue?.phone ?? ""}
           {...register("phone", { required: true })}
         >
           Phone
@@ -111,7 +108,7 @@ const EmployeeForm = ({ prefilled }: EmployeeFormProps) => {
         <Input
           label="address"
           type="search"
-          prefilledValue={prefilled?.address ?? ""}
+          defaultValue={defaultValue?.address ?? ""}
           {...register("address")}
         >
           Address

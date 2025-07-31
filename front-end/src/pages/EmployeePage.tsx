@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import Button from "../components/Button/Button";
-import EmployeeForm from "../containers/EmployeeForm/EmployeeForm";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import {
   deleteEmployee,
@@ -9,7 +8,6 @@ import {
 } from "../services/employees";
 import Card from "../components/Card/Card";
 import DeleteButton from "../containers/DeleteButton/DeleteButton";
-import { set } from "react-hook-form";
 
 //needs to preload data from selected employee from Card
 // you come here on Edit Button

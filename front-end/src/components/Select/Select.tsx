@@ -6,14 +6,14 @@ export interface SelectInputProps
   errors?: FieldError | undefined;
   label: string;
   title?: string;
-  prefilledValue?: string;
+  defaultValue?: string;
   options: string[];
   children: React.ReactNode;
 }
 
 const Select = React.forwardRef<HTMLSelectElement, SelectInputProps>(
   (
-    { errors, label, title, prefilledValue = "", options, children, ...rest },
+    { errors, label, title, defaultValue = "", options, children, ...rest },
     ref
   ) => {
     return (
@@ -25,7 +25,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectInputProps>(
           id={label}
           defaultValue={
             options.find(
-              (option) => option === prefilledValue.split("_").join(" ")
+              (option) => option === defaultValue.split("_").join(" ")
             ) || ""
           }
           ref={ref}
