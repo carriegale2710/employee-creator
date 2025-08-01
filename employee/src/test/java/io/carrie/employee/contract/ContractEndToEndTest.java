@@ -5,6 +5,8 @@ import io.carrie.employee.contract.enums.Department;
 import io.carrie.employee.contract.dtos.CreateContractDTO;
 import io.carrie.employee.employee.Employee;
 import io.carrie.employee.employee.EmployeeRepository;
+import io.carrie.employee.contract.Contract;
+import io.carrie.employee.contract.ContractRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -141,7 +143,8 @@ public class ContractEndToEndTest {
 					.when().get("/contracts")
 					.then().statusCode(HttpStatus.OK.value())
 					.body("$", hasSize(2)) // should return 2 records in list
-					.body(matchesJsonSchemaInClasspath("schemas/contracts/contract-list-schema.json"));
+					.body(matchesJsonSchemaInClasspath(
+							"schemas/contracts/dtos/response-contract-dto-list-schema.json"));
 		}
 
 		@Test
@@ -177,7 +180,7 @@ public class ContractEndToEndTest {
 					.body("department", equalTo("SALES"))
 					.body("contractType", equalTo("FULL_TIME"))
 					.body("hoursPerWeek", equalTo(38))
-					.body(matchesJsonSchemaInClasspath("schemas/contracts/contract-schema.json"));
+					.body(matchesJsonSchemaInClasspath("schemas/contracts/dtos/response-contract-dto-schema.json"));
 		}
 
 		@Test
@@ -251,11 +254,15 @@ public class ContractEndToEndTest {
 		public void create_ValidData_Created() {
 			CreateContractDTO contractDto = createContractDto();
 
-			given()
+			Response response = given()
 					.contentType(ContentType.JSON).body(contractDto)
-					.when().post("/contracts")
-					.then().statusCode(HttpStatus.CREATED.value());
+					.when().post("/contracts");
 
+			// Print response for debugging
+			System.out.println("Response Status: " + response.getStatusCode());
+			System.out.println("Response Body: " + response.asString());
+
+			response.then().statusCode(HttpStatus.CREATED.value());
 		}
 
 		@Test
@@ -269,7 +276,7 @@ public class ContractEndToEndTest {
 			response.then()
 					.statusCode(HttpStatus.CREATED.value())
 					// has correct schema
-					.body(matchesJsonSchemaInClasspath("schemas/contracts/contract-schema.json"))
+					.body(matchesJsonSchemaInClasspath("schemas/contracts/dtos/response-contract-dto-schema.json"))
 					// contains the correct data
 					.body("department", equalTo("DESIGN"))
 					.body("contractType", equalTo("CASUAL"));

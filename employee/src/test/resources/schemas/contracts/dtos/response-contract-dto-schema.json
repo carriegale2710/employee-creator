@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ResponseContractDTO",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "employeeId": {
+      "type": "integer"
+    },
+    "department": {
+      "type": "string"
+    },
+    "contractType": {
+      "type": "string"
+    },
+    "salaryAmount": {
+      "type": "number"
+    },
+    "hoursPerWeek": {
+      "type": "integer"
+    },
+    "startDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "endDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "isActive": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "id",
+    "employeeId",
+    "department",
+    "contractType",
+    "salaryAmount",
+    "hoursPerWeek",
+    "isActive"
+  ],
+  "additionalProperties": false
+}
