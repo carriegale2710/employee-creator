@@ -75,10 +75,10 @@ public class ContractService {
     public void tidyDto(CreateContractDTO dto) {
         // Tidy up the DTO fields to ensure consistent formatting
         if (dto.getDepartment() != null) {
-            dto.setDepartment(dto.getDepartment().replace(" ", "_").toUpperCase());
+            dto.setDepartment(dto.getDepartment().trim().replace(" ", "_").toUpperCase());
         }
         if (dto.getContractType() != null) {
-            dto.setContractType(dto.getContractType().replace(" ", "_").toUpperCase());
+            dto.setContractType(dto.getContractType().trim().replace(" ", "_").toUpperCase());
         }
         if (dto.getStartDate() != null) {
             dto.setStartDate(dto.getStartDate().trim());
