@@ -9,6 +9,12 @@
     "employeeId": {
       "type": "integer"
     },
+    "employeeFirstName": {
+      "type": "string"
+    },
+    "employeeLastName": {
+      "type": "string"
+    },
     "department": {
       "type": "string"
     },

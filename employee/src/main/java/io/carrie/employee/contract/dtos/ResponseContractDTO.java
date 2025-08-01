@@ -3,13 +3,14 @@ package io.carrie.employee.contract.dtos;
 import io.carrie.employee.contract.Contract;
 import java.math.BigDecimal;
 import lombok.*;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Data
 @Builder
 public class ResponseContractDTO {
     private Integer id;
     private Integer employeeId;
+    private String employeeFirstName;
+    private String employeeLastName;
     private String department;
     private String contractType;
     private BigDecimal salaryAmount;
@@ -22,6 +23,8 @@ public class ResponseContractDTO {
         return ResponseContractDTO.builder()
                 .id(contract.getId())
                 .employeeId(contract.getEmployee().getId()) // Only ID, not full Employee object
+                .employeeFirstName(contract.getEmployee().getFirstName())
+                .employeeLastName(contract.getEmployee().getLastName())
                 .department(contract.getDepartment().name())
                 .contractType(contract.getContractType().name())
                 .salaryAmount(contract.getSalaryAmount())
