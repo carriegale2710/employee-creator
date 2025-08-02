@@ -27,6 +27,14 @@ public class ContractService {
         return contracts;
     }
 
+    public List<Contract> findAllByEmployeeId(Integer employeeId) {
+        List<Contract> contracts = this.contractRepository.findAllByEmployeeId(employeeId);
+        if (contracts.isEmpty()) {
+            throw new NotFoundException("No contracts found for employee with id " + employeeId);
+        }
+        return contracts;
+    }
+
     public Contract findById(Integer id) throws NotFoundException {
         Optional<Contract> result = this.contractRepository.findById(id);
         if (result.isEmpty())
