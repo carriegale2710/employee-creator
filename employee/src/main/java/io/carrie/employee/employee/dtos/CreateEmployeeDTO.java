@@ -23,7 +23,7 @@ public class CreateEmployeeDTO {
     private String email;
 
     @NotBlank
-    @Pattern(regexp = "^\\+?\\d{7,15}$", message = "Invalid phone number.")
+    @Pattern(regexp = "^\\+?\\d{1,3}(\\s\\d{3}){2,3}$", message = "Invalid phone number.")
     private String phone;
 
     private String address;
