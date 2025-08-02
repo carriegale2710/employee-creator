@@ -8,6 +8,12 @@
     "email": { "type": "string", "format": "email" },
     "phone": { "type": "string" },
     "address": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["ACTIVE", "INACTIVE", "NEW_HIRE", "TERMINATED", "ON_LEAVE"]
+    },
+    "contractCount": { "type": "integer" },
+    "contractEndDate": { "type": ["string", "null"], "format": "date" },
     "contracts": {
       "$ref": "../contracts/contract-list-schema.json"
     }

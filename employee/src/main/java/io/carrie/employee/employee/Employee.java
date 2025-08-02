@@ -3,6 +3,7 @@ package io.carrie.employee.employee;
 import io.carrie.employee.contract.Contract;
 import io.carrie.employee.employee.enums.EmployeeStatus;
 
+import java.time.LocalDate;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -39,10 +40,6 @@ public class Employee {
     @Column
     private String address; // dto validation later if needed
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private EmployeeStatus status;
-
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     // Prevent circular references
     @JsonIgnoreProperties({ "employee", "contract" })
@@ -69,6 +66,16 @@ public class Employee {
                 .anyMatch(Contract::isActive);
     }
 
+    public LocalDate getContractEndDate() {
+        // eg. check if new contract needs renewal
+        return getLatestContract() != null ? getLatestContract().getEndDate() : null;
+    }
+
+    public int getContractCount() {
+        // eg. check if employee is new
+        return getAllContracts().size();
+    }
+
     // SECTION Private helper methods
     // provides security and encapsulation (eg. admin access only)
 
@@ -82,18 +89,6 @@ public class Employee {
         return getAllContracts().stream()
                 .filter(Contract::isActive)
                 .toList();
-    }
-
-    private int getContractCount() {
-        // eg. check if employee is new
-        return getAllContracts().size();
-    }
-
-    private Contract getCurrentContract() {
-        // Get the most recent active contract
-        return getActiveContracts().stream()
-                .findFirst()
-                .orElse(null);
     }
 
     private Contract getLatestContract() {
