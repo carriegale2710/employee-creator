@@ -94,7 +94,7 @@ Refer to 'Build Steps' instructions in these READMEs.
 | Type       | Tools Used       | Status |
 | ---------- | ---------------- | ------ |
 | Unit Tests | JUnit + Mockito  | ✅     |
-| E2E Tests  | REST Assured, H2 | ⏳     |
+| E2E Tests  | REST Assured, H2 | ✅     |
 | Frontend   | Vitest / Zod     | ⏳     |
 
 ```bash

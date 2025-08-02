@@ -2,49 +2,40 @@ import { useForm } from "react-hook-form";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import {
+  CONTRACT_TYPES,
   createContract,
-  type Contract,
+  DEPARTMENTS,
   type ContractDTO,
 } from "../../services/contracts";
-import { useEffect, useState } from "react";
 import Select from "../../components/Select/Select";
+import type { Employee } from "../../services/employees";
+import { useNavigate } from "react-router-dom";
 
 export interface ContractFormProps {
-  prevContract?: Contract | null;
+  employee?: Employee | null; // Optional employee prop for context
 }
 
-const ContractForm = ({ prevContract }: ContractFormProps) => {
+const ContractForm = ({ employee }: ContractFormProps) => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors, isSubmitting },
-  } = useForm<ContractDTO>();
-
-  // console.log("Errors:", errors); // Add this to see if validation is blocking submit
-
-  const [usingTemplate, setUsingTemplate] = useState(false);
-
-  useEffect(() => {
-    if (!usingTemplate) {
-      console.log("Using blank form data");
-    }
-    if (usingTemplate && prevContract) {
-      console.log(
-        "Using template from previous contract with ID:",
-        prevContract.id,
-        "with data:",
-        prevContract
-      );
-    }
-  }, [usingTemplate, prevContract]);
+  } = useForm<ContractDTO>({
+    defaultValues: {
+      employeeId: employee?.id || 0,
+    },
+  });
 
   const onSubmit = async (formData: ContractDTO) => {
     // Handle form submission, e.g., send data to backend
     try {
-      console.log("Creating new Contract:", formData);
+      console.info("Creating new Contract:", formData);
       const result = await createContract(formData);
-      console.log("Contract created:", result);
-      return result;
+      console.info("Contract created:", result);
+      navigate(`/employees/${employee?.id}/contracts`);
     } catch (error) {
       console.error(error);
     }
@@ -54,119 +45,96 @@ const ContractForm = ({ prevContract }: ContractFormProps) => {
     <>
       <h2>Contract Form</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* Prefilled Values Button if previous contract exists for this employee */}
-        {prevContract && (
-          <Button
-            type="button"
-            onClick={() => prevContract && setUsingTemplate(!usingTemplate)}
-          >
-            {usingTemplate ? "Use Blank Form" : "Use Template"}
-          </Button>
-        )}
-
         <Input
+          errors={errors.employeeId}
           label="employeeId"
           type="number"
-          prefilledValue={
-            usingTemplate ? String(prevContract?.employee?.id ?? "") : ""
-          }
-          {...register("employeeId", { required: "Employee ID is required" })}
+          {...register("employeeId", {
+            required: "Employee ID is required",
+            min: 1,
+            max: 999,
+          })}
         >
           Employee ID
-          <br />
-          {errors.employeeId && (
-            <span style={{ color: "red" }}>{errors.employeeId.message}</span>
-          )}
         </Input>
 
         <Select
+          errors={errors.department}
           label="department"
           title="Department"
-          options={["ENGINEERING", "SALES", "MARKETING", "DESIGN"]}
-          prefilledValue={usingTemplate ? prevContract?.department ?? "" : ""}
-          {...register("department", { required: "Department is required" })}
+          options={DEPARTMENTS.map((type) =>
+            type.toUpperCase().split("_").join(" ")
+          )}
+          {...register("department", { required: false })}
         >
           Department
-          <br />
-          {errors.department && (
-            <span style={{ color: "red" }}>{errors.department.message}</span>
-          )}
         </Select>
 
         <Select
+          errors={errors.contractType}
           label="contractType"
           title="Contract Type"
-          options={["FULL TIME", "PART TIME", "CASUAL", "CONTRACT"]}
-          prefilledValue={usingTemplate ? prevContract?.contractType : ""}
+          options={CONTRACT_TYPES.map((type) =>
+            type.toUpperCase().split("_").join(" ")
+          )}
           {...register("contractType", {
             required: "Contract Type is required",
           })}
         >
           Contract Type
-          <br />
-          {errors.contractType && (
-            <span style={{ color: "red" }}>{errors.contractType.message}</span>
-          )}
         </Select>
 
         <Input
+          errors={errors.salaryAmount}
           label="salaryAmount"
           type="number"
-          prefilledValue={
-            usingTemplate ? String(prevContract?.salaryAmount ?? "") : ""
-          }
           {...register("salaryAmount", {
             required: "Salary Amount is required",
+            min: { value: 0, message: "Salary must be positive" },
+            max: { value: 500000, message: "Salary exceeds maximum" },
           })}
         >
           Salary Amount
-          <br />
-          {errors.salaryAmount && (
-            <span style={{ color: "red" }}>{errors.salaryAmount.message}</span>
-          )}
         </Input>
 
         <Input
+          errors={errors.hoursPerWeek}
           label="hoursPerWeek"
           type="number"
-          prefilledValue={
-            usingTemplate ? String(prevContract?.hoursPerWeek ?? "") : ""
-          }
           {...register("hoursPerWeek", {
-            required: "Hours per Week is required",
+            required: false, // Optional field
+            min: { value: 0, message: "Hours must be positive" },
+            max: { value: 40, message: "Cannot exceed 40 hours per week" },
           })}
         >
           Hours per Week
-          <br />
-          {errors.hoursPerWeek && (
-            <span style={{ color: "red" }}>{errors.hoursPerWeek.message}</span>
-          )}
         </Input>
 
         <Input
+          errors={errors.startDate}
           label="startDate"
           type="date"
-          prefilledValue={usingTemplate ? prevContract?.startDate ?? "" : ""}
           {...register("startDate", { required: "Start Date is required" })}
         >
           Start Date
-          <br />
-          {errors.startDate && (
-            <span style={{ color: "red" }}>{errors.startDate.message}</span>
-          )}
         </Input>
 
         <Input
+          errors={errors.endDate}
           label="endDate"
           type="date"
-          prefilledValue={usingTemplate ? prevContract?.endDate ?? "" : ""}
-          {...register("endDate", { required: false })} // Optional field
+          {...register("endDate", {
+            required: false,
+            // Optional field, can be left blank
+            validate: (value) => {
+              if (value && new Date(value) < new Date(getValues("startDate"))) {
+                return "End Date cannot be before Start Date";
+              }
+              return true;
+            },
+          })}
         >
           End Date
-          <br />
-          {errors.endDate && (
-            <span style={{ color: "red" }}>{errors.endDate.message}</span>
-          )}
         </Input>
 
         <Button type="submit" disabled={isSubmitting}>

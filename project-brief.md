@@ -23,7 +23,7 @@ Demonstrates an understanding of:
 Also code should be:
 
 - [x] Production ready.
-  - [ ] (except for custom domain - healthcheck)
+  - [x] (except for custom domain - healthcheck)
 - [x] Understandable and maintainable by other developers.
 - [x] Robust and handle error situations.
 - [x] Bug free, compile and work.
@@ -35,14 +35,14 @@ Also code should be:
 
 ### React hints
 
-- [ ] React Redux middlewear is recommended like thunks or epics to handle async actions.
+- React Redux middlewear is recommended like thunks or epics to handle async actions.
 - [x] Typescript is recommended.
 - [x] React hooks are recommended.
-- [ ] You can include any other open source NPM library.
+- You can include any other open source NPM library.
 - [x] Feel free to use your favorite CSS framework.
   - [ ] Tailwind is a good choice
 - [ ] Add some basic validations on the form like:
-  - [ ] input required
+  - [x] input required
   - [ ] input max length
 - Reccomended:
   - [x] React Hook Form

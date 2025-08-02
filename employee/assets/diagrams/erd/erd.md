@@ -18,7 +18,7 @@ Table employees {
 Table contracts {
   id int [pk, increment] --generated
   employee_id int [not null, ref: > employees.id]
-  department_id int [ref: > departments.id]
+  department varchar // e.g. sales
   contract_type varchar [not null] // e.g., full-time, part-time
   salary_amount decimal
   hours_per_week int -- limit to 40 (exclude overtime)

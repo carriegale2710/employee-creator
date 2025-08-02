@@ -23,21 +23,24 @@ public class ContractController {
     }
 
     @PostMapping
-    public ResponseEntity<Contract> create(@Valid @RequestBody CreateContractDTO dto) {
-        Contract newContract = contractService.create(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newContract);
+    public ResponseEntity<ResponseContractDTO> create(@Valid @RequestBody CreateContractDTO dto) {
+        Contract contract = contractService.create(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseContractDTO.fromEntity(contract));
     }
 
     @GetMapping
-    public ResponseEntity<List<Contract>> getAll() {
+    public ResponseEntity<List<ResponseContractDTO>> getAll() {
         List<Contract> allContracts = contractService.findAll();
-        return ResponseEntity.ok(allContracts);
+        List<ResponseContractDTO> response = allContracts.stream()
+                .map(ResponseContractDTO::fromEntity)
+                .toList();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Contract> getById(@PathVariable Integer id) {
+    public ResponseEntity<ResponseContractDTO> getById(@PathVariable Integer id) {
         Contract foundContract = contractService.findById(id);
-        return ResponseEntity.ok(foundContract);
+        return ResponseEntity.ok(ResponseContractDTO.fromEntity(foundContract));
     }
 
     @DeleteMapping("/{id}")

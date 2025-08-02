@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,9 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
 import io.carrie.employee.contract.dtos.CreateContractDTO;
+import io.carrie.employee.contract.dtos.ResponseContractDTO;
+import io.carrie.employee.contract.enums.ContractType;
+import io.carrie.employee.contract.enums.Department;
 import io.carrie.employee.employee.Employee;
 import io.carrie.employee.employee.EmployeeService;
 
@@ -101,4 +105,92 @@ public class ContractServiceTest {
                 assertEquals(contract, result);
                 assertEquals(contract, result);
         }
+
+        @Test
+        public void tidyDto_CleansUpDtoFields() {
+                CreateContractDTO dto = new CreateContractDTO();
+                dto.setDepartment(" Sales ");
+                dto.setContractType(" Full Time ");
+                dto.setStartDate(" 2023-01-01 ");
+
+                contractService.tidyDto(dto);
+
+                assertEquals("SALES", dto.getDepartment());
+                assertEquals("FULL_TIME", dto.getContractType());
+                assertEquals("2023-01-01", dto.getStartDate().trim());
+        }
+
+        @Test
+        public void validateDto_ValidatesContractDates() {
+                CreateContractDTO dto = new CreateContractDTO();
+                dto.setStartDate("2023-01-01");
+                dto.setEndDate("2023-12-31");
+
+                contractService.validateDto(dto, LocalDate.parse(dto.getStartDate()),
+                                LocalDate.parse(dto.getEndDate()));
+        }
+
+        @Test
+        public void validateDto_EndDateBeforeStartDate_ThrowsException() {
+                CreateContractDTO dto = new CreateContractDTO();
+                dto.setStartDate("2023-12-31");
+                dto.setEndDate("2023-01-01");
+
+                try {
+                        contractService.validateDto(dto, LocalDate.parse(dto.getStartDate()),
+                                        LocalDate.parse(dto.getEndDate()));
+                } catch (IllegalArgumentException e) {
+                        assertEquals("End date cannot be before start date", e.getMessage());
+                        return; // Test passes if exception is thrown
+                }
+                // If we reach here, the test fails
+                assert false : "Expected IllegalArgumentException was not thrown";
+        }
+
+        @Test
+        public void fromEntity_MapsContractToResponseContractDTO() {
+                Contract contract = new Contract();
+                contract.setId(1);
+                contract.setEmployee(new Employee());
+                contract.getEmployee().setId(1);
+                contract.setDepartment(Department.SALES);
+                contract.setContractType(ContractType.FULL_TIME);
+                contract.setSalaryAmount(new BigDecimal("50000.00"));
+                contract.setHoursPerWeek(40);
+                contract.setStartDate(LocalDate.parse("2023-01-01"));
+                contract.setEndDate(LocalDate.parse("2023-12-31"));
+
+                ResponseContractDTO dto = ResponseContractDTO.fromEntity(contract);
+
+                assertNotNull(dto);
+                assertEquals(contract.getId(), dto.getId());
+                assertEquals(contract.getEmployee().getId(), dto.getEmployeeId());
+                assertEquals(contract.getDepartment().name(), dto.getDepartment());
+                assertEquals(contract.getContractType().name(), dto.getContractType());
+                assertEquals(contract.getSalaryAmount(), dto.getSalaryAmount());
+                assertEquals(contract.getHoursPerWeek(), dto.getHoursPerWeek());
+                assertEquals("2023-01-01", dto.getStartDate());
+                assertEquals("2023-12-31", dto.getEndDate());
+        }
+
+        @Test
+        public void isActive_ReturnsTrueIfEndDateIsNullOrAfterToday() {
+                Contract contract = new Contract();
+                contract.setEndDate(null);
+                assertEquals(true, contract.isActive());
+
+                contract.setEndDate(LocalDate.now().plusDays(1));
+                assertEquals(true, contract.isActive());
+
+                contract.setEndDate(LocalDate.now().minusDays(1));
+                assertEquals(false, contract.isActive());
+        }
+
+        @Test
+        public void isActive_ReturnsFalseIfEndDateIsBeforeToday() {
+                Contract contract = new Contract();
+                contract.setEndDate(LocalDate.now().minusDays(1));
+                assertEquals(false, contract.isActive());
+        }
+
 }

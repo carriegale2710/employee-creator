@@ -150,7 +150,7 @@ Use [Postman](https://www.postman.com/downloads/) or a browser (for GET requests
 | Type       | Tools Used       | Status |
 | ---------- | ---------------- | ------ |
 | Unit Tests | JUnit + Mockito  | ✅     |
-| E2E Tests  | REST Assured, H2 | ⏳     |
+| E2E Tests  | REST Assured, H2 | ✅     |
 
 ```bash
 ./mvnw test      # backend
@@ -317,7 +317,7 @@ Each employee can have multiple contracts across different time periods and depa
   "salaryAmount": 80000,
   "hoursPerWeek": 38,
   "startDate": "2023-01-10", // ISO date string //required
-  "endDate": null, //isActive if empty by default
+  "endDate": null, //active if empty by default
   "isActive": true //virtual field (true unless endDate has past)
 }
 ```

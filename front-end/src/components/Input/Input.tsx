@@ -1,26 +1,20 @@
 import React from "react";
+import type { FieldError } from "react-hook-form";
 
 export interface TextInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
+  errors?: FieldError | undefined;
   label: string;
   type: string;
-  prefilledValue: string;
   children: React.ReactNode;
 }
 
 const Input = React.forwardRef<HTMLInputElement, TextInputProps>(
-  ({ label, type, prefilledValue = "", children, ...rest }, ref) => (
+  ({ errors, label, type, children, ...rest }, ref) => (
     <div>
       <label htmlFor={label}>{children}</label>
-      <input
-        name={label}
-        id={label}
-        type={type}
-        defaultValue={prefilledValue}
-        ref={ref}
-        {...rest}
-      />
-      <br />
+      {errors && <span style={{ color: "red" }}>{errors.message}</span>}
+      <input name={label} id={label} type={type} ref={ref} {...rest} />
     </div>
   )
 );
