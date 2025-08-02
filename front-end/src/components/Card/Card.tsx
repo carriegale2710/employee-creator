@@ -19,6 +19,12 @@ const Card = ({ employee, buttons }: CardProps) => {
         <p id="employee-email">Email: {employee.email} </p>
         <p id="employee-phone">Phone: {employee.phone || ""}</p>
         <p id="employee-address">Address: {employee.address || ""}</p>
+        <p id="employee-status">
+          Status: {employee.status || "No status available"}
+        </p>
+        <p id="employee-contract-count">
+          Contract Count: {employee.contractCount || 0}
+        </p>
       </div>
       <span className="buttons">
         {buttons?.map((button, idx) => (

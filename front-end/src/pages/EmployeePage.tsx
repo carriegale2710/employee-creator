@@ -8,6 +8,7 @@ import {
 } from "../services/employees";
 import Card from "../components/Card/Card";
 import DeleteButton from "../containers/DeleteButton/DeleteButton";
+import ContractCard from "../components/ContractCard/ContractCard";
 
 //needs to preload data from selected employee from Card
 // you come here on Edit Button
@@ -67,14 +68,14 @@ const EmployeePage = () => {
           <Button>Edit Employee</Button>
         </NavLink>
 
-        <NavLink to={`/employees/${employee != null && employee.id}/contracts`}>
-          <Button>View Contracts</Button>
-        </NavLink>
-
         <NavLink
           to={`/employees/${employee != null && employee.id}/contracts/new`}
         >
           <Button>Add Contract</Button>
+        </NavLink>
+
+        <NavLink to={`/employees/${employee != null && employee.id}/contracts`}>
+          <Button>View Contracts</Button>
         </NavLink>
 
         <DeleteButton

@@ -1,5 +1,11 @@
-import type { Contract } from "./contracts";
 import { apiCall } from "./api";
+
+export type EmployeeStatus =
+  | "ACTIVE"
+  | "INACTIVE"
+  | "NEW_HIRE"
+  | "TERMINATED"
+  | "ON_LEAVE";
 
 export interface Employee {
   id: number;
@@ -8,7 +14,9 @@ export interface Employee {
   email: string;
   phone: string;
   address?: string;
-  contracts?: Contract[];
+  status?: EmployeeStatus;
+  contractEndDate?: string; // ISO date string
+  contractCount?: number; // Total number of contracts
 }
 
 export interface EmployeeDTO {
