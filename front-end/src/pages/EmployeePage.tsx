@@ -7,8 +7,6 @@ import {
   type Employee,
 } from "../services/employees";
 import Card from "../components/Card/Card";
-import DeleteButton from "../containers/DeleteButton/DeleteButton";
-import ContractCard from "../components/ContractCard/ContractCard";
 import Header from "../components/Header/Header";
 
 //needs to preload data from selected employee from Card
