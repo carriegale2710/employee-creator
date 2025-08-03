@@ -46,6 +46,19 @@ export interface ContractDTO {
   endDate?: string; // ISO date string or null
 }
 
+export const getContracts = async (): Promise<Contract[]> => {
+  return apiCall<Contract[]>("/contracts", "Failed to get contracts");
+};
+
+export const getContractsByEmployeeId = async (
+  employeeId: number
+): Promise<Contract[]> => {
+  return apiCall<Contract[]>(
+    `/contracts/employee/${employeeId}`,
+    "Failed to get contracts for employee"
+  );
+};
+
 export const getContractById = async (id: string): Promise<Contract> => {
   return apiCall<Contract>(
     `/contracts/${id}`,

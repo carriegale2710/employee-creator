@@ -1,6 +1,6 @@
 const API_URL = import.meta.env.VITE_API_URL;
-console.log("Environment mode: " + import.meta.env.MODE);
-console.log("Using API URL:", API_URL);
+console.debug("Environment mode: " + import.meta.env.MODE);
+console.debug("Using API URL:", API_URL);
 
 export const apiCall = async <T>(
   endpoint: string,
@@ -17,11 +17,22 @@ export const apiCall = async <T>(
 
   const content = options?.method === "DELETE" ? null : await response.json();
 
-  // NOTE - for debugging purposes, we log the API URL and response status
+  // NOTE - Gracefully handle errors
   if (!response.ok) {
-    const errorLogMessage = `API Error: ${userErrorMessage} : "${content?.message}" `;
+    const errors = `${content?.errors?.map(
+      (error: { defaultMessage: string }) => `${error.defaultMessage} `
+    )}`;
+
+    const errorLogMessage = `API Error: ${userErrorMessage}
+    Status ${response.status}
+    Endpoint: ${API_URL}${endpoint}
+    Message: "${content?.message}"
+    Errors: ${errors}`;
+
     if (import.meta.env.MODE === "development") console.error(errorLogMessage);
-    throw new Error(userErrorMessage);
+    throw new Error(
+      `${userErrorMessage} - ${errors}` //display to user
+    );
   }
 
   return content;

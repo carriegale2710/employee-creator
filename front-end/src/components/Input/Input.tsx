@@ -11,10 +11,27 @@ export interface TextInputProps
 
 const Input = React.forwardRef<HTMLInputElement, TextInputProps>(
   ({ errors, label, type, children, ...rest }, ref) => (
-    <div>
-      <label htmlFor={label}>{children}</label>
-      {errors && <span style={{ color: "red" }}>{errors.message}</span>}
-      <input name={label} id={label} type={type} ref={ref} {...rest} />
+    <div className="mb-4 flex flex-col gap-1  sm:col-span-3">
+      <label
+        htmlFor={label}
+        className="flex justify-between block text-sm/6 font-medium text-gray-900"
+      >
+        {children}
+        {errors && (
+          <span className="text-red-500 italic font-normal">
+            {errors.message}
+          </span>
+        )}
+      </label>
+
+      <input
+        name={label}
+        id={label}
+        type={type}
+        ref={ref}
+        {...rest}
+        className="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6 "
+      />
     </div>
   )
 );

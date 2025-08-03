@@ -8,6 +8,8 @@ import {
 } from "../services/employees";
 import Card from "../components/Card/Card";
 import DeleteButton from "../containers/DeleteButton/DeleteButton";
+import ContractCard from "../components/ContractCard/ContractCard";
+import Header from "../components/Header/Header";
 
 //needs to preload data from selected employee from Card
 // you come here on Edit Button
@@ -49,39 +51,45 @@ const EmployeePage = () => {
 
   return (
     <>
-      <header>
-        <h1>
-          {employee?.firstName} {employee?.lastName}
-        </h1>
-        <p>View details below.</p>
-      </header>
+      <Header
+        heading={
+          employee
+            ? `${employee.firstName} ${employee.lastName}`
+            : "Employee Details"
+        }
+      >
+        <div className="  grid-flow-row grid-cols-1 gap-4 justify-evenly">
+          <NavLink
+            to={`/employees/${employee != null && employee.id}/contracts/new`}
+          >
+            <Button>Add Contract</Button>
+          </NavLink>
+
+          <NavLink
+            to={`/employees/${employee != null && employee.id}/contracts`}
+          >
+            <Button>View Contracts</Button>
+          </NavLink>
+          <NavLink to={`/employees/${employee != null && employee.id}/edit`}>
+            <Button>Edit Employee</Button>
+          </NavLink>
+          <Button
+            variant="danger"
+            type="button"
+            onClick={() => {
+              if (employee) onDelete(employee);
+            }}
+          >
+            Delete Employee
+          </Button>
+        </div>
+      </Header>
       <main>
-        <NavLink to="/employees">Go back</NavLink>
         {employee ? (
           <Card employee={employee} />
         ) : (
           <p>{isLoading ? "Loading employee data..." : error}</p>
         )}
-
-        <NavLink to={`/employees/${employee != null && employee.id}/edit`}>
-          <Button>Edit Employee</Button>
-        </NavLink>
-
-        <NavLink to={`/employees/${employee != null && employee.id}/contracts`}>
-          <Button>View Contracts</Button>
-        </NavLink>
-
-        <NavLink
-          to={`/employees/${employee != null && employee.id}/contracts/new`}
-        >
-          <Button>Add Contract</Button>
-        </NavLink>
-
-        <DeleteButton
-          onDelete={() => {
-            if (employee) onDelete(employee);
-          }}
-        />
       </main>
     </>
   );

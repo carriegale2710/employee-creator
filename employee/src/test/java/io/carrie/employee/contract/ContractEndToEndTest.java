@@ -200,6 +200,45 @@ public class ContractEndToEndTest {
 	}
 
 	@Nested
+	@DisplayName("GET /contracts/employee/{employeeId}")
+	class GetContractsByEmployeeIdTests {
+
+		@Test
+		public void getContractsByEmployeeId_EmployeeHasContracts_ReturnsSuccess() {
+			Integer existingEmployeeId = employee1.getId();
+			given()
+					.when().get("/contracts/employee/" + existingEmployeeId)
+					.then().statusCode(HttpStatus.OK.value())
+					.body("$", hasSize(1)); // employee1 has 1 contract
+		}
+
+		@Test
+		public void getContractsByEmployeeId_EmployeeHasNoContracts_ReturnsEmptyArray() {
+			Employee employee3 = new Employee();
+			employeeRepository.save(employee3);
+			Integer existingEmployeeId = employee3.getId(); // employee3 has no contracts
+			given()
+					.when().get("/contracts/employee/" + existingEmployeeId)
+					.then().statusCode(HttpStatus.NOT_FOUND.value());
+		}
+
+		@Test
+		public void getContractsByEmployeeId_EmployeeNotFound_ReturnsNotFound() {
+			given()
+					.when().get("/contracts/employee/999")
+					.then().statusCode(HttpStatus.NOT_FOUND.value());
+		}
+
+		@Test
+		public void getContractsByEmployeeId_IdNotValid_BadRequest() {
+			given()
+					.when().get("/contracts/employee/sfee23")
+					.then().statusCode(HttpStatus.BAD_REQUEST.value());
+		}
+
+	}
+
+	@Nested
 	@DisplayName("DELETE /contracts/{id}")
 	class DeleteContractByIdTests {
 

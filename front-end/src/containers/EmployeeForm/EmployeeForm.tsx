@@ -7,6 +7,9 @@ import {
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import { useForm } from "react-hook-form";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useValidation } from "../../hooks/useValidation";
 
 export interface EmployeeFormProps {
   defaultValue?: Employee | null;
@@ -20,105 +23,118 @@ const EmployeeForm = ({ defaultValue }: EmployeeFormProps) => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<EmployeeDTO>();
-
-  // console.log("Errors:", errors); //check
+  const navigate = useNavigate();
+  const [submitError, setSubmitError] = useState<string>("");
+  const { employeeValidation } = useValidation();
 
   const onSubmit = async (formData: EmployeeDTO) => {
-    // Handle form submission, e.g., send data to backend
+    // Handle form submission, send data to backend
 
     try {
       //creating employee
       if (!defaultValue) {
-        console.log("Creating employee with form data:", formData);
-        const result = await createEmployee(formData);
-        console.log("Employee successfully created:", result);
-        return result;
+        console.info("Creating employee with form data:", formData);
+        const created = await createEmployee(formData);
+        console.info("Employee successfully created:", created);
+        navigate(`/employees/${created.id}/contracts/new`);
+        return created;
       }
       //updating employee
       if (defaultValue) {
-        console.log(`Updating Employee ID: ${defaultValue.id}`);
-        console.log("With form data:", formData);
+        console.info(`Updating Employee ID: ${defaultValue.id}`);
+        console.info("With form data:", formData);
 
-        const result = await updateEmployee(defaultValue.id, formData);
-        console.log("Employee successfully updated:", result);
-        return result;
+        const edited = await updateEmployee(defaultValue.id, formData);
+        console.info("Employee successfully updated:", edited);
+        navigate(`/employees/${edited.id}`);
+        return edited;
       }
       // todo - redirect or show a success message Toast to user
     } catch (error) {
       console.error(error);
+      setSubmitError(`${error}`);
+    } finally {
+      console.info("Form submission complete.");
     }
   };
 
   return (
-    <>
-      <h2>Employee Form</h2>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="employee-form"
-        autoComplete="off"
-      >
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-3xl mx-auto p-6">
+      <h2 className="text-lg font-bold mb-4 text-center">Employee Form</h2>
+
+      <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
         <Input
+          errors={errors.firstName}
           label="firstName"
           type="text"
           defaultValue={defaultValue?.firstName ?? ""}
-          {...register("firstName", { required: true })}
+          {...register("firstName", employeeValidation.firstName)}
         >
           First Name
         </Input>
-        {errors.firstName && (
-          <span style={{ color: "red" }}>First Name is required</span>
-        )}
 
         <Input
+          errors={errors.lastName}
           label="lastName"
           type="text"
           defaultValue={defaultValue?.lastName ?? ""}
-          {...register("lastName", { required: true })}
+          {...register("lastName", employeeValidation.lastName)}
         >
           Last Name
         </Input>
-        {errors.lastName && (
-          <span style={{ color: "red" }}>Last Name is required</span>
-        )}
+      </div>
 
-        <Input
-          label="email"
-          type="email"
-          defaultValue={defaultValue?.email ?? ""}
-          {...register("email", { required: true })}
-        >
-          Email
-        </Input>
-        {errors.email && (
-          <span style={{ color: "red" }}>Email is required</span>
-        )}
+      <Input
+        errors={errors.email}
+        label="email"
+        type="email"
+        defaultValue={defaultValue?.email ?? ""}
+        {...register("email", employeeValidation.email)}
+      >
+        Email
+      </Input>
 
-        <Input
-          label="phone"
-          type="tel"
-          defaultValue={defaultValue?.phone ?? ""}
-          {...register("phone", { required: true })}
-        >
-          Phone
-        </Input>
-        {errors.phone && (
-          <span style={{ color: "red" }}>Phone is required</span>
-        )}
+      <Input
+        errors={errors.phone}
+        label="phone"
+        type="text"
+        defaultValue={defaultValue?.phone.replaceAll(" ", "") ?? ""}
+        {...register("phone", employeeValidation.phone)}
+      >
+        Phone
+      </Input>
 
-        <Input
-          label="address"
-          type="search"
-          defaultValue={defaultValue?.address ?? ""}
-          {...register("address")}
-        >
-          Address
-        </Input>
-
-        <Button type="submit" disabled={isSubmitting}>
+      <Input
+        label="address"
+        type="search"
+        defaultValue={defaultValue?.address ?? ""}
+        {...register("address", employeeValidation.address)}
+      >
+        Address
+      </Input>
+      <div className="flex justify-end gap-4 mt-6">
+        <NavLink to="/employees">
+          <Button
+            variant="secondary"
+            type="button"
+            onClick={() => console.log("Cancel button clicked")}
+          >
+            Cancel
+          </Button>
+        </NavLink>
+        <Button type="submit" disabled={isSubmitting} variant="submit">
           {isSubmitting ? "Submitting..." : "Submit"}
         </Button>
-      </form>
-    </>
+      </div>
+
+      {submitError && (
+        <p className="text-red-600 font-bold italic block">
+          An error occurred while submitting the form. Please try again.
+          <br />
+          {submitError}
+        </p>
+      )}
+    </form>
   );
 };
 

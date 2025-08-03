@@ -3,6 +3,7 @@ import Button from "../components/Button/Button";
 import ContractForm from "../containers/ContractForm/ContractForm";
 import { getEmployeeById, type Employee } from "../services/employees";
 import { useEffect, useState } from "react";
+import Header from "../components/Header/Header";
 
 const CreateContract = () => {
   const { id } = useParams();
@@ -24,28 +25,18 @@ const CreateContract = () => {
 
   return (
     <>
-      <header>
-        <h1>New Contract</h1>
-        <p>
-          Fill out the form below to create a new contract for the employee.
-        </p>
-      </header>
+      <Header
+        heading="New Contract"
+        subheading="Fill out the form below to create a new contract for the employee."
+      />
       <main>
         {loading ? <p>Loading...</p> : <ContractForm employee={employee} />}
-
-        <NavLink to="/employees">
-          <Button
-            style={{ backgroundColor: "lightgray", color: "black" }}
-            type="button"
-            onClick={() => console.log("Cancel button clicked")}
-          >
-            Cancel
-          </Button>
-          <p>
+        <div className="mt-4 justify-center flex">
+          <p className="text-blue-500 italic">
             <strong>Warning:</strong> Do not navigate away from this page
             without submitting your changes. Your changes will be lost.
           </p>
-        </NavLink>
+        </div>
       </main>
     </>
   );

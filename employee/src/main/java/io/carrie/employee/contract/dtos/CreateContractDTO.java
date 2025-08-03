@@ -36,9 +36,13 @@ public class CreateContractDTO {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private String startDate;
 
-    // end date can be null (this will make it an open-ended contract)
+    // end date can be null or empty (this will make it an open-ended contract)
     // endDate cannot be before startDate (check in service layer)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private String endDate;
+
+    public void setEndDate(String endDate) {
+        this.endDate = (endDate != null && endDate.trim().isEmpty()) ? null : endDate;
+    }
 
 }

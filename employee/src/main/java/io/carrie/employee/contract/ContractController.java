@@ -37,6 +37,16 @@ public class ContractController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/employee/{employeeId}")
+    public ResponseEntity<List<ResponseContractDTO>> getByEmployeeId(@PathVariable Integer employeeId) {
+        List<Contract> contracts = contractService.findAllByEmployeeId(employeeId);
+        List<ResponseContractDTO> response = contracts.stream()
+                .map(ResponseContractDTO::fromEntity)
+                .toList();
+        return ResponseEntity.ok(response);
+
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ResponseContractDTO> getById(@PathVariable Integer id) {
         Contract foundContract = contractService.findById(id);

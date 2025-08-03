@@ -13,8 +13,6 @@ import io.carrie.employee.contract.enums.Department;
 
 import io.carrie.employee.employee.Employee;
 import io.carrie.employee.employee.EmployeeRepository;
-import io.carrie.employee.employee.enums.EmployeeStatus;
-
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;

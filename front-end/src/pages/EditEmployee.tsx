@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import EmployeeForm from "../containers/EmployeeForm/EmployeeForm";
 import { NavLink, useParams } from "react-router-dom";
 import { getEmployeeById, type Employee } from "../services/employees";
+import Header from "../components/Header/Header";
 
 const EditEmployee = () => {
   //needs to preload data from selected employee from Card
@@ -21,12 +22,12 @@ const EditEmployee = () => {
 
   return (
     <>
-      <header>
-        <h1>Edit Employee</h1>
-        <p>Fill out the form below to edit the employee details.</p>
-      </header>
+      <Header
+        heading="Edit Employee"
+        subheading="Fill out the form below to edit the employee details."
+      />
       <main>
-        <NavLink to="/employees">Go back to Employees</NavLink>
+        <NavLink to={`/employees/${id}`}>Go back to Profile</NavLink>
         {employeeData ? (
           <EmployeeForm defaultValue={employeeData} />
         ) : (
