@@ -5,6 +5,8 @@ import io.carrie.employee.contract.enums.Department;
 import io.carrie.employee.contract.dtos.CreateContractDTO;
 import io.carrie.employee.employee.Employee;
 import io.carrie.employee.employee.EmployeeRepository;
+import io.carrie.employee.contract.Contract;
+import io.carrie.employee.contract.ContractRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

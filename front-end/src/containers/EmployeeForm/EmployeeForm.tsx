@@ -122,7 +122,6 @@ const EmployeeForm = ({ defaultValue }: EmployeeFormProps) => {
             Cancel
           </Button>
         </NavLink>
-
         <Button type="submit" disabled={isSubmitting} variant="submit">
           {isSubmitting ? "Submitting..." : "Submit"}
         </Button>

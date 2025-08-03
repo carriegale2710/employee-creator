@@ -52,6 +52,7 @@ public class Employee {
 
     // SECTION - Custom domain business logic: contract access methods
 
+
     public EmployeeStatus getStatus() {
         if (!hasActiveContract())
             return EmployeeStatus.INACTIVE;

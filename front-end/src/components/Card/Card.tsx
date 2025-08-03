@@ -4,6 +4,8 @@ import avatarDefault from "../../assets/avatar-default-svgrepo-com.svg";
 import { NavLink } from "react-router-dom";
 import Button from "../Button/Button";
 
+import type { ReactNode } from "react";
+
 export interface CardProps {
   employee: Employee;
   buttons?: ReactNode[];
@@ -60,6 +62,7 @@ const Card = ({ employee, buttons }: CardProps) => {
         ))}
       </div>
     </section>
+
   );
 };
 

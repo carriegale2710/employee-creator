@@ -10,6 +10,7 @@ import CreateContract from "./pages/CreateContract";
 import EmployeePage from "./pages/EmployeePage";
 import ContractsPage from "./pages/ContractsPage";
 
+
 function App() {
   return (
     <>
@@ -23,6 +24,7 @@ function App() {
           <Route path="/employees/:id" element={<EmployeePage />} />
           <Route path="/employees/:id/edit" element={<EditEmployee />} />
           <Route path="/employees/:id/contracts" element={<ContractsPage />} />
+
           <Route
             path="/employees/:id/contracts/new"
             element={<CreateContract />}

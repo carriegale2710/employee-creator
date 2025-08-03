@@ -44,6 +44,7 @@ public class ContractController {
                 .map(ResponseContractDTO::fromEntity)
                 .toList();
         return ResponseEntity.ok(response);
+
     }
 
     @GetMapping("/{id}")
