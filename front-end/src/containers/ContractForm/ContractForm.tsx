@@ -10,6 +10,7 @@ import {
 import Select from "../../components/Select/Select";
 import type { Employee } from "../../services/employees";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useValidation } from "../../hooks/useValidation";
 
 export interface ContractFormProps {
   employee?: Employee | null; // Optional employee prop for context
@@ -17,11 +18,11 @@ export interface ContractFormProps {
 
 const ContractForm = ({ employee }: ContractFormProps) => {
   const navigate = useNavigate();
+  const { contractValidation } = useValidation();
 
   const {
     register,
     handleSubmit,
-    getValues,
     formState: { errors, isSubmitting },
   } = useForm<ContractDTO>({
     defaultValues: {
@@ -42,117 +43,92 @@ const ContractForm = ({ employee }: ContractFormProps) => {
   };
 
   return (
-    <>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <h2>Contract Form</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          errors={errors.employeeId}
-          label="employeeId"
-          type="number"
-          {...register("employeeId", {
-            required: "*required",
-            min: 1,
-            max: 999,
-          })}
-        >
-          Employee ID
-        </Input>
+      <Input
+        errors={errors.employeeId}
+        label="employeeId"
+        type="number"
+        {...register("employeeId", contractValidation.employeeId)}
+      >
+        Employee ID
+      </Input>
 
-        <Select
-          errors={errors.department}
-          label="department"
-          title="Department"
-          options={DEPARTMENTS.map((type) =>
-            type.toUpperCase().split("_").join(" ")
-          )}
-          {...register("department", { required: false })}
-        >
-          Department
-        </Select>
+      <Select
+        errors={errors.department}
+        label="department"
+        title="Department"
+        options={DEPARTMENTS.map((type) =>
+          type.toUpperCase().split("_").join(" ")
+        )}
+        {...register("department", contractValidation.department)}
+      >
+        Department
+      </Select>
 
-        <Select
-          errors={errors.contractType}
-          label="contractType"
-          title="Contract Type"
-          options={CONTRACT_TYPES.map((type) =>
-            type.toUpperCase().split("_").join(" ")
-          )}
-          {...register("contractType", {
-            required: "*required",
-          })}
-        >
-          Contract Type
-        </Select>
+      <Select
+        errors={errors.contractType}
+        label="contractType"
+        title="Contract Type"
+        options={CONTRACT_TYPES.map((type) =>
+          type.toUpperCase().split("_").join(" ")
+        )}
+        {...register("contractType", contractValidation.contractType)}
+      >
+        Contract Type
+      </Select>
 
-        <Input
-          errors={errors.salaryAmount}
-          label="salaryAmount"
-          type="number"
-          {...register("salaryAmount", {
-            required: "*required",
-            min: { value: 0, message: "Salary must be positive" },
-            max: { value: 500000, message: "Salary exceeds maximum" },
-          })}
-        >
-          Salary Amount
-        </Input>
+      <Input
+        errors={errors.salaryAmount}
+        label="salaryAmount"
+        type="number"
+        {...register("salaryAmount", contractValidation.salaryAmount)}
+      >
+        Salary Amount
+      </Input>
 
-        <Input
-          errors={errors.hoursPerWeek}
-          label="hoursPerWeek"
-          type="number"
-          {...register("hoursPerWeek", {
-            required: "*required",
-            min: { value: 0, message: "Hours must be positive" },
-            max: { value: 40, message: "Cannot exceed 40 hours per week" },
-          })}
-        >
-          Hours per Week
-        </Input>
+      <Input
+        errors={errors.hoursPerWeek}
+        label="hoursPerWeek"
+        type="number"
+        {...register("hoursPerWeek", contractValidation.hoursPerWeek)}
+      >
+        Hours per Week
+      </Input>
 
-        <Input
-          errors={errors.startDate}
-          label="startDate"
-          type="date"
-          {...register("startDate", { required: "*required" })}
-        >
-          Start Date
-        </Input>
+      <Input
+        errors={errors.startDate}
+        label="startDate"
+        type="date"
+        {...register("startDate", contractValidation.startDate)}
+      >
+        Start Date
+      </Input>
 
-        <Input
-          errors={errors.endDate}
-          label="endDate"
-          type="date"
-          {...register("endDate", {
-            required: false,
-            // Optional field, can be left blank
-            validate: (value) => {
-              if (value && new Date(value) < new Date(getValues("startDate"))) {
-                return "End Date cannot be before Start Date";
-              }
-              return true;
-            },
-          })}
-        >
-          End Date
-        </Input>
+      <Input
+        errors={errors.endDate}
+        label="endDate"
+        type="date"
+        {...register("endDate", contractValidation.endDate)}
+      >
+        End Date
+      </Input>
 
-        <div className="flex justify-between gap-2 mt-5">
-          <NavLink to="/employees">
-            <Button
-              className="bg-gray-200 text-black"
-              type="button"
-              onClick={() => console.log("Cancel button clicked")}
-            >
-              Cancel
-            </Button>
-          </NavLink>
-          <Button type="submit" disabled={isSubmitting} variant="submit">
-            {isSubmitting ? "Submitting..." : "Submit"}
+      <div className="flex justify-end gap-2 mt-5">
+        <NavLink to="/employees">
+          <Button
+            className="bg-gray-200 text-black"
+            type="button"
+            onClick={() => console.log("Cancel button clicked")}
+          >
+            Cancel
           </Button>
-        </div>
-      </form>
-    </>
+        </NavLink>
+        <Button type="submit" disabled={isSubmitting} variant="submit">
+          {isSubmitting ? "Submitting..." : "Submit"}
+        </Button>
+      </div>
+    </form>
   );
 };
 

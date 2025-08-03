@@ -1,6 +1,8 @@
 import type { Employee } from "../../services/employees";
 import type { ReactNode } from "react";
 import avatarDefault from "../../assets/avatar-default-svgrepo-com.svg";
+import { NavLink } from "react-router-dom";
+import Button from "../Button/Button";
 
 export interface CardProps {
   employee: Employee;
@@ -9,7 +11,7 @@ export interface CardProps {
 
 const Card = ({ employee, buttons }: CardProps) => {
   return (
-    <div
+    <section
       className="flex flex-row items-start justify-between flex-wrap bg-[#e8e7e7] p-4 m-2 rounded"
       data-testid="card"
       id="card"
@@ -50,12 +52,14 @@ const Card = ({ employee, buttons }: CardProps) => {
         <p className="text-gray-600">{employee.contractCount || 0}</p>
       </div>
 
-      {buttons?.map((button, idx) => (
-        <span key={idx} className="mr-2">
-          {button}
-        </span>
-      ))}
-    </div>
+      <div className="flex flex-row gap-2 mt-4 text-sm">
+        {buttons?.map((button, idx) => (
+          <span key={idx} className=" flex justify-end">
+            {button}
+          </span>
+        ))}
+      </div>
+    </section>
   );
 };
 

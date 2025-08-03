@@ -31,11 +31,12 @@ const CreateContract = () => {
       />
       <main>
         {loading ? <p>Loading...</p> : <ContractForm employee={employee} />}
-
-        <p className="text-blue-500 italic">
-          <strong>Warning:</strong> Do not navigate away from this page without
-          submitting your changes. Your changes will be lost.
-        </p>
+        <div className="mt-4 justify-center flex">
+          <p className="text-blue-500 italic">
+            <strong>Warning:</strong> Do not navigate away from this page
+            without submitting your changes. Your changes will be lost.
+          </p>
+        </div>
       </main>
     </>
   );

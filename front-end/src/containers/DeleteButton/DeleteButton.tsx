@@ -23,10 +23,10 @@ const DeleteButton = ({ onDelete }: DeleteButtonProps) => {
       >
         Delete Employee
       </Button>
-
+      <br />
       {/* Warning message that appears on hover */}
       {warningVisible && (
-        <span id="delete-warning" className="text-red-500">
+        <span id="delete-warning" className="text-red-500 justify-end">
           Are you sure? This action cannot be undone.
         </span>
       )}

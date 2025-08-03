@@ -57,34 +57,39 @@ const EmployeePage = () => {
             ? `${employee.firstName} ${employee.lastName}`
             : "Employee Details"
         }
-        subheading="View details below."
-      />
+      >
+        <div className="  grid-flow-row grid-cols-1 gap-4 justify-evenly">
+          <NavLink
+            to={`/employees/${employee != null && employee.id}/contracts/new`}
+          >
+            <Button>Add Contract</Button>
+          </NavLink>
+
+          <NavLink
+            to={`/employees/${employee != null && employee.id}/contracts`}
+          >
+            <Button>View Contracts</Button>
+          </NavLink>
+          <NavLink to={`/employees/${employee != null && employee.id}/edit`}>
+            <Button>Edit Employee</Button>
+          </NavLink>
+          <Button
+            variant="danger"
+            type="button"
+            onClick={() => {
+              if (employee) onDelete(employee);
+            }}
+          >
+            Delete Employee
+          </Button>
+        </div>
+      </Header>
       <main>
         {employee ? (
           <Card employee={employee} />
         ) : (
           <p>{isLoading ? "Loading employee data..." : error}</p>
         )}
-
-        <NavLink to={`/employees/${employee != null && employee.id}/edit`}>
-          <Button>Edit Employee</Button>
-        </NavLink>
-
-        <NavLink
-          to={`/employees/${employee != null && employee.id}/contracts/new`}
-        >
-          <Button>Add Contract</Button>
-        </NavLink>
-
-        <NavLink to={`/employees/${employee != null && employee.id}/contracts`}>
-          <Button>View Contracts</Button>
-        </NavLink>
-
-        <DeleteButton
-          onDelete={() => {
-            if (employee) onDelete(employee);
-          }}
-        />
       </main>
     </>
   );

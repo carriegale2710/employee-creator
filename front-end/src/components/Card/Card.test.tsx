@@ -1,4 +1,3 @@
-// Card.test.tsx
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { MemoryRouter } from "react-router-dom";
