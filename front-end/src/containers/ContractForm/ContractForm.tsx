@@ -25,7 +25,6 @@ const ContractForm = ({ employee }: ContractFormProps) => {
   const {
     register,
     handleSubmit,
-    getValues,
     formState: { errors, isSubmitting },
   } = useForm<ContractDTO>({
     defaultValues: {
