@@ -27,7 +27,7 @@ const EditEmployee = () => {
         subheading="Fill out the form below to edit the employee details."
       />
       <main>
-        <NavLink to="/employees">Go back to Employees</NavLink>
+        <NavLink to={`/employees/${id}`}>Go back to Profile</NavLink>
         {employeeData ? (
           <EmployeeForm defaultValue={employeeData} />
         ) : (

@@ -34,8 +34,8 @@ export const useValidation = () => {
     phone: {
       required: "*required",
       pattern: {
-        value: /^[0-9+]{8,12}$/,
-        message: "Phone must be 8-12 digits long",
+        value: /^\+?[0-9]{8,15}$/,
+        message: "Phone must be 8-15 digits long",
       },
     },
     address: {

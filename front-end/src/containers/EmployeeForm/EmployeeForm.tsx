@@ -36,7 +36,7 @@ const EmployeeForm = ({ defaultValue }: EmployeeFormProps) => {
         console.info("Creating employee with form data:", formData);
         const created = await createEmployee(formData);
         console.info("Employee successfully created:", created);
-        navigate(`/employees/${created.id}/contracts`);
+        navigate(`/employees/${created.id}/contracts/new`);
         return created;
       }
       //updating employee
@@ -97,7 +97,7 @@ const EmployeeForm = ({ defaultValue }: EmployeeFormProps) => {
       <Input
         errors={errors.phone}
         label="phone"
-        type="tel"
+        type="text"
         defaultValue={defaultValue?.phone.replaceAll(" ", "") ?? ""}
         {...register("phone", employeeValidation.phone)}
       >

@@ -11,6 +11,7 @@ import Select from "../../components/Select/Select";
 import type { Employee } from "../../services/employees";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useValidation } from "../../hooks/useValidation";
+import { useState } from "react";
 
 export interface ContractFormProps {
   employee?: Employee | null; // Optional employee prop for context
@@ -18,6 +19,7 @@ export interface ContractFormProps {
 
 const ContractForm = ({ employee }: ContractFormProps) => {
   const navigate = useNavigate();
+  const [submitError, setSubmitError] = useState<string>("");
   const { contractValidation } = useValidation();
 
   const {
@@ -39,6 +41,9 @@ const ContractForm = ({ employee }: ContractFormProps) => {
       navigate(`/employees/${employee?.id}/contracts`);
     } catch (error) {
       console.error(error);
+      setSubmitError(`${error}`);
+    } finally {
+      console.info("Form submission complete.");
     }
   };
 
@@ -128,6 +133,14 @@ const ContractForm = ({ employee }: ContractFormProps) => {
           {isSubmitting ? "Submitting..." : "Submit"}
         </Button>
       </div>
+
+      {submitError && (
+        <p className="text-red-600 font-bold italic block">
+          An error occurred while submitting the form. Please try again.
+          <br />
+          {submitError}
+        </p>
+      )}
     </form>
   );
 };
