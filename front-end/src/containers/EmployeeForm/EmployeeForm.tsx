@@ -7,6 +7,7 @@ import {
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 export interface EmployeeFormProps {
   defaultValue?: Employee | null;
@@ -20,32 +21,39 @@ const EmployeeForm = ({ defaultValue }: EmployeeFormProps) => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<EmployeeDTO>();
-
-  // console.log("Errors:", errors); //check
+  const navigate = useNavigate();
 
   const onSubmit = async (formData: EmployeeDTO) => {
-    // Handle form submission, e.g., send data to backend
+    // Handle form submission, send data to backend
 
     try {
       //creating employee
       if (!defaultValue) {
-        console.log("Creating employee with form data:", formData);
+        console.info("Creating employee with form data:", formData);
         const result = await createEmployee(formData);
-        console.log("Employee successfully created:", result);
+        console.info("Employee successfully created:", result);
         return result;
       }
       //updating employee
       if (defaultValue) {
-        console.log(`Updating Employee ID: ${defaultValue.id}`);
-        console.log("With form data:", formData);
+        console.info(`Updating Employee ID: ${defaultValue.id}`);
+        console.info("With form data:", formData);
 
         const result = await updateEmployee(defaultValue.id, formData);
-        console.log("Employee successfully updated:", result);
+        console.info("Employee successfully updated:", result);
         return result;
       }
       // todo - redirect or show a success message Toast to user
     } catch (error) {
       console.error(error);
+    } finally {
+      // redirect to employee details page or list page
+      console.info("Form submission complete.");
+      if (defaultValue) {
+        navigate(`/employees/${defaultValue.id}`);
+      } else {
+        navigate(`/employees`);
+      }
     }
   };
 
@@ -58,58 +66,88 @@ const EmployeeForm = ({ defaultValue }: EmployeeFormProps) => {
         autoComplete="off"
       >
         <Input
+          errors={errors.firstName}
           label="firstName"
           type="text"
           defaultValue={defaultValue?.firstName ?? ""}
-          {...register("firstName", { required: true })}
+          {...register("firstName", {
+            required: "First Name is required",
+            maxLength: {
+              value: 20,
+              message: "First Name must be at most 20 characters",
+            },
+            pattern: {
+              value: /^[A-Za-z]+$/,
+              message: "First Name must contain only letters",
+            },
+          })}
         >
           First Name
         </Input>
-        {errors.firstName && (
-          <span style={{ color: "red" }}>First Name is required</span>
-        )}
 
         <Input
+          errors={errors.lastName}
           label="lastName"
           type="text"
           defaultValue={defaultValue?.lastName ?? ""}
-          {...register("lastName", { required: true })}
+          {...register("lastName", {
+            required: "Last Name is required",
+            maxLength: {
+              value: 20,
+              message: "Last Name must be at most 20 characters",
+            },
+            pattern: {
+              value: /^[A-Za-zÀ-ÖØ-öø-ÿ'’\- ]+$/,
+              message:
+                "Last Name must contain only letters, apostrophes, or accents",
+            },
+          })}
         >
           Last Name
         </Input>
-        {errors.lastName && (
-          <span style={{ color: "red" }}>Last Name is required</span>
-        )}
 
         <Input
+          errors={errors.email}
           label="email"
           type="email"
           defaultValue={defaultValue?.email ?? ""}
-          {...register("email", { required: true })}
+          {...register("email", {
+            required: "Email is required",
+            pattern: {
+              value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+              message: "Invalid email format",
+            },
+          })}
         >
           Email
         </Input>
-        {errors.email && (
-          <span style={{ color: "red" }}>Email is required</span>
-        )}
 
         <Input
+          errors={errors.phone}
           label="phone"
           type="tel"
-          defaultValue={defaultValue?.phone ?? ""}
-          {...register("phone", { required: true })}
+          defaultValue={defaultValue?.phone.replaceAll(" ", "") ?? ""}
+          {...register("phone", {
+            required: "Phone is required",
+            pattern: {
+              value: /^[0-9+]{12}$/,
+              message: "Phone must be 12 digits or less",
+            },
+          })}
         >
           Phone
         </Input>
-        {errors.phone && (
-          <span style={{ color: "red" }}>Phone is required</span>
-        )}
 
         <Input
           label="address"
           type="search"
           defaultValue={defaultValue?.address ?? ""}
-          {...register("address")}
+          {...register("address", {
+            maxLength: {
+              value: 100,
+              message: "Address must be at most 100 characters",
+            },
+          })}
         >
           Address
         </Input>
