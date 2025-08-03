@@ -1,30 +1,21 @@
-import { NavLink } from "react-router-dom";
+import Header from "../components/Header/Header";
 import EmployeeForm from "../containers/EmployeeForm/EmployeeForm";
-import Button from "../components/Button/Button";
 
 const CreatePage = () => {
   return (
     <>
-      <header>
-        <h1>Register Employee</h1>
-        <p>Fill out the form below to register a new employee.</p>
-      </header>
+      <Header
+        heading="Register Employee"
+        subheading="Fill out the form below to register a new employee."
+      />
       <main>
         <EmployeeForm />
-
-        <NavLink to="/employees">
-          <Button
-            style={{ backgroundColor: "lightgray", color: "black" }}
-            type="button"
-            onClick={() => console.log("Cancel button clicked")}
-          >
-            Cancel
-          </Button>
-        </NavLink>
-        <p style={{ color: "blue", fontStyle: "italic" }}>
-          <strong>Warning:</strong> Do not navigate away from this page without
-          submitting your changes. Your changes will be lost.
-        </p>
+        <div className="mt-4 justify-center text-center">
+          <p className="mt-1 text-sm/6 text-gray-600">
+            <strong>Warning:</strong> Do not navigate away from this page
+            without submitting your changes. Your changes will be lost.
+          </p>
+        </div>
       </main>
     </>
   );

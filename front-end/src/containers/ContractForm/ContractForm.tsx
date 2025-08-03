@@ -50,7 +50,7 @@ const ContractForm = ({ employee }: ContractFormProps) => {
           label="employeeId"
           type="number"
           {...register("employeeId", {
-            required: "Employee ID is required",
+            required: "*required",
             min: 1,
             max: 999,
           })}
@@ -78,7 +78,7 @@ const ContractForm = ({ employee }: ContractFormProps) => {
             type.toUpperCase().split("_").join(" ")
           )}
           {...register("contractType", {
-            required: "Contract Type is required",
+            required: "*required",
           })}
         >
           Contract Type
@@ -89,7 +89,7 @@ const ContractForm = ({ employee }: ContractFormProps) => {
           label="salaryAmount"
           type="number"
           {...register("salaryAmount", {
-            required: "Salary Amount is required",
+            required: "*required",
             min: { value: 0, message: "Salary must be positive" },
             max: { value: 500000, message: "Salary exceeds maximum" },
           })}
@@ -102,7 +102,7 @@ const ContractForm = ({ employee }: ContractFormProps) => {
           label="hoursPerWeek"
           type="number"
           {...register("hoursPerWeek", {
-            required: false, // Optional field
+            required: "*required",
             min: { value: 0, message: "Hours must be positive" },
             max: { value: 40, message: "Cannot exceed 40 hours per week" },
           })}
@@ -114,7 +114,7 @@ const ContractForm = ({ employee }: ContractFormProps) => {
           errors={errors.startDate}
           label="startDate"
           type="date"
-          {...register("startDate", { required: "Start Date is required" })}
+          {...register("startDate", { required: "*required" })}
         >
           Start Date
         </Input>
@@ -137,24 +137,17 @@ const ContractForm = ({ employee }: ContractFormProps) => {
           End Date
         </Input>
 
-        <div
-          style={{
-            display: "flex",
-            gap: "10px",
-            marginTop: "20px",
-            justifyContent: "space-between",
-          }}
-        >
+        <div className="flex justify-between gap-2 mt-5">
           <NavLink to="/employees">
             <Button
-              style={{ backgroundColor: "lightgray", color: "black" }}
+              className="bg-gray-200 text-black"
               type="button"
               onClick={() => console.log("Cancel button clicked")}
             >
               Cancel
             </Button>
           </NavLink>
-          <Button type="submit" disabled={isSubmitting}>
+          <Button type="submit" disabled={isSubmitting} variant="submit">
             {isSubmitting ? "Submitting..." : "Submit"}
           </Button>
         </div>

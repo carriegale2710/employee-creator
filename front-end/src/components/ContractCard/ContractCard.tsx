@@ -6,16 +6,7 @@ export interface ContractProps {
 
 const ContractCard = ({ contract }: ContractProps) => {
   return (
-    <div
-      style={{
-        marginTop: "20px",
-        border: "1px solid #ccc",
-        padding: "10px",
-        borderRadius: "5px",
-        backgroundColor: "#f9f9f9",
-        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-      }}
-    >
+    <div className="mt-5 border border-gray-300 p-4 rounded bg-gray-50 shadow">
       {contract ? (
         <>
           <p>Contract ID: {contract.id}</p>

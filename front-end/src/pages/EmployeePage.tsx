@@ -9,6 +9,7 @@ import {
 import Card from "../components/Card/Card";
 import DeleteButton from "../containers/DeleteButton/DeleteButton";
 import ContractCard from "../components/ContractCard/ContractCard";
+import Header from "../components/Header/Header";
 
 //needs to preload data from selected employee from Card
 // you come here on Edit Button
@@ -50,14 +51,15 @@ const EmployeePage = () => {
 
   return (
     <>
-      <header>
-        <h1>
-          {employee?.firstName} {employee?.lastName}
-        </h1>
-        <p>View details below.</p>
-      </header>
+      <Header
+        heading={
+          employee
+            ? `${employee.firstName} ${employee.lastName}`
+            : "Employee Details"
+        }
+        subheading="View details below."
+      />
       <main>
-        <NavLink to="/employees">Go back</NavLink>
         {employee ? (
           <Card employee={employee} />
         ) : (

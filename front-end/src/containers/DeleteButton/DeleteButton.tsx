@@ -10,10 +10,8 @@ const DeleteButton = ({ onDelete }: DeleteButtonProps) => {
 
   return (
     <>
-      {/* <br />
-      <p style={{ color: "red", fontWeight: "bold" }}>Danger Zone</p> */}
       <Button
-        style={{ backgroundColor: "red" }}
+        variant="danger"
         type="button"
         onClick={onDelete}
         onMouseOver={() => {
@@ -28,7 +26,7 @@ const DeleteButton = ({ onDelete }: DeleteButtonProps) => {
 
       {/* Warning message that appears on hover */}
       {warningVisible && (
-        <span id="delete-warning" style={{ color: "red" }}>
+        <span id="delete-warning" className="text-red-500">
           Are you sure? This action cannot be undone.
         </span>
       )}

@@ -17,9 +17,15 @@ const Select = React.forwardRef<HTMLSelectElement, SelectInputProps>(
     ref
   ) => {
     return (
-      <>
-        <label htmlFor={label}>{children}</label>
-        {errors && <span style={{ color: "red" }}>{errors.message}</span>}
+      <div className="mb-4">
+        <label htmlFor={label} className="flex justify-between">
+          {children}
+          {errors && (
+            <span className="text-red-500 italic font-normal">
+              {errors.message}
+            </span>
+          )}
+        </label>
         <select
           name={label}
           id={label}
@@ -42,7 +48,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectInputProps>(
           ))}
         </select>
         <br />
-      </>
+      </div>
     );
   }
 );

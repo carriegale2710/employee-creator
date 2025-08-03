@@ -7,7 +7,7 @@ import {
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 export interface EmployeeFormProps {
@@ -57,121 +57,116 @@ const EmployeeForm = ({ defaultValue }: EmployeeFormProps) => {
   };
 
   return (
-    <>
+    <form onSubmit={handleSubmit(onSubmit)} autoComplete="on">
       <h2>Employee Form</h2>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="employee-form"
-        autoComplete="on"
+      <Input
+        errors={errors.firstName}
+        label="firstName"
+        type="text"
+        defaultValue={defaultValue?.firstName ?? ""}
+        {...register("firstName", {
+          required: "*required",
+          maxLength: {
+            value: 20,
+            message: "First Name must be at most 20 characters",
+          },
+          pattern: {
+            value: /^[A-Za-z]+$/,
+            message: "First Name must contain only letters",
+          },
+        })}
       >
-        <Input
-          errors={errors.firstName}
-          label="firstName"
-          type="text"
-          defaultValue={defaultValue?.firstName ?? ""}
-          {...register("firstName", {
-            required: "First Name is required",
-            maxLength: {
-              value: 20,
-              message: "First Name must be at most 20 characters",
-            },
-            pattern: {
-              value: /^[A-Za-z]+$/,
-              message: "First Name must contain only letters",
-            },
-          })}
-        >
-          First Name
-        </Input>
+        First Name
+      </Input>
 
-        <Input
-          errors={errors.lastName}
-          label="lastName"
-          type="text"
-          defaultValue={defaultValue?.lastName ?? ""}
-          {...register("lastName", {
-            required: "Last Name is required",
-            maxLength: {
-              value: 20,
-              message: "Last Name must be at most 20 characters",
-            },
-            pattern: {
-              value: /^[A-Za-zÀ-ÖØ-öø-ÿ'’\- ]+$/,
-              message:
-                "Last Name must contain only letters, apostrophes, or accents",
-            },
-          })}
-        >
-          Last Name
-        </Input>
+      <Input
+        errors={errors.lastName}
+        label="lastName"
+        type="text"
+        defaultValue={defaultValue?.lastName ?? ""}
+        {...register("lastName", {
+          required: "*required",
+          maxLength: {
+            value: 20,
+            message: "Last Name must be at most 20 characters",
+          },
+          pattern: {
+            value: /^[A-Za-zÀ-ÖØ-öø-ÿ'’\- ]+$/,
+            message:
+              "Last Name must contain only letters, apostrophes, or accents",
+          },
+        })}
+      >
+        Last Name
+      </Input>
 
-        <Input
-          errors={errors.email}
-          label="email"
-          type="email"
-          defaultValue={defaultValue?.email ?? ""}
-          {...register("email", {
-            required: "Email is required",
-            pattern: {
-              value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-              message: "Invalid email format",
-            },
-          })}
-        >
-          Email
-        </Input>
+      <Input
+        errors={errors.email}
+        label="email"
+        type="email"
+        defaultValue={defaultValue?.email ?? ""}
+        {...register("email", {
+          required: "*required",
+          pattern: {
+            value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+            message: "Invalid email format",
+          },
+        })}
+      >
+        Email
+      </Input>
 
-        <Input
-          errors={errors.phone}
-          label="phone"
-          type="tel"
-          defaultValue={defaultValue?.phone.replaceAll(" ", "") ?? ""}
-          {...register("phone", {
-            required: "Phone is required",
-            pattern: {
-              value: /^[0-9+]{8,12}$/,
-              message: "Phone must be 8-12 digits long",
-            },
-          })}
-        >
-          Phone
-        </Input>
+      <Input
+        errors={errors.phone}
+        label="phone"
+        type="tel"
+        defaultValue={defaultValue?.phone.replaceAll(" ", "") ?? ""}
+        {...register("phone", {
+          required: "*required",
+          pattern: {
+            value: /^[0-9+]{8,12}$/,
+            message: "Phone must be 8-12 digits long",
+          },
+        })}
+      >
+        Phone
+      </Input>
 
-        <Input
-          label="address"
-          type="search"
-          defaultValue={defaultValue?.address ?? ""}
-          {...register("address", {
-            maxLength: {
-              value: 100,
-              message: "Address must be at most 100 characters",
-            },
-          })}
-        >
-          Address
-        </Input>
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          style={{ justifySelf: "right" }}
-        >
+      <Input
+        label="address"
+        type="search"
+        defaultValue={defaultValue?.address ?? ""}
+        {...register("address", {
+          maxLength: {
+            value: 100,
+            message: "Address must be at most 100 characters",
+          },
+        })}
+      >
+        Address
+      </Input>
+      <div>
+        <NavLink to="/employees">
+          <Button
+            variant="secondary"
+            type="button"
+            onClick={() => console.log("Cancel button clicked")}
+          >
+            Cancel
+          </Button>
+        </NavLink>
+        <Button type="submit" disabled={isSubmitting} variant="submit">
           {isSubmitting ? "Submitting..." : "Submit"}
         </Button>
-        <p
-          style={{
-            color: "red",
-            display: submitError ? "block" : "none",
-            fontWeight: "bold",
-            fontStyle: "italic",
-          }}
-        >
-          {" "}
+      </div>
+      {submitError && (
+        <p className="text-red-600 font-bold italic block">
           An error occurred while submitting the form. Please try again.
           <br />
           {submitError}
         </p>
-      </form>
-    </>
+      )}
+    </form>
   );
 };
 

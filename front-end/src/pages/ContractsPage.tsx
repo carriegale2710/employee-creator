@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ContractCard from "../components/ContractCard/ContractCard";
 import { NavLink, useParams } from "react-router-dom";
 import { getContractsByEmployeeId, type Contract } from "../services/contracts";
+import Header from "../components/Header/Header";
 
 const ContractsPage = () => {
   const { id } = useParams(); //get the employee ID from the URL parameters
@@ -30,10 +31,7 @@ const ContractsPage = () => {
 
   return (
     <>
-      <header>
-        <h1>Contract Details</h1>
-        <p>View details below.</p>
-      </header>
+      <Header heading="Contract Details" subheading="View details below." />
       <main>
         <NavLink to={`/employees/${id}`}>Go back</NavLink>
         {contracts ? (

@@ -21,7 +21,7 @@ const List = ({ employees }: ListProps) => {
               key={employee.id}
               buttons={[
                 <NavLink to={`/employees/${employee.id}`}>
-                  <Button>View</Button>
+                  <Button variant="link">View Details</Button>
                 </NavLink>,
               ]}
             />

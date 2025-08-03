@@ -1,22 +1,21 @@
 import { NavLink } from "react-router-dom";
 import Button from "../components/Button/Button";
+import Header from "../components/Header/Header";
 
 const Home = () => {
   return (
     <>
-      <header>
-        <h1>Home</h1>
-        <p>Welcome to the Employee Management System!</p>
-      </header>
-      <main>
+      <Header
+        heading="Home"
+        subheading="Welcome to the Employee Management System!"
+      />
+      <main className="text-center">
         <h2>Get Started</h2>
         <p>
-          {" "}
           Use the buttons below or navigation links above to navigate the
           system.
         </p>
-
-        <div style={{ marginTop: "20px" }}>
+        <div>
           <NavLink to="/employees/new">
             <Button>Register New Employee</Button>
           </NavLink>
