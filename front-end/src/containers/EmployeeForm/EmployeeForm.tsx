@@ -8,6 +8,7 @@ import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export interface EmployeeFormProps {
   defaultValue?: Employee | null;
@@ -22,6 +23,7 @@ const EmployeeForm = ({ defaultValue }: EmployeeFormProps) => {
     formState: { errors, isSubmitting },
   } = useForm<EmployeeDTO>();
   const navigate = useNavigate();
+  const [submitError, setSubmitError] = useState<string>("");
 
   const onSubmit = async (formData: EmployeeDTO) => {
     // Handle form submission, send data to backend
@@ -32,6 +34,7 @@ const EmployeeForm = ({ defaultValue }: EmployeeFormProps) => {
         console.info("Creating employee with form data:", formData);
         const result = await createEmployee(formData);
         console.info("Employee successfully created:", result);
+        navigate(`/employees`);
         return result;
       }
       //updating employee
@@ -41,19 +44,15 @@ const EmployeeForm = ({ defaultValue }: EmployeeFormProps) => {
 
         const result = await updateEmployee(defaultValue.id, formData);
         console.info("Employee successfully updated:", result);
+        navigate(`/employees/${defaultValue.id}`);
         return result;
       }
       // todo - redirect or show a success message Toast to user
     } catch (error) {
       console.error(error);
+      setSubmitError(`${error}`);
     } finally {
-      // redirect to employee details page or list page
       console.info("Form submission complete.");
-      if (defaultValue) {
-        navigate(`/employees/${defaultValue.id}`);
-      } else {
-        navigate(`/employees`);
-      }
     }
   };
 
@@ -63,7 +62,7 @@ const EmployeeForm = ({ defaultValue }: EmployeeFormProps) => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="employee-form"
-        autoComplete="off"
+        autoComplete="on"
       >
         <Input
           errors={errors.firstName}
@@ -130,8 +129,8 @@ const EmployeeForm = ({ defaultValue }: EmployeeFormProps) => {
           {...register("phone", {
             required: "Phone is required",
             pattern: {
-              value: /^[0-9+]{12}$/,
-              message: "Phone must be 12 digits or less",
+              value: /^[0-9+]{8,12}$/,
+              message: "Phone must be 8-12 digits long",
             },
           })}
         >
@@ -151,10 +150,26 @@ const EmployeeForm = ({ defaultValue }: EmployeeFormProps) => {
         >
           Address
         </Input>
-
-        <Button type="submit" disabled={isSubmitting}>
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          style={{ justifySelf: "right" }}
+        >
           {isSubmitting ? "Submitting..." : "Submit"}
         </Button>
+        <p
+          style={{
+            color: "red",
+            display: submitError ? "block" : "none",
+            fontWeight: "bold",
+            fontStyle: "italic",
+          }}
+        >
+          {" "}
+          An error occurred while submitting the form. Please try again.
+          <br />
+          {submitError}
+        </p>
       </form>
     </>
   );

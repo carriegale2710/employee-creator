@@ -9,7 +9,7 @@ import {
 } from "../../services/contracts";
 import Select from "../../components/Select/Select";
 import type { Employee } from "../../services/employees";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export interface ContractFormProps {
   employee?: Employee | null; // Optional employee prop for context
@@ -137,9 +137,27 @@ const ContractForm = ({ employee }: ContractFormProps) => {
           End Date
         </Input>
 
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Submitting..." : "Submit"}
-        </Button>
+        <div
+          style={{
+            display: "flex",
+            gap: "10px",
+            marginTop: "20px",
+            justifyContent: "space-between",
+          }}
+        >
+          <NavLink to="/employees">
+            <Button
+              style={{ backgroundColor: "lightgray", color: "black" }}
+              type="button"
+              onClick={() => console.log("Cancel button clicked")}
+            >
+              Cancel
+            </Button>
+          </NavLink>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : "Submit"}
+          </Button>
+        </div>
       </form>
     </>
   );

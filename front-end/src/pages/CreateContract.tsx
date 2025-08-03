@@ -33,19 +33,10 @@ const CreateContract = () => {
       <main>
         {loading ? <p>Loading...</p> : <ContractForm employee={employee} />}
 
-        <NavLink to="/employees">
-          <Button
-            style={{ backgroundColor: "lightgray", color: "black" }}
-            type="button"
-            onClick={() => console.log("Cancel button clicked")}
-          >
-            Cancel
-          </Button>
-          <p>
-            <strong>Warning:</strong> Do not navigate away from this page
-            without submitting your changes. Your changes will be lost.
-          </p>
-        </NavLink>
+        <p style={{ color: "blue", fontStyle: "italic" }}>
+          <strong>Warning:</strong> Do not navigate away from this page without
+          submitting your changes. Your changes will be lost.
+        </p>
       </main>
     </>
   );

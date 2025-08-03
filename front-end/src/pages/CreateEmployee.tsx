@@ -21,6 +21,10 @@ const CreatePage = () => {
             Cancel
           </Button>
         </NavLink>
+        <p style={{ color: "blue", fontStyle: "italic" }}>
+          <strong>Warning:</strong> Do not navigate away from this page without
+          submitting your changes. Your changes will be lost.
+        </p>
       </main>
     </>
   );
