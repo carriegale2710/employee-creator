@@ -15,16 +15,16 @@ public class UpdateEmployeeDTO {
 
     // NOTE - all these fields are optional
 
-    @Pattern(regexp = "^[a-zA-Z]{2,30}$", message = "Enter valid first name.")
+    @Pattern(regexp = "^[\\p{L} .'-]{2,30}$", message = "Enter valid first name.")
     private String firstName;
 
-    @Pattern(regexp = "^[a-zA-Z]{2,30}$", message = "Enter valid last name.")
+    @Pattern(regexp = "^[a-zA-Z\\s\\-']{2,30}$", message = "Enter valid last name (letters, spaces, hyphens, apostrophes).")
     private String lastName;
 
     @Email
     private String email;
 
-    @Pattern(regexp = "^\\+?\\d{1,3}(\\s\\d{3}){2,3}$", message = "Invalid phone number.")
+    @Pattern(regexp = "^\\+?[0-9\\s\\-()]{8,20}$", message = "Invalid phone number. Use digits, spaces, dashes, parentheses, and optional leading '+'.")
     private String phone;
 
     private String address;

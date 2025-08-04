@@ -6,6 +6,8 @@
 
 ## Introduction
 
+Hosted website: https://d3bcyx0s1yb5do.cloudfront.net/
+
 ### Implementation: Front-end decisions
 
 <!-- Why did you implement this the way you did? -->
@@ -125,16 +127,15 @@ Right now, testing public features only:
 
 - [x] Required fields show validation error if empty
 - [x] Invalid input (e.g. bad email) is blocked
-- [ ] Backend error (e.g. 400 or 500) shows helpful message
-- [ ] Loading and error states show something visible (e.g. spinner or alert)
+- [x] Backend error (e.g. 400 or 500) shows helpful message
+- [x] Loading and error states show something visible (message)
 
 #### User Experience
 
 - [x] Mobile/responsive layout works (test one small screen)
-- [ ] Buttons and links are clickable and have visual feedback
+- [x] Buttons and links are clickable and have visual feedback
 - [x] Basic keyboard navigation works (Tab, Enter)
 - [x] No obvious visual glitches after user actions
-- [ ] Toasts or alerts auto-dismiss after success
 
 ---
 
@@ -172,18 +173,17 @@ NOTE - Since contracts are legal documents, we don't want them to be mutable ie.
 
 ### Mockups
 
-![home page](design-assets/mockups/image.png)
-![list page](design-assets/mockups/image-1.png)
-![create employee](design-assets/mockups/image-2.png)
-![alt text](design-assets/mockups/image-3.png)
+Home
+![Home](design-assets/mockups/version2.0/image-1.png)
 
-![alt text](design-assets/mockups/image-4.png)
-![alt text](design-assets/mockups/image-5.png)
+Employee List Page
+![Employee List Page](design-assets/mockups/version2.0/image.png)
 
-![alt text](design-assets/mockups/image-6.png)
+Register Employee Form
+![Register Employee Form](design-assets/mockups/version2.0/image-2.png)
 
-![alt text](design-assets/mockups/image-7.png)
-![alt text](design-assets/mockups/image-8.png)
+Employee Profile Page
+![Employee Profile](design-assets/mockups/version2.0/image-3.png)
 
 #### Component Nesting
 
@@ -219,22 +219,6 @@ flowchart TD
     L2 --> FormPage
 
 ```
-
-### Wireframes
-
-#### List Page
-
-![List Page Wireframe](/front-end/design-assets/wireframes/ListPage-wireframe.png)
-
-#### Form Page
-
-![Form Page Wireframe](design-assets/wireframes/FormPage-Wireframe.png)
-
-### Flows
-
-#### Data Flow between React components
-
-![CRUD data flow diagram](design-assets/flows/crud-flow.png)
 
 ### User Flows
 
@@ -306,53 +290,24 @@ B8 -- No --> C2[Show validation errors] -->B4
 
 ---
 
-## Sprint Backlog
-
-### Due Aug 1st 10:30am
-
-- [ ] ✅ Only show contract creation on task card (remove from homepage)  
-       ⏱️ 0.5 hr
-
-- [ ] ⚠️ Add “Next: Add contract” in Employee Form wiht pre-filled info
-      ⏱️ 1 hr
-
-- [ ] ⚠️ Add Zod validation to Employee and Contract forms  
-       ⏱️ 2 hrs
-
-- [ ] ⚠️ Build + test full MVP user flow demo: Home > Create > Forms > Toast > List  
-       ⏱️ 3 hrs
-
-- [ ] ⚡ **Prepare project showcase slideshow** (for mock interview/demo)  
-       ⏱️ 3 hrs  
-       📌 _Include_:  
-       - Overview of app (what it does)  
-       - MVP scope and user flow  
-       - Tech stack + decisions (e.g. Tailwind, TDD, DTOs)  
-       - Obstacles & what you learned (esp. solo dev insight)  
-       - Screenshots or demo video
-
-### 23/07/2025
-
 ## Future Goals
 
-| **Section**      | **Frontend Feature**                                               | 🔍 Priority            | ⏱️ Time Estimate |
-| ---------------- | ------------------------------------------------------------------ | ---------------------- | ---------------- |
-| Employee List    | Searchbar for name/ID (query params from form)                     | ⚠️ Med / High Impact   | 2–3 hrs          |
-| Contract Form    | - "Back to employee form" button <br> - Final confirmation step    | ⚠️ Med / Medium Impact | 1–1.5 hrs        |
-| Styling          | Gather/import design system assets (fonts, spacing, etc.)          | 🐘 Med / Low Impact    | 1–2 hrs          |
-| Styling          | Install Tailwind CSS + Use Tailwind Play to preview designs        | 🐘 Med / Low Impact    | 1 hr             |
-| Styling          | Delete redundant SCSS files and refactor to Tailwind               | 🐘 Hard / low Impact   | 2-3 hrs          |
-| Contract History | View contracts per employee (contract history GET /contracts{:id}) | 🐘 Med / Low Impact    | 1–2 hrs          |
-| Contract Drafts  | View/edit saved drafts (GET /contracts/{:id}/drafts)               | 🐘 Hard / low Impact   | 3–4 hrs          |
-| Contract Form    | Dropdown: 5 recent employees (last_updated + created timestamps)   | 🐘 Hard / High Impact  | 2–4 hrs          |
+| **Section**     | **Frontend Feature**                                        | 🔍 Priority            | ⏱️ Time Estimate |
+| --------------- | ----------------------------------------------------------- | ---------------------- | ---------------- |
+| Employee List   | Searchbar for name/ID (query params from form)              | ⚠️ Med / High Impact   | 2–3 hrs          |
+| Contract Form   | - Final confirmation step                                   | ⚠️ Med / Medium Impact | 1–1.5 hrs        |
+| Styling         | Gather/import design system assets (fonts, spacing, etc.)   | 🐘 Med / Low Impact    | 1–2 hrs          |
+| Styling         | Install Tailwind CSS + Use Tailwind Play to preview designs | 🐘 Med / Low Impact    | 1 hr             |
+| Contract Drafts | View/edit saved drafts (GET /contracts/{:id}/drafts)        | 🐘 Hard / low Impact   | 3–4 hrs          |
 
 ---
+
+ <!--  DONE          | Contract History                                            | View contracts per employee (contract history GET /contracts{:id}) | 🐘 Med / Low Impact | 1–2 hrs | -->
 
 ## Resources
 
 - https://react.dev/learn/thinking-in-react
 - https://react.dev/learn/reusing-logic-with-custom-hooks
-
 
 ## Change Log
 

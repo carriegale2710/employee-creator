@@ -40,10 +40,10 @@ Also code should be:
 - [x] React hooks are recommended.
 - You can include any other open source NPM library.
 - [x] Feel free to use your favorite CSS framework.
-  - [ ] Tailwind is a good choice
-- [ ] Add some basic validations on the form like:
+  - [x] Tailwind is a good choice
+- [x] Add some basic validations on the form like:
   - [x] input required
-  - [ ] input max length
+  - [x] input max length
 - Reccomended:
   - [x] React Hook Form
   - [ ] Zod are reccomended
@@ -80,7 +80,7 @@ Frontend
 
 - [x] Vite with `react-ts`
 - [x] Use SCSS instead of CSS, `npm install sass`
-  - [ ] Or just use Tailwind
+  - [x] Or just use Tailwind
 - [x] [React Form Hook for form validation & submission](https://react-hook-form.com/get-started)
 - [x] [Typescript React Cheatsheet](https://react-typescript-cheatsheet.netlify.app/docs/basic/setup)
 - [x] [React Router for routes](https://reactrouter.com/en/main/start/tutorial)
