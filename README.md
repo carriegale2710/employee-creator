@@ -64,14 +64,14 @@ Front-end app:
 
 ## Techstack and why
 
-| Layer      | Technology                              | Why I chose it                      |
-| ---------- | --------------------------------------- | ----------------------------------- |
-| Backend    | Java, Spring Boot                       | Production-grade APIs, type safety  |
-| DB         | MySQL, JPA                              | SQL schema control, ORM integration |
-| Frontend   | React, TypeScript, Vite                 | SPA structure, compile-time safety  |
-| Styling    | Tailwind (TBD) CSS / SCSS               | Component-level styling, responsive |
-| Testing    | JUnit, Mockito, REST Assured, H2        | API e2e + unit tests, mock data     |
-| Deployment | AWS EC2 (Backend API) S3 (Front-end UI) | Easy CI/CD, low costs               |
+| Layer      | Technology                                          | Why I chose it                      |
+| ---------- | --------------------------------------------------- | ----------------------------------- |
+| Backend    | Java, Spring Boot                                   | Production-grade APIs, type safety  |
+| DB         | MySQL, JPA                                          | SQL schema control, ORM integration |
+| Frontend   | React, TypeScript, Vite                             | SPA structure, compile-time safety  |
+| Styling    | Tailwind / SCSS                                     | Component-level styling, responsive |
+| Testing    | JUnit, Mockito, REST Assured, H2 , Log24j           | API e2e + unit tests, mock data     |
+| Deployment | AWS EC2 (Backend API) S3 + CloudFront(Front-end UI) | Easy CI/CD, low costs               |
 
 ---
 
@@ -95,7 +95,7 @@ Refer to 'Build Steps' instructions in these READMEs.
 | ---------- | ---------------- | ------ |
 | Unit Tests | JUnit + Mockito  | ✅     |
 | E2E Tests  | REST Assured, H2 | ✅     |
-| Frontend   | Vitest / Zod     | ⏳     |
+| Frontend   | Vitest           | ⏳     |
 
 ```bash
 ./mvnw test      # backend
@@ -134,19 +134,19 @@ See [Project Requirements](project-brief.md)
 #### 💻 Frontend (React + TypeScript)
 
 - [x] React app compiles and runs (Vite)
-- [ ] Basic CRUD employee functionality works -testing
-- [ ] Form validation added -testing
-- [ ] Optional testing included (Vitest/Zod) -testing
-- [x] UI styled + responsive (SCSS/Tailwind) - use tailwind
+- [x] Basic CRUD employee functionality works
+- [x] Form validation added
+- [x] Minimal Component testing included (Vitest)
+- [x] UI styled + responsive (SCSS/Tailwind)
 
 #### 🚚 Delivery & Deployment (Both)
 
 - [x] README includes clear setup steps for both API and Web app (local dev)
 - [x] Hosting link works (Heroku, AWS, Azure, etc.)
 - [x] App is production-ready
-- [ ] Code is clean + well documented
-- [ ] Codebase is understandable and maintainable
-- [ ] Bug-free and everything compiles + runs as expected
+- [x] Code is clean + well documented
+- [x] Codebase is understandable and maintainable
+- [x] Bug-free and everything compiles + runs as expected
 
 ## Design Approach
 
@@ -191,12 +191,11 @@ Employees can be added, updated, deleted in Employee form by clicking on 'Edit' 
 
 Each **employee can have multiple contracts**, and contracts are managed separately but linked to employees (like foreign key via `employeeId`).
 
-| BE            | FE  | Feature                                   | User Wants To...          | So They Can...                       | User should be able to...                                                  |
-| ------------- | --- | ----------------------------------------- | ------------------------- | ------------------------------------ | -------------------------------------------------------------------------- |
-| x             | x   | \*`Submit a new Contract` (complete form) | Add a new contract        | Register new agreement               | Click button that opens a form to add a new contract linked to an employee |
-|               |     | \*`View Current Contract of an Employee`  | View a specific contract  | Check specific terms/details         | Enter a contract ID to fetch and display its details                       |
-| pass BE -> FE | x   | `View list of Departments`                | View current departments  | Avoid looking them up                | Select available department from simple dropdown in Contract Form          |
-|               |     | `Create Department`                       | Create new department tag | Update any renamed / new departments | Have option to use a simple department name input in Contract form         |
+| BE            | FE  | Feature                                   | User Wants To...         | So They Can...               | User should be able to...                                                  |
+| ------------- | --- | ----------------------------------------- | ------------------------ | ---------------------------- | -------------------------------------------------------------------------- |
+| x             | x   | \*`Submit a new Contract` (complete form) | Add a new contract       | Register new agreement       | Click button that opens a form to add a new contract linked to an employee |
+| x             | x   | \*`View Current Contract of an Employee`  | View a specific contract | Check specific terms/details | Enter a contract ID to fetch and display its details                       |
+| pass BE -> FE | x   | `View list of Departments`                | View current departments | Avoid looking them up        | Select available department from simple dropdown in Contract Form          |
 
 ---
 
