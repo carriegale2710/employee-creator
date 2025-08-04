@@ -42,7 +42,7 @@ This project was created to practice building production-ready applications with
 ### Hosted Links:
 
 Back-end API:
-`ec2-3-107-209-102.ap-southeast-2.compute.amazonaws.com:8080/employees`
+`https://employeecreator.my/employees`
 
 Front-end app:
 `https://d3bcyx0s1yb5do.cloudfront.net/`
@@ -64,14 +64,14 @@ Front-end app:
 
 ## Techstack and why
 
-| Layer      | Technology                                          | Why I chose it                      |
-| ---------- | --------------------------------------------------- | ----------------------------------- |
-| Backend    | Java, Spring Boot                                   | Production-grade APIs, type safety  |
-| DB         | MySQL, JPA                                          | SQL schema control, ORM integration |
-| Frontend   | React, TypeScript, Vite                             | SPA structure, compile-time safety  |
-| Styling    | Tailwind / SCSS                                     | Component-level styling, responsive |
-| Testing    | JUnit, Mockito, REST Assured, H2 , Log24j           | API e2e + unit tests, mock data     |
-| Deployment | AWS EC2 (Backend API) S3 + CloudFront(Front-end UI) | Easy CI/CD, low costs               |
+| Layer      | Technology                                             | Why I chose it                      |
+| ---------- | ------------------------------------------------------ | ----------------------------------- |
+| Backend    | Java, Spring Boot , Log24j                             | Production-grade APIs, type safety  |
+| DB         | MySQL, JPA                                             | SQL schema control, ORM integration |
+| Frontend   | React, TypeScript, Vite                                | SPA structure, compile-time safety  |
+| Styling    | Tailwind / SCSS                                        | Component-level styling, responsive |
+| Testing    | JUnit, Mockito, REST Assured, H2, Faker (Data seeding) | API e2e + unit tests, mock data     |
+| Deployment | AWS EC2 (Backend API) S3 + CloudFront(Front-end UI)    | Easy CI/CD, low costs               |
 
 ---
 
