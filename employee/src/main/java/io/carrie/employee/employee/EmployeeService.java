@@ -71,6 +71,7 @@ public class EmployeeService {
         return result.get();
     }
 
+    // NOTE - Custom validation methods for email uniqueness
     private void checkEmail(String email, EmployeeRepository employeeRepository) throws EmailAlreadyExistsException {
         if (email != null && employeeRepository.existsByEmail(email)) {
             log.warn("Email validation failed - Email already exists: {}", email);
