@@ -9,8 +9,6 @@ Table employees {
   email varchar [unique, not null] -- can be auto-generated based on name
   phone_number varchar [not null] -- should be verified somehow
   address text -- searchable or custom entry
-  date_of_birth date --verify not in future, date picker
-  tax_file_number varchar [unique] -- security encryption needed
 }
 
 -- [Employee → One-to-Many → Contracts]
@@ -27,12 +25,5 @@ Table contracts {
   is_active boolean -- on by default unless past end_date
 }
 
--- [Department → One-to-Many → Contracts]
-
-Table departments {
-  id int [pk, increment]
-  name varchar [unique, not null]
-  num_of_employees int -- count num of employees in this department with active contracts
-}
 
 ```

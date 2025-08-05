@@ -1,16 +1,54 @@
 # Employee Creator Full-Stack Web Application
 
-<!-- [![Spring App EC2 Deploy](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-ec2-deploy.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-ec2-deploy.yml) -->
+> A production-ready HR management system built with Java Spring Boot and React TypeScript
 
-[![Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml) [![React Deploy](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+**Live Demo**: [Employee Creator App](https://d3bcyx0s1yb5do.cloudfront.net/) | **⚡ API**: [employeecreator.my](https://employeecreator.my)
 
-The documentation for this project is split up into backend vs front-end specific locations in the code base. They include more details like build steps, testing and change logs.
+## [![Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml) [![React Deploy](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-| Location                                         | Purpose                                                 |
-| ------------------------------------------------ | ------------------------------------------------------- |
-| See `README.md` (this file)                      | 🔷 High-level overview of the entire full-stack project |
-| See [`employee/README.md`](employee/README.md)   | ⚙️ Backend-specific setup, API docs, DB, test config.   |
-| See [`front-end/README.md`](front-end/README.md) | 🎨 Frontend-specific setup, dev commands, tests         |
+## Table of Contents
+
+- [Project Overview](#project-overview)
+- [Project Structure](#project-structure)
+- [Quick Start](#quick-start)
+- [Tech Stack](#tech-stack)
+- [Demo & Screenshots](#demo--screenshots)
+- [Core Features](#features)
+- [Testing](#testing)
+- [Architecture & Design](#architecture--design)
+- [Development Process](#development-process)
+- [Known Issues](#known-issues)
+- [Project Retrospective](#project-retrospective)
+- [License](#license)
+
+---
+
+## Project Overview
+
+**Employee Creator** is a full-stack CRUD application for managing employee records and contracts. Built over 4 weeks as a solo project, it demonstrates enterprise-level development practices including comprehensive testing, CI/CD deployment, and scalable architecture.
+
+### Key Highlights
+
+- 🏗️ **Full-Stack**: Java Spring Boot API + React TypeScript frontend
+- 🧪 **Comprehensive Testing**: 40+ automated tests (Unit, Integration, E2E)
+- 🚀 **Production Deployed**: AWS infrastructure with automated CI/CD
+- 📊 **Enterprise Features**: Employee management, contract tracking, form validation
+- ⚡ **Modern Stack**: TypeScript, Tailwind CSS, MySQL, GitHub Actions
+
+### Business Value
+
+**For HR Teams**: Streamline employee onboarding, track contract history, maintain compliance records
+
+**For Developers**: Reference implementation showcasing modern full-stack patterns, testing strategies, and deployment practices
+
+**For Stakeholders**: Production-ready system with scalable architecture and comprehensive audit trails
+
+## Project Structure
+
+> Note: The documentation for this project is split up into backend vs front-end specific locations in the code base. They include more details like build steps, testing and change logs.
+
+See [`employee/README.md`](employee/README.md)
+See [`front-end/README.md`](front-end/README.md)
 
 ```markdown
 📁 employee-creator/
@@ -23,79 +61,67 @@ The documentation for this project is split up into backend vs front-end specifi
     └── 📄 CHANGELOG.md (frontend changes)
 ```
 
-## Introduction
-
-### What it is
-
-Employee Creator is a full-stack CRUD web app built with Java Spring Boot and React TypeScript. It allows users to manage employee records (add, view, edit, delete). The project demonstrates frontend/backend integration, RESTful API design, form validation, testing, and deployment.
-
-### Why I built it
-
-This project was created to practice building production-ready applications with testing, responsive UI, and scalable architecture. It also mirrors typical enterprise apps used in HR systems.
-
 ---
 
-## Demo & Snippets
+## Quick Start
 
-<!-- - [x] Include hosted link: TBA -->
+### Prerequisites
 
-### Hosted Links:
+- Java 17+
+- Node.js 18+
+- MySQL 8.0+
 
-Back-end API:
-`https://employeecreator.my/employees`
+### Backend (Spring Boot)
 
-Front-end app:
-`https://d3bcyx0s1yb5do.cloudfront.net/`
+```bash
+cd employee
+./mvnw clean install
+./mvnw spring-boot:run
+# API available at: http://localhost:8080
+```
 
-<!-- - [ ] Include images of app if CLI or Client App -->
+### Frontend (React)
 
-<!--
-//TODO - (replace with own finished front-end UI upon completion)
+```bash
+cd front-end
+npm install
+npm run dev
+# App available at: http://localhost:5173
+```
 
-### Feature 1: Employee List
+### Detailed Setup
 
-(TBA)
-
-### Feature 2: New Employee Form
-
-(TBA) -->
-
----
-
-## Techstack and why
-
-| Layer      | Technology                                             | Why I chose it                      |
-| ---------- | ------------------------------------------------------ | ----------------------------------- |
-| Backend    | Java, Spring Boot , Log24j                             | Production-grade APIs, type safety  |
-| DB         | MySQL, JPA                                             | SQL schema control, ORM integration |
-| Frontend   | React, TypeScript, Vite                                | SPA structure, compile-time safety  |
-| Styling    | Tailwind / SCSS                                        | Component-level styling, responsive |
-| Testing    | JUnit, Mockito, REST Assured, H2, Faker (Data seeding) | API e2e + unit tests, mock data     |
-| Deployment | AWS EC2 (Backend API) S3 + CloudFront(Front-end UI)    | Easy CI/CD, low costs               |
-
----
-
-## Build Steps
-
-<!-- - how to build / run project
-- use proper code snippets if there are any commands to run -->
-
-<!-- ## Build - Quickstart
-
-put quickstart version here -->
-
-Refer to 'Build Steps' instructions in these READMEs.
+For comprehensive setup instructions including environment configuration, database setup, and deployment:
 
 - [Building Backend API](employee/README.md)
 - [Building Front-end UI](front-end/README.md)
 
+---
+
+## Techstack
+
+| Layer      | Technology                                             | Purpose                             |
+| ---------- | ------------------------------------------------------ | ----------------------------------- |
+| DB         | MySQL, JPA                                             | SQL schema control, ORM integration |
+| Backend    | Spring Boot, Java, Maven                               | Production-grade APIs, type safety  |
+| Frontend   | React, TypeScript, Vite                                | SPA structure, compile-time safety  |
+| Testing    | JUnit, Mockito, REST Assured, H2, Faker (Data seeding) | API e2e + unit tests, mock data     |
+| Styling    | Tailwind / SCSS                                        | Component-level styling, responsive |
+| Deployment | AWS EC2 (Backend API) S3 + CloudFront(Front-end UI)    | Easy CI/CD, low costs               |
+| CI/CD      | GitHub Actions                                         | Automated testing and deployment    |
+| Monitoring | Log24j                                                 | Logs, error tracking                |
+
+---
+
 ## Testing
 
-| Type       | Tools Used       | Status |
-| ---------- | ---------------- | ------ |
-| Unit Tests | JUnit + Mockito  | ✅     |
-| E2E Tests  | REST Assured, H2 | ✅     |
-| Frontend   | Vitest           | ⏳     |
+| Type                  | Tools Used       | Implementation               |
+| --------------------- | ---------------- | ---------------------------- |
+| Spring Unit Tests     | JUnit + Mockito  | ✅ Service Layers            |
+| Spring E2E Tests      | REST Assured, H2 | ✅ 40+ employees / contracts |
+| React Component Tests | Vitest           | ⏳ Basic                     |
+
+To run tests, use the following commands:
 
 ```bash
 ./mvnw test      # backend
@@ -105,11 +131,55 @@ npm run test     # frontend (if added)
 
 ---
 
-## Design Goals
+## Demo & Screenshots
 
-### MVP Objectives
+### Hosted Links
 
-See [Project Requirements](project-brief.md)
+- **Frontend:** [Live Demo](https://d3bcyx0s1yb5do.cloudfront.net/)
+- **Backend API:** [API Documentation](https://employeecreator.my)
+
+### Application Screenshots
+
+| View                 | Screenshot                                                                        |
+| -------------------- | --------------------------------------------------------------------------------- |
+| **Home Page**        | ![Home](front-end/design-assets/mockups/version2.0/image-1.png)                   |
+| **Employee List**    | ![Employee List Page](front-end/design-assets/mockups/version2.0/image.png)       |
+| **Add Employee**     | ![Register Employee Form](front-end/design-assets/mockups/version2.0/image-2.png) |
+| **Employee Profile** | ![Employee Profile](front-end/design-assets/mockups/version2.0/image-3.png)       |
+
+---
+
+## Features
+
+### :man_office_worker: Employee Management
+
+- **View All Employees** - Paginated list with search and filter capabilities
+- **Employee Profiles** - Detailed view showing personal info, contracts, and actions
+- **Add Employee** - Registration form with validation and confirmation
+- **Edit Employee** - Update existing employee information
+- **Delete Employee** - Remove employee with confirmation dialog
+
+### 📄 Contract Management
+
+- **View All Contracts** - Paginated list with employee filtering
+- **Create Contract** - Link new contracts to existing employees
+- **Employee Contracts** - View all contracts for a specific employee
+- **Delete Contract** - Remove contracts with proper authorization (WIP)
+
+> **Note:** Each employee can have multiple contracts. Contracts are treated as immutable legal documents with no update functionality by design.
+
+### 🚀 Future Goals
+
+- Advanced search and filtering for employee list
+- Contract draft management system
+- Department management module
+- Enhanced form confirmation steps
+
+---
+
+## Architecture & Design
+
+### MVP Requirements
 
 - Build a full-stack app:
   - Backend: Spring Boot REST API (CRUD for employees)
@@ -119,11 +189,56 @@ See [Project Requirements](project-brief.md)
 
   - Basic validations
   - Responsive layout
-  - Hosting (Heroku, AWS, etc.)
+  - Hosting (AWS)
 
-### QA Checklist
+### Design Goals
 
-#### 🔧 Backend (Spring Boot)
+1. **User-Centric**: Prioritize user experience and usability in all design decisions.
+2. **Scalability**: Ensure the application can scale with increasing data and user load.
+3. **Maintainability**: Write clean, modular code that is easy to understand and maintain.
+4. **Testability**: Implement thorough testing at all levels (unit, integration, E2E) to ensure reliability.
+
+### Approach
+
+1. **Agile Methodology**: Follow an iterative development process with regular feedback loops from stakeholders.
+2. **TDD**: Use Test-Driven Development to define and validate functionality before implementation.
+3. **Component-Based**: Use a component-based approach for the frontend to promote reusability and separation of concerns.
+
+## Design Implementation
+
+### Backend decisions
+
+- Used top-down TDD to define backend features and to run within CI/CD pipeline.
+- Included a contracts with a `one-to-many relationship` for `employees -> contracts`
+- This allows for flexible, quicker UX when updating of DB records via in FE client app with only minor updates eg. salary, contract dates etc.
+- Separated concerns by having a dedicated contracts table, allowing for better organization and management + security of employee contracts.
+
+### Front-end decisions
+
+- Used React Router for seamless navigation between views.
+- Implemented form validation using React Hook Form for schema validation.
+- Used Vitest for minimal component testing to ensure UI functionality.
+- Implemented a responsive design using Tailwind CSS and SCSS for component-level styling.
+
+## Known issues
+
+<!-- Remaining bugs, things that have been left unfixed:
+
+Features that are buggy / flimsy/not functional yet: -->
+
+- [5/08/25] Contract deletion is not fully implemented yet in front-end (WIP)
+
+- [4/08/25] Pagination needed for employee list to reduce API load times and improve UX
+
+- [4/08/25] Contract form should not have employee ID field - this is a UX issue (risk of human error)
+
+- [25/07/25] React unit tests are still WIP
+
+---
+
+## QA Checklist
+
+### 🔧 Backend (Spring Boot)
 
 - [x] App compiles and runs
 - [x] API has working CRUD endpoints (GET, CREATE, DELETE + EDIT)
@@ -131,7 +246,7 @@ See [Project Requirements](project-brief.md)
 - [x] Error handling implemented
 - [x] Logging strategy in place
 
-#### 💻 Frontend (React + TypeScript)
+### 💻 Frontend (React + TypeScript)
 
 - [x] React app compiles and runs (Vite)
 - [x] Basic CRUD employee functionality works
@@ -148,175 +263,26 @@ See [Project Requirements](project-brief.md)
 - [x] Codebase is understandable and maintainable
 - [x] Bug-free and everything compiles + runs as expected
 
-## Design Approach
-
-<!-- ### Implementation
-
-Why did you implement this the way you did? -->
-
 ---
 
-## Implementation
+## Project Retrospective
 
-<!-- Why did you implement this the way you did? -->
-
-### Backend decisions
-
-- Included a contracts and departments table with a `one-to-many relationship` for `employees -> contracts` and `departments -> contracts`
-- This allows for flexible, quicker UX when updating of DB records via in FE client app with only minor updates eg. salary, contract dates etc.
-
-### Front-end decisions
-
-- Used top-down TDD to define backend before connecting to frontend.
-- Write up basic tests before coding to understand functionality, entity shapes & edge cases.
-
----
-
-### Features
-
-Note: \* = MVP (priority)
-
-#### 👩‍🏭 Employee Form
-
-Employees can be added, updated, deleted in Employee form by clicking on 'Edit' in the Employee List Page.
-
-| BE         | FE  | Feature             | User Wants To...       | So They Can...            | User should be able to...                                                        |
-| ---------- | --- | ------------------- | ---------------------- | ------------------------- | -------------------------------------------------------------------------------- |
-| pagination | x   | \*`List Employees`  | See all employees      | Review records            | Click link to view a _paginated list_ of all employee records                    |
-| x          | x   | \*`Create Employee` | Add a new employee     | Register new hire         | Click button that opens a form to add a new employee as a new record in DB       |
-| x          | x   | \*`Delete Employee` | Delete employee        | Remove old record         | Click a button to delete a record of an existing employee in DB                  |
-| x          | x   | \*`Update Employee` | Edit existing employee | Fix errors or update info | Click an edit button that opens a form pre-filled with data to update the record |
-
-#### 📄 Contract Form
-
-Each **employee can have multiple contracts**, and contracts are managed separately but linked to employees (like foreign key via `employeeId`).
-
-| BE            | FE  | Feature                                   | User Wants To...         | So They Can...               | User should be able to...                                                  |
-| ------------- | --- | ----------------------------------------- | ------------------------ | ---------------------------- | -------------------------------------------------------------------------- |
-| x             | x   | \*`Submit a new Contract` (complete form) | Add a new contract       | Register new agreement       | Click button that opens a form to add a new contract linked to an employee |
-| x             | x   | \*`View Current Contract of an Employee`  | View a specific contract | Check specific terms/details | Enter a contract ID to fetch and display its details                       |
-| pass BE -> FE | x   | `View list of Departments`                | View current departments | Avoid looking them up        | Select available department from simple dropdown in Contract Form          |
-
----
-
-## Known issues
-
-<!-- Remaining bugs, things that have been left unfixed:
-
-Features that are buggy / flimsy/not functional yet: -->
-
-Front-end:
-
-- [25/07/25] Contract form UX is tedious/misleading (based on feedback):
-  - not clear that contracts need existing employee ID
-  - users might not remember employee ID number
-
-Backend:
-
----
-
-## Challenges
-
-- Setting up **GitHub Actions** was tricky—required many commits to get configs right.
-- Deployment went smoothly, but linking backend & frontend on AWS EC2 with a custom domain took some tweaking of security settings.
-- Maintaining TDD was a challenge under a tight deadline. Found a middle ground of implementing tests after testing in browser to be more rewarding due to lack of specifications - made writing tests first difficult.
-- Setting up Github Actions was a bit tricky in terms of config. Too many commits to test it.
-- Maintaining a cleaner git commit history and merging with multiple branches
-
----
-
-## What I Learned
-
-### Test Driven Development (TDD)
-
-- Writing end-to-end backend tests helped clarify features and edge cases.
-- Seeing tests pass was motivating and boosted momentum.
-- Reduced time spent debugging during refactors by catching issues early.
-
-| Phase       | Action                                           |
-| ----------- | ------------------------------------------------ |
-| 🔴 Red      | Write a test for a feature you haven’t built yet |
-| 🟢 Green    | Build the simplest code to pass the test         |
-| 🟡 Refactor | Clean up code while keeping tests passing        |
-
-**Pros:**
-
-- Defined project scope early
-- Increased confidence with regression tests
-- Motivation from green test ticks
-
-**Cons:**
-
-- Slowed me down as project grew
-- Felt like overkill for small features
-
----
-
-### Workflow Strategy
-
-An aim of this project was to understand best practices used in business settings, including:
+This project was a solo endeavor to build a full-stack web application that simulates real-world business scenarios. It aimed to apply best practices in software development, including:
 
 - **Microservices architecture** thinking
 - **Separation of concerns** principle
-- **Team workflow** considerations
 - **Production deployment** patterns
+- **Documentation** and changelog management
 
-#### Git Workflow
+### Development Experience & Outcomes
 
-- Using **main** + **dev** branches mimicked team workflows — great for practicing merges and resolving conflicts.
-- GitHub Actions for CI/CD and testing was challenging but rewarding.
-- Branching for each feature felt a bit overkill for solo work but valuable production protocol practice for team projects.
-- Learning advanced Git commands like rebase and [squashing commits](https://www.datacamp.com/tutorial/git-squash-commits) was helpful for clean up merge histories
-
-Example:
-
-```mermaid
-gitGraph
-    commit id: "main"
-    branch dev
-    checkout dev
-    commit id: "setup project"
-
-    %% Feature branches
-    branch feature/create-employee
-    checkout feature/create-employee
-    commit id: "Add backend API"
-    commit id: "Add frontend form"
-    checkout dev
-    merge feature/create-employee
-
-    branch feature/edit-employee
-    checkout feature/edit-employee
-    commit id: "Update backend logic"
-    commit id: "Update frontend UI"
-    checkout dev
-    merge feature/edit-employee
-
-    %% Hybrid long-lived branches for refactors
-    branch refactor/frontend-rewrite
-    checkout refactor/frontend-rewrite
-    commit id: "Rewrite UI structure"
-    checkout dev
-    merge refactor/frontend-rewrite
-
-    branch refactor/backend-cleanup
-    checkout refactor/backend-cleanup
-    commit id: "Refactor controller logic"
-    checkout dev
-    merge refactor/backend-cleanup
-    checkout main
-    merge dev
-```
-
-#### Documentation Strategy: READMEs + Changelogs
-
-- Split up documentation between back-end and front-end, and having changelogs helps keptp it readable and focused. This follows [monorepo](https://monorepo.tools/#what-is-a-monorepo) patterns often used in big tech industries.
-
-- Mini progress updates in CHANGELOG helped document solo work:
-
-  - Easier version control
-  - Helps track scope creep and blockers
-  - Refreshes context after breaks
+| **Area**                   | **Skills Gained**                                                                     | **Key Challenge**                       | **Solution & Learning**                                                                        |
+| -------------------------- | ------------------------------------------------------------------------------------- | --------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| **Full-Stack Development** | Frontend/backend integration, API design, CORS handling, state management             | AWS backend/frontend integration issues | Resolved with proper CORS configuration and security group adjustments                         |
+| **Testing Strategy**       | TDD methodology, unit/integration testing, balancing coverage with delivery speed     | Balancing TDD with delivery speed       | Hybrid approach: browser testing first, then writing tests worked better for solo projects     |
+| **DevOps & Deployment**    | AWS deployment (EC2, S3, CloudFront), GitHub Actions CI/CD, production configurations | GitHub Actions configuration complexity | Multiple iterations needed - learned to test pipeline changes incrementally                    |
+| **Code Quality**           | Git workflows, branching strategies, code review processes, clean commit histories    | Simulating team development practices   | Used `main` + `dev` branches with feature branching and advanced Git commands (rebase, squash) |
+| **Architecture**           | Microservices thinking, separation of concerns, scalable application structure        | Managing monorepo documentation         | Split by domain (frontend/backend) with regular changelog updates for better maintainability   |
 
 ---
 

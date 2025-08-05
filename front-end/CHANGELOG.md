@@ -1,8 +1,32 @@
 # Employee Creator Frontend - Change Log
 
+## 04/08/2025 - Validation & UI Improvements
+
+- **Tailwind CSS Integration:** Complete migration from SCSS to Tailwind for consistent styling
+- **Form Validation:** Enhanced useValidation hook with centralized validation rules
+- **UI Components:** Refactored Button, Input, and Card components with Tailwind styling
+- **Phone Validation:** Fixed regex patterns to handle international phone formats correctly
+
+**Impact:** Improved user experience with consistent styling and better form validation.
+**Related backend changes:** See [Minor Hotfix + Stakeholder Feedback](../employee/CHANGELOG.md#04082025)
+
+---
+
+## 31/07/2025 - Contract System Integration
+
+- **Contract Management:** Complete contract CRUD functionality with employee integration
+- **Data Seeding:** Realistic test data generation for development and testing
+- **Employee Status:** Dynamic status calculation based on active contracts
+- **API Service:** Enhanced error handling and consistent API communication patterns
+
+**Impact:** Full contract lifecycle management with improved data relationships.
+**Related backend changes:** See [Lombok Integration & Contract System Enhancement](../employee/CHANGELOG.md#31072025---lombok-integration--contract-system-enhancement)
+
+---
+
 ## 28/07/2025 - Dev vs Prod. Mode API Configuration
 
-- **Configuration Consistency:** Aligned development configurations across different environments.
+- **Configuration Consistency:** Aligned development logging [(log2j4)](https://www.geeksforgeeks.org/advance-java/how-to-configure-log4j-2-logging-in-spring-boot/) configurations across different environments.
 
 **Impact:** Improved developer experience, better build processes.
 **Related backend changes:** See [Web Configuration](../employee/CHANGELOG.md#28072025)
@@ -49,7 +73,7 @@
 - **Type Safety:** Enhanced TypeScript usage for better error prevention
 - **Service Improvements:** Better error handling in employee and contract services
 
-**Related backend changes:** See [Employee deletion and form fixes](../employee/CHANGELOG.md#24072025---employee-management--form-validation)
+**Related backend changes:** See [Employee Management & Form Validation](../employee/CHANGELOG.md#24072025)
 
 ---
 
@@ -81,7 +105,7 @@
 - **Data Flow:** Established proper communication between contract forms and employee management
 - **Reusable Components:** Built form components that can be reused across different parts of the app
 
-**Related backend changes:** See [Backend Architecture Optimization & Contract Services](../employee/CHANGELOG.md#23072025---backend-architecture-optimization--contract-services)
+**Related backend changes:** See [System Architecture & Contract Management](../employee/CHANGELOG.md#23072025---system-architecture--contract-management)
 
 ---
 
@@ -113,7 +137,7 @@
 - **Integration Testing:** Tested how contract forms work with the overall employee management system
 - **Data Validation:** Verified that data flows correctly between forms and database
 
-**Related backend changes:** See [Contract Management System Implementation](../employee/CHANGELOG.md#22072025---contract-management-system-implementation)
+**Related backend changes:** See [Contract Management System](../employee/CHANGELOG.md#22072025---contract-management-system)
 
 ---
 
@@ -141,7 +165,7 @@
 - Adapted to new Contract entity structure with start date and department
 - Modified components to handle employees with multiple contracts
 
-**Related backend changes:** See [Employee entity extensions](../employee/CHANGELOG.md#20072025)
+**Related backend changes:** See [Employee Entity Enhancement & Testing](../employee/CHANGELOG.md#20072025)
 
 ---
 
@@ -175,4 +199,4 @@
 - Established data flow: Page → List → Card component architecture
 - Added basic SCSS styling for Card components
 
-**Related backend changes:** See [Basic CRUD endpoints](../employee/CHANGELOG.md#08072025---basic-crud-endpoints--writing-tests)
+**Related backend changes:** See [Core CRUD API & Testing Infrastructure](../employee/CHANGELOG.md#08072025---core-crud-api--testing-infrastructure)

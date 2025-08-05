@@ -1,5 +1,69 @@
 # Employee Creator Backend - Change Log
 
+## 05/08/2025 - Entity Refactoring
+
+- **Code Quality:** Improved readability of Employee entity class methods and business logic
+- **Architecture:** Enhanced domain model encapsulation and method naming consistency
+- **Documentation:** Updated README files and Changelogs during for code review purposes.
+
+---
+
+## 04/08/2025 - Minor Hotfix + Stakeholder Feedback
+
+### Bug Fixes + Error handling
+
+- Resolved phone regex validations (CreateEmployeeDTO and UpdateEmployeeDTO)
+- Included format edgecases for phone + name fields (punctuation)
+- improved error handling & logging messages from backend
+  **Impact:** More robust input validation and better developer onboarding + debugging experience.
+
+  **Related frontend changes:** See [Validation & UI Improvements](../front-end/CHANGELOG.md#04082025---validation--ui-improvements)
+
+### Stakeholder Feedback - Code Review
+
+Presented full project showcase to team leaders for feedback.
+
+**Positive Feedback:**
+
+- Dynamic business logic for Employee status calculation proves highly useful for HR workflows
+- Comprehensive documentation, particularly ERD and API sequence diagrams, greatly assists developer onboarding
+
+**Improvement Recommendations:**
+
+_User Experience Enhancements:_
+
+- Remove unnecessary ID number displays for employees/contracts in frontend interfaces - prioritize names for better UX
+- Display employee ID and name information directly on Contract form to reduce cognitive load for users
+- Remove employee ID as required field in ContractDTO since forms pre-populate this data (reduces human error risk)
+
+_Performance Optimization Considerations:_
+
+- **Challenge:** Private virtual methods (like `getEmployeeStatus()`) from Employee entity may impact loading performance with larger databases
+- **Potential Solutions:**
+  1. Relocate business logic methods like `getEmployeeStatus()` to service layers for improved separation of concerns
+  2. Implement eager loading using JOIN SQL queries for related data
+  3. Apply selective data fetching ie. only loading what's needed. Load contracts **only** when viewing **_individual employees_**, not in employee list views (optimize for 1 vs 50+ record scenarios) **(simplest)**
+  4. Introduce pagination for employee list views to reduce initial data load per request**(long-term solution)**
+
+**Impact:** Better maintainability and clearer business logic separation, improving UX of front-end from backend.
+
+## 31/07/2025 - Lombok Integration & Contract System Enhancement
+
+- **Data Seeding:** Realistic test data generation for development and testing using Faker library
+- **Health Check:** Enhanced health check log response with more detailed system information
+- **Code Reduction:** Implemented Lombok to eliminate boilerplate code in entities and DTOs
+
+Refactors
+
+- **Contract Enums:** Added ContractType and Department enums for better data consistency
+- **Employee Status:** Dynamic enum status calculation based on active contracts
+- **Enhanced DTOs:** Improved validation patterns in CreateContractDTO with comprehensive field validation
+
+**Impact:** Reduced codebase size, improved type safety, realistic data for front-end, and better system monitoring.
+**Related frontend changes:** See [Contract System Integration](../front-end/CHANGELOG.md#31072025---contract-system-integration)
+
+---
+
 ## 28/07/2025 - Web Configuration
 
 - **Configuration Improvements:** Fixes CORS errors for both development and production application build modes. Works with dev, preview and deployed front-ends.
@@ -124,7 +188,7 @@
 - Leveraged existing employee architecture patterns for rapid contract feature development
 - Completed end-to-end and service layer tests for contract functionality
 
-**Related frontend changes:** See [Database Schema Updates](../front-end/CHANGELOG.md#15072025---component-architecture--database-updates)
+**Related frontend changes:** See [Component Architecture & Database Updates](../front-end/CHANGELOG.md#15072025---component-architecture--database-updates)
 
 ---
 
