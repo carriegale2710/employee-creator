@@ -4,6 +4,10 @@
 
 This is the frontend for the Employee Creator app, built with React and TypeScript. It provides a user interface for managing employee data, including creating, editing, and deleting employee records.
 
+> For detailed development history and feature updates for this front-end, see [CHANGELOG.md](CHANGELOG.md).
+
+> For full project overview, see [main README](../README.md).
+
 ## Table of Contents
 
 - [Quick Setup](#quick-setup)
@@ -69,12 +73,11 @@ npm run test  # Vitest component tests
 
 ## Architecture Notes
 
+> See `/design-assets` folder for design plans and UI mockups.
+
 - **Component reuse**: Same form component for create/edit
 - **Top-down approach**: Backend API defined first, then frontend integration
 - **Responsive design**: Mobile-first with Tailwind breakpoints
-
-> For full project overview, see [main README](../README.md).
-> For detailed development history and feature updates, see [CHANGELOG.md](CHANGELOG.md).
 
 ## Quality Assurance - FRONTEND
 
@@ -93,8 +96,6 @@ npm run test  # Vitest component tests
 - [x] Form submits valid data successfully (POST/PATCH)
 - [x] Item can be deleted (DELETE)
 - [x] Navigation or redirects work after actions
-
-> See `/design-assets` folder for screenshots and UI mockups.
 
 #### Error Handling
 

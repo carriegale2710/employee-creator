@@ -43,8 +43,8 @@ public class Contract {
 
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE) // !NOTE associated contracts get deleted too
-    @JsonIgnoreProperties({ "contracts" }) // !NOTE - Prevents circular references
+    @OnDelete(action = OnDeleteAction.CASCADE) // NOTE associated contracts get deleted too
+    @JsonIgnoreProperties({ "contracts" }) // NOTE - Prevents circular references
     @ToString.Exclude // lombok
     private Employee employee;
 
@@ -76,19 +76,8 @@ public class Contract {
     // NOTE - virtual field for front-end
     @JsonProperty("isActive")
     public Boolean isActive() {
-
-        LocalDate endDateInput = this.endDate;
-        LocalDate today = LocalDate.now();
-
-        boolean isActive = false;
-
-        if (endDateInput == null) {
-            isActive = true; // !NOTE - logic: this contract is ongoing indefinitely
-        } else if (endDateInput.isBefore(today)) {
-            isActive = true; // !NOTE - logic: this contract has not expired yet
-        }
-
-        return isActive;
+        // A contract is active (returns true) if endDate is null or after today
+        return endDate == null || endDate.isAfter(LocalDate.now());
     }
 
 }

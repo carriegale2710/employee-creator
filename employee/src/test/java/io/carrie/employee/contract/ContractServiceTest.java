@@ -187,9 +187,9 @@ public class ContractServiceTest {
         }
 
         @Test
-        public void isActive_ReturnsFalseIfEndDateIsBeforeToday() {
+        public void isActive_ReturnsFalseIfTodayIsAfterEndDate() {
                 Contract contract = new Contract();
-                contract.setEndDate(LocalDate.now().minusDays(1));
+                contract.setEndDate(LocalDate.now().minusDays(2));
                 assertEquals(false, contract.isActive());
         }
 

@@ -11,15 +11,14 @@
 - [Project Overview](#project-overview)
 - [Project Structure](#project-structure)
 - [Quick Start](#quick-start)
-- [Tech Stack](#tech-stack)
+- [Tech Stack](#techstack)
 - [Demo & Screenshots](#demo--screenshots)
 - [Core Features](#features)
 - [Testing](#testing)
 - [Architecture & Design](#architecture--design)
-- [Development Process](#development-process)
 - [Known Issues](#known-issues)
 - [Project Retrospective](#project-retrospective)
-- [License](#license)
+- [Licensing Details](#licensing-details)
 
 ---
 
@@ -29,11 +28,11 @@
 
 ### Key Highlights
 
-- 🏗️ **Full-Stack**: Java Spring Boot API + React TypeScript frontend
-- 🧪 **Comprehensive Testing**: 40+ automated tests (Unit, Integration, E2E)
-- 🚀 **Production Deployed**: AWS infrastructure with automated CI/CD
-- 📊 **Enterprise Features**: Employee management, contract tracking, form validation
-- ⚡ **Modern Stack**: TypeScript, Tailwind CSS, MySQL, GitHub Actions
+- **Full-Stack**: Java Spring Boot API + React TypeScript frontend
+- **Comprehensive Testing**: 40+ automated tests (Unit, Integration, E2E)
+- **Production Deployed**: AWS infrastructure with automated CI/CD
+- **Enterprise Features**: Employee management, contract tracking, form validation
+- **Modern Stack**: TypeScript, Tailwind CSS, MySQL, GitHub Actions
 
 ### Business Value
 
