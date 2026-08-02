@@ -2,6 +2,54 @@
 
 [![Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## Table of Contents
+
+- [Deployment](#deployment)
+- [Quick Setup](#quick-setup)
+- [Database Setup](#database-setup)
+- [Testing](#testing)
+- [API Endpoints](#api-endpoints)
+- [Database Schema](#database-schema)
+- [Tech Details](#tech-details)
+- [Architecture Notes](#architecture-notes)
+- [Related projects, reimplementations, assets](#related-projects-reimplementations-assets)
+- [Sequence Diagram](#sequence-diagram)
+
+## Deployment
+
+> Live API Demo: [https://api.employeecreator.site](https://api.employeecreator.site)
+
+Deployed on an EC2 instance (Ubuntu), running behind Nginx as a reverse proxy.
+
+**Stack**
+
+- Packaged as an executable jar, run via `systemd` (`employee-creator.service`)
+- Listens locally on `127.0.0.1:8002`
+- Nginx reverse-proxies `api.employeecreator.site` → the app, with TLS via Let's Encrypt/Certbot
+- Database: MySQL, local to the same instance, using a scoped non-root user (`employee_user`) with access limited to `employee_creator_db`
+
+**Configuration**
+
+- DB credentials and other environment-specific config are injected via a `systemd` `EnvironmentFile` (`.env`), not baked into the jar
+- `application.properties` references these via `${DB_NAME}`, `${MYSQL_USER}`, `${MYSQL_PASS}` placeholders
+
+**CORS**
+
+- Explicitly allows the deployed frontend origin (`https://employeecreator.site`) rather than a wildcard, since frontend and backend are separate origins/domains
+
+**Redeploying**
+
+```bash
+./mvnw clean package -DskipTests
+scp -i <key.pem> target/employee-creator.jar ubuntu@<EC2_IP>:/home/ubuntu/apps/employee-creator-spring/
+ssh -i <key.pem> ubuntu@<EC2_IP> "sudo systemctl restart employee-creator"
+```
+
+**Resource notes**
+
+- Runs alongside Nginx and MySQL on a small instance; JVM heap is capped (`-Xmx256m`) and MySQL's buffer pool is trimmed to avoid memory pressure
+- systemd is configured with `StartLimitIntervalSec`/`StartLimitBurst` to prevent crash-loop restarts from exhausting resources if the app fails to start
+
 ## Quick Setup
 
 ```bash
@@ -61,7 +109,6 @@ MYSQL_PASS=your_password
 - `GET /employees` - List all employees
 - `GET /employees/{id}` - Get employee by ID
 - `POST /employees` - Create employee
-
   - Example Body (JSON):
 
     ```json
@@ -75,7 +122,6 @@ MYSQL_PASS=your_password
     ```
 
 - `PATCH /employees/{id}` - Update employee
-
   - Example Body (JSON):
 
     ```json

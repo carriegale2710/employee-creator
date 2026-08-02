@@ -10,15 +10,47 @@ This is the frontend for the Employee Creator app, built with React and TypeScri
 
 ## Table of Contents
 
+- [Deployment](#deployment)
 - [Quick Setup](#quick-setup)
 - [Environment Variables](#environment-variables)
 - [Build Commands](#build-commands)
 - [Testing](#testing)
 - [Tech Details](#tech-details)
 - [Architecture Notes](#architecture-notes)
-- [Change Log](#change-log)
-- [Useful Resources](#useful-resources)
 - [Quality Assurance - FRONTEND](#quality-assurance---frontend)
+- [Useful Resources](#useful-resources)
+
+## Deployment
+
+> Live Demo: [https://employeecreator.site/](https://employeecreator.site/)
+
+Hosted as a static site on S3, served through CloudFront for HTTPS and custom domain support.
+
+**Stack**
+
+- Built with `npm run build` (Vite → outputs to `dist/`)
+- Synced to an S3 bucket configured for static website hosting
+- CloudFront distribution in front of the bucket, serving `https://employeecreator.site`
+- TLS cert issued via AWS Certificate Manager (must be requested in `us-east-1`, regardless of bucket region — a CloudFront requirement)
+
+**SPA routing**
+
+- CloudFront is configured with custom error responses (403 and 404 → `/index.html`, HTTP 200) so client-side routes resolve correctly on direct navigation or refresh, since S3 has no native concept of SPA routing
+
+**API**
+
+- Calls the backend at `https://api.employeecreator.site`
+- Backend CORS is scoped specifically to this frontend's origin
+
+**Redeploying**
+
+```bash
+npm run build
+aws s3 sync dist/ s3://<bucket-name> --delete
+aws cloudfront create-invalidation --distribution-id <DIST_ID> --paths "/*"
+```
+
+(Manual alternative: upload the contents of `dist/` via the S3 console, then create an invalidation for `/*` via the CloudFront console.)
 
 ## Quick Setup
 
