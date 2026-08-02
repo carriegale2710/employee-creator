@@ -21,7 +21,9 @@ public class WebConfig implements WebMvcConfigurer {
                 "https://d3bcyx0s1yb5do.cloudfront.net/employees",
                 "https://d3bcyx0s1yb5do.cloudfront.net/contracts",
                 "https://d3bcyx0s1yb5do.cloudfront.net/departments",
-                "https://employeecreator.my" };
+                "https://employeecreator.site",
+                "https://www.employeecreator.site"
+        };
 
         // Configure CORS mapping
         // This allows all methods and headers from the specified origins
