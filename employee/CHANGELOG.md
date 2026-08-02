@@ -1,5 +1,19 @@
 # Employee Creator Backend - Change Log
 
+## 03/08/2026 - Backend Domain Migration & Deploy Fix
+
+- **Custom Domain:** Migrated backend from Elastic IP/path-based routing to a dedicated subdomain (`api.employeecreator.site`) with its own Nginx server block and Let's Encrypt certificate
+- **CORS:** Updated allowed origins to match the new frontend domain
+- **CI/CD Fix:** Rewrote outdated `spring-ec2-deploy.yml` to new production setup:
+  - EC2 SSH user (`ec2-user`(linux) → `ubuntu`)
+  - Raw `nohup` process -> managed systemd service
+  - MySQLdb creds no longer passed inline (reads from `.env` file).
+
+**Impact:** Backend is now reachable on a stable branded subdomain with HTTPS, and deploys reliably restart the actual production process instead of spawning an untracked one.
+**Related frontend changes:** See [Custom Domain Migration](../front-end/CHANGELOG.md#03082026)
+
+---
+
 ## 05/08/2025 - Entity Refactoring
 
 - **Code Quality:** Improved readability of Employee entity class methods and business logic

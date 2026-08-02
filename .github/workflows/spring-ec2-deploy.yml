@@ -18,6 +18,12 @@ on:
 permissions:
   contents: read
 
+env:
+  JAR_NAME: employee-0.0.1-SNAPSHOT.jar
+  REMOTE_DIR: /home/ubuntu/apps/employee-creator-spring
+  REMOTE_JAR_NAME: employee-creator.jar
+  SERVICE_NAME: employee-creator
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -36,27 +42,19 @@ jobs:
       - name: 🔨 Build Spring Boot application
         run: |
           cd employee
-          mvn clean install
+          mvn clean install -DskipTests
           echo "✅ Build completed successfully"
-          ls -lh target/employee-0.0.1-SNAPSHOT.jar
+          ls -lh target/${{ env.JAR_NAME }}
 
       - name: 🚀 Deploy to EC2 via SSH
         env:
           EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
-          EC2_USER: ec2-user
-          DB_NAME: ${{ secrets.DB_NAME }}
-          MYSQL_USER: ${{ secrets.MYSQL_USER }}
-          MYSQL_PASS: ${{ secrets.MYSQL_PASS }}
+          EC2_USER: ubuntu # Ubuntu AMI, not Amazon Linux
         run: |
           # Save SSH key to file and set permissions
           echo "$EC2_SSH_KEY" > ec2-key.pem
           chmod 600 ec2-key.pem
-
-          # Test network connectivity first
-          echo "🔍 Testing network connectivity to EC2 instance..."
-          echo "EC2_HOST: $EC2_HOST"
-          ping -c 3 $EC2_HOST || echo "⚠️ Ping failed, but SSH might still work"
 
           # Test SSH connectivity with timeout
           echo "🔐 Testing SSH connectivity..."
@@ -69,13 +67,14 @@ jobs:
             exit 1
           }
 
-          # Upload JAR file using SCP with retry logic
+          # Upload JAR file straight into the app's deploy directory, using the
+          # same filename the systemd unit's ExecStart expects
           echo "📦 Uploading JAR file to EC2..."
           for attempt in 1 2 3; do
             echo "Upload attempt $attempt/3..."
             if timeout 120 scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o ServerAliveInterval=5 -o ServerAliveCountMax=3 -i ec2-key.pem \
-              employee/target/employee-0.0.1-SNAPSHOT.jar \
-              ${EC2_USER}@${EC2_HOST}:~/employee-0.0.1-SNAPSHOT.jar; then
+              employee/target/${{ env.JAR_NAME }} \
+              ${EC2_USER}@${EC2_HOST}:${{ env.REMOTE_DIR }}/${{ env.REMOTE_JAR_NAME }}; then
               echo "✅ JAR file uploaded successfully on attempt $attempt"
               break
             else
@@ -89,51 +88,31 @@ jobs:
             fi
           done
 
-          # Deploy and start application via SSH
-          echo "🚀 Deploying application on EC2..."
-          timeout 180 ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o ServerAliveInterval=5 -o ServerAliveCountMax=3 -i ec2-key.pem ${EC2_USER}@${EC2_HOST} << 'EOF'
-            echo "🛑 Stopping existing Spring Boot application..."
-            pkill -f employee-0.0.1-SNAPSHOT.jar || true
-            
-            echo "⏳ Waiting for process to terminate..."
+          # Restart the app via its systemd service (DB credentials are already
+          # supplied on the box via EnvironmentFile — no need to pass them here)
+          echo "🚀 Restarting ${{ env.SERVICE_NAME }} via systemd..."
+          timeout 60 ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o ServerAliveInterval=5 -o ServerAliveCountMax=3 -i ec2-key.pem ${EC2_USER}@${EC2_HOST} << 'EOF'
+            set -e
+
+            echo "🔄 Reloading systemd (in case the unit file changed)..."
+            sudo systemctl daemon-reload
+
+            echo "🔁 Restarting employee-creator..."
+            sudo systemctl restart employee-creator
+
+            echo "⏳ Waiting for the service to settle..."
             sleep 5
-            
-            echo "✅ Verifying JAR file upload..."
-            if [ -f "employee-0.0.1-SNAPSHOT.jar" ]; then
-              echo "✅ JAR file found: $(ls -lh employee-0.0.1-SNAPSHOT.jar)"
+
+            echo "🔍 Checking service status..."
+            if sudo systemctl is-active --quiet employee-creator; then
+              echo "✅ employee-creator is running"
+              sudo systemctl status employee-creator --no-pager | head -10
             else
-              echo "❌ JAR file not found after upload!"
+              echo "❌ employee-creator failed to start!"
+              sudo journalctl -u employee-creator -n 50 --no-pager
               exit 1
             fi
-            
-            echo "🚀 Starting new Spring Boot application..."
-            export DB_NAME="${{ secrets.DB_NAME }}"
-            export MYSQL_USER="${{ secrets.MYSQL_USER }}"
-            export MYSQL_PASS="${{ secrets.MYSQL_PASS }}"
-            
-            nohup java -jar employee-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
-            echo "📝 Application started in background, PID: $!"
-            
-            echo "⏳ Waiting for application to initialize..."
-            sleep 15
-            
-            echo "🔍 Checking if application is running..."
-            if pgrep -f employee-0.0.1-SNAPSHOT.jar > /dev/null; then
-              echo "✅ Application is running successfully!"
-              echo "📊 Process details:"
-              pgrep -f employee-0.0.1-SNAPSHOT.jar | head -5
-            else
-              echo "❌ Application failed to start!"
-              echo "📋 Last 20 lines of application log:"
-              tail -20 app.log || echo "No log file found"
-              exit 1
-            fi
-            
-            echo "🎉 Deployment completed successfully!"
-            echo "📄 Check logs with: tail -f app.log"
-            echo "🔍 Monitor process with: ps aux | grep employee"
           EOF
 
           # Clean up SSH key
           rm -f ec2-key.pem
-

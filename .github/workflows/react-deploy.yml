@@ -48,11 +48,11 @@ jobs:
 
       - name:
           Deploy to S3
-          # upload index.html file to s3, if it already exists, replace it
-          # Syncs the 'assets' directory from the 'dist' folder to the S3 bucket, deleting old files that no longer exist
+          # Syncs the entire 'dist' folder to the S3 bucket root, deleting old files
+          # that no longer exist. Syncing the whole folder (not just assets/) avoids
+          # missing static files like favicon.ico or manifest.json.
         run: |
-          aws s3 cp ./dist/index.html s3://${{ secrets.AWS_S3_BUCKET }}/index.html
-          aws s3 sync ./dist/assets s3://${{ secrets.AWS_S3_BUCKET }}/assets --delete
+          aws s3 sync ./dist s3://${{ secrets.AWS_S3_BUCKET }} --delete
         working-directory: front-end
 
       - name:

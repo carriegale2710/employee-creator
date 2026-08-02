@@ -1,5 +1,16 @@
 # Employee Creator Frontend - Change Log
 
+## 03/08/2026 - Custom Domain Migration for Live Demo
+
+- **Custom Domain:** Migrated frontend from EC2-hosted domain to dedicated custom domain (`employeecreator.site`) served via CloudFront
+- **HTTPS:** Issued and attached new ACM certificate for the new domain
+- **CI/CD:** Updated S3 deploy step to sync the full `dist/` folder on commit. It was syncing only `dist/assets/`, which would silently skip files like `favicon.ico`, `manifest.json`.
+
+**Impact:** Frontend is now served from its own branded domain with working HTTPS and reliable client-side routing on all routes.
+**Related backend changes:** See [Backend Domain Migration & Deploy Fix](../employee/CHANGELOG.md#03082026)
+
+---
+
 ## 04/08/2025 - Validation & UI Improvements
 
 - **Tailwind CSS Integration:** Complete migration from SCSS to Tailwind for consistent styling
