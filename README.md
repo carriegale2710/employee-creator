@@ -13,7 +13,7 @@
 - [Live Demo & API](#live-demo--api)
 - [Quick Start](#quick-start)
 - [Testing](#testing)
-- [Techstack](#techstack)
+- [Tech Stack](#tech-stack)
 - [Design Decisions](#design-decisions)
 - [Known Issues](#known-issues)
 - [Future Goals](#future-goals)
@@ -26,15 +26,7 @@
 
 **Employee Creator** is a full-stack CRUD application for managing employee records and contracts. Built over 4 weeks as a solo project, it demonstrates enterprise-level development practices including comprehensive testing, CI/CD deployment, and scalable architecture.
 
-### Key Highlights
-
-- **Full-Stack**: Java Spring Boot API + React TypeScript frontend
-- **Comprehensive Testing**: 40+ automated tests (Unit, Integration, E2E)
-- **Production Deployed**: AWS infrastructure with automated CI/CD
-- **Enterprise Features**: Employee management, contract tracking, form validation
-- **Modern Stack**: TypeScript, Tailwind CSS, MySQL, GitHub Actions
-
-### Business Value
+### Who this app is for:
 
 1. **For HR Teams**: Streamline employee onboarding, track contract history, maintain compliance records
 
@@ -42,7 +34,17 @@
 
 3. **For Stakeholders**: Production-ready system with scalable architecture and comprehensive audit trails
 
-### Key Features
+### Highlights
+
+- **Full-Stack**: Java Spring Boot API + React TypeScript frontend
+- **Comprehensive Testing**: 40+ automated tests (Unit, Integration, E2E)
+- **Production Deployed**: AWS infrastructure with automated CI/CD
+- **Enterprise Features**: Employee management, contract tracking, form validation
+- **Modern Stack**: TypeScript, Tailwind CSS, MySQL, GitHub Actions
+
+---
+
+## Key Features
 
 #### :man_office_worker: Employee Management
 
@@ -63,7 +65,25 @@
 
 ---
 
-## Project Retrospective
+## Design Decisions
+
+### Backend
+
+- Used top-down TDD to define backend features and to run within CI/CD pipeline.
+- Included a contracts with a `one-to-many relationship` for `employees -> contracts`
+- This allows for flexible, quicker UX when updating of DB records via in FE client app with only minor updates eg. salary, contract dates etc.
+- Separated concerns by having a dedicated contracts table, allowing for better organization and management + security of employee contracts.
+
+### Front-end
+
+- Used React Router for seamless navigation between views.
+- Implemented form validation using React Hook Form for schema validation.
+- Used Vitest for minimal component testing to ensure UI functionality.
+- Implemented a responsive design using Tailwind CSS and SCSS for component-level styling.
+
+---
+
+## Skills and Lessons Learned
 
 This project was a solo endeavor to build a full-stack web application that simulates real-world business scenarios. It aimed to apply best practices in software development, including:
 
@@ -72,7 +92,7 @@ This project was a solo endeavor to build a full-stack web application that simu
 - **Production deployment** patterns
 - **Documentation** and changelog management
 
-### Development Experience & Outcomes
+### Key Challenges of this project
 
 | **Area**                   | **Skills Gained**                                                                     | **Key Challenge**                       | **Solution & Learning**                                                                        |
 | -------------------------- | ------------------------------------------------------------------------------------- | --------------------------------------- | ---------------------------------------------------------------------------------------------- |
@@ -152,7 +172,7 @@ npm run test     # frontend (if added)
 
 ---
 
-## Techstack
+## Tech Stack
 
 | Layer      | Technology                                             | Purpose                             |
 | ---------- | ------------------------------------------------------ | ----------------------------------- |
@@ -167,21 +187,63 @@ npm run test     # frontend (if added)
 
 ---
 
-## Design Decisions
+## Database Design
 
-### Backend
+- **TDD approach**: Tests written before implementation
+- **Entity separation**: Employees vs Contracts for better organization
+- **One-to-Many relationship**: Supports contract history tracking
+- **Immutable contracts**: No update operations by design
 
-- Used top-down TDD to define backend features and to run within CI/CD pipeline.
-- Included a contracts with a `one-to-many relationship` for `employees -> contracts`
-- This allows for flexible, quicker UX when updating of DB records via in FE client app with only minor updates eg. salary, contract dates etc.
-- Separated concerns by having a dedicated contracts table, allowing for better organization and management + security of employee contracts.
+**Employees** (1) → **Contracts** (Many)
 
-### Front-end
+Each employee can have multiple contracts over time. Contracts are immutable legal documents.
 
-- Used React Router for seamless navigation between views.
-- Implemented form validation using React Hook Form for schema validation.
-- Used Vitest for minimal component testing to ensure UI functionality.
-- Implemented a responsive design using Tailwind CSS and SCSS for component-level styling.
+![diagram of one-to-many class between employee and contracts tables in database](employee/assets/diagrams/erd/erd.png)
+
+## Sequence Diagram of Core Flow
+
+```mermaid
+---
+
+config:
+theme: redux-dark-color
+
+---
+
+sequenceDiagram
+actor User
+participant ReactApp as React App
+participant SpringAPI as Spring Boot API
+participant MySQL as MySQL Database
+Note over User: View all employees
+User->>ReactApp: Opens Employee List
+ReactApp->>SpringAPI: GET /employees
+SpringAPI->>MySQL: SELECT \* FROM employees
+MySQL-->>SpringAPI: Rows (employee list)
+SpringAPI-->>ReactApp: JSON response
+ReactApp-->>User: Display list
+Note over User: Add a new employee
+User->>ReactApp: Fills out form
+ReactApp->>SpringAPI: POST /employees (form data)
+SpringAPI->>MySQL: INSERT INTO employees
+MySQL-->>SpringAPI: OK
+SpringAPI-->>ReactApp: New employee JSON
+ReactApp-->>User: Confirmation
+Note over User: Edit an employee
+User->>ReactApp: Clicks Edit
+ReactApp->>SpringAPI: PUT /employees/:id (updated data)
+SpringAPI->>MySQL: UPDATE employees WHERE id=...
+MySQL-->>SpringAPI: OK
+SpringAPI-->>ReactApp: Updated JSON
+ReactApp-->>User: Show updated data
+Note over User: Delete an employee
+User->>ReactApp: Clicks Delete
+ReactApp->>SpringAPI: DELETE /employees/:id
+SpringAPI->>MySQL: DELETE FROM employees WHERE id=...
+MySQL-->>SpringAPI: OK
+SpringAPI-->>ReactApp: 200 OK
+ReactApp-->>User: Item removed
+```
 
 ---
 
