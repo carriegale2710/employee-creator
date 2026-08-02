@@ -1,4 +1,4 @@
-# Employee Creator Full-Stack Web Application
+# Employee Creator Spring API + React App
 
 > A production-ready HR management system built with Java Spring Boot and React TypeScript
 
