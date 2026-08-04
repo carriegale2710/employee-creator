@@ -17,10 +17,6 @@ public class WebConfig implements WebMvcConfigurer {
                 "http://120.0.0.1:5173",
                 "http://localhost:4173",
                 "http://120.0.0.1:4173",
-                "https://d3bcyx0s1yb5do.cloudfront.net",
-                "https://d3bcyx0s1yb5do.cloudfront.net/employees",
-                "https://d3bcyx0s1yb5do.cloudfront.net/contracts",
-                "https://d3bcyx0s1yb5do.cloudfront.net/departments",
                 "https://employeecreator.site",
                 "https://www.employeecreator.site"
         };
