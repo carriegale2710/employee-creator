@@ -1,5 +1,11 @@
 # Employee Creator Backend - Change Log
 
+## 03/09/2026 - PostgreSQL Demo Deployment
+
+- Due to limited budget (AWS no longer free tier), the demo deployment is migrating from AWS to Render (offers Free Tier). Saves more than $22/month.
+- Replaced the MySQL runtime driver and datasource configuration with PostgreSQL settings for the demo deployment.
+- Updated setup and deployment documentation accordingly.
+
 ## 03/08/2026 - Backend Domain Migration & Deploy Fix
 
 - **Custom Domain:** Migrated backend from Elastic IP/path-based routing to a dedicated subdomain (`api.employeecreator.site`) with its own Nginx server block and Let's Encrypt certificate

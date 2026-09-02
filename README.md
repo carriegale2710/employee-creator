@@ -40,7 +40,7 @@
 - **Comprehensive Testing**: 40+ automated tests (Unit, Integration, E2E)
 - **Production Deployed**: AWS infrastructure with automated CI/CD
 - **Enterprise Features**: Employee management, contract tracking, form validation
-- **Modern Stack**: TypeScript, Tailwind CSS, MySQL, GitHub Actions
+- **Modern Stack**: TypeScript, Tailwind CSS, PostgreSQL, GitHub Actions
 
 ---
 
@@ -115,7 +115,7 @@ This project was a solo endeavor to build a full-stack web application that simu
 | --------------------- | ------------------------------------------- | -------------------------- |
 | Frontend (React)      | S3 static site behind CloudFront            | `employeecreator.site`     |
 | Backend (Spring Boot) | EC2 (Nginx reverse proxy → systemd service) | `api.employeecreator.site` |
-| Database              | MySQL, local to the EC2 instance            | —                          |
+| Database              | PostgreSQL, local to the EC2 instance       | —                          |
 
 ---
 
@@ -125,7 +125,7 @@ This project was a solo endeavor to build a full-stack web application that simu
 
 - Java 17+
 - Node.js 18+
-- MySQL 8.0+
+- PostgreSQL 14+
 
 ### Backend (Spring Boot)
 
@@ -176,7 +176,7 @@ npm run test     # frontend (if added)
 
 | Layer      | Technology                                             | Purpose                             |
 | ---------- | ------------------------------------------------------ | ----------------------------------- |
-| DB         | MySQL, JPA                                             | SQL schema control, ORM integration |
+| DB         | PostgreSQL, JPA                                        | SQL schema control, ORM integration |
 | Backend    | Spring Boot, Java, Maven                               | Production-grade APIs, type safety  |
 | Frontend   | React, TypeScript, Vite                                | SPA structure, compile-time safety  |
 | Testing    | JUnit, Mockito, REST Assured, H2, Faker (Data seeding) | API e2e + unit tests, mock data     |
@@ -214,33 +214,33 @@ sequenceDiagram
 actor User
 participant ReactApp as React App
 participant SpringAPI as Spring Boot API
-participant MySQL as MySQL Database
+participant PostgreSQL as PostgreSQL Database
 Note over User: View all employees
 User->>ReactApp: Opens Employee List
 ReactApp->>SpringAPI: GET /employees
-SpringAPI->>MySQL: SELECT \* FROM employees
-MySQL-->>SpringAPI: Rows (employee list)
+SpringAPI->>PostgreSQL: SELECT \* FROM employees
+PostgreSQL-->>SpringAPI: Rows (employee list)
 SpringAPI-->>ReactApp: JSON response
 ReactApp-->>User: Display list
 Note over User: Add a new employee
 User->>ReactApp: Fills out form
 ReactApp->>SpringAPI: POST /employees (form data)
-SpringAPI->>MySQL: INSERT INTO employees
-MySQL-->>SpringAPI: OK
+SpringAPI->>PostgreSQL: INSERT INTO employees
+PostgreSQL-->>SpringAPI: OK
 SpringAPI-->>ReactApp: New employee JSON
 ReactApp-->>User: Confirmation
 Note over User: Edit an employee
 User->>ReactApp: Clicks Edit
 ReactApp->>SpringAPI: PUT /employees/:id (updated data)
-SpringAPI->>MySQL: UPDATE employees WHERE id=...
-MySQL-->>SpringAPI: OK
+SpringAPI->>PostgreSQL: UPDATE employees WHERE id=...
+PostgreSQL-->>SpringAPI: OK
 SpringAPI-->>ReactApp: Updated JSON
 ReactApp-->>User: Show updated data
 Note over User: Delete an employee
 User->>ReactApp: Clicks Delete
 ReactApp->>SpringAPI: DELETE /employees/:id
-SpringAPI->>MySQL: DELETE FROM employees WHERE id=...
-MySQL-->>SpringAPI: OK
+SpringAPI->>PostgreSQL: DELETE FROM employees WHERE id=...
+PostgreSQL-->>SpringAPI: OK
 SpringAPI-->>ReactApp: 200 OK
 ReactApp-->>User: Item removed
 ```

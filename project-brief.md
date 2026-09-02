@@ -54,7 +54,7 @@ Also code should be:
 ### RESTful API hints
 
 - The list can be a local database
-  - [x] MySQL is reccomended
+  - [x] PostgreSQL is recommended
 - Implementing an API logging strategy.
   - [x] Log2j **highly** reccomended
 - [x] Implementing error handling strategy.
@@ -88,14 +88,13 @@ Frontend
 ### Backend
 
 - Dependencies
-
   - [x] Spring Web,
   - [x] Validation I/O
   - [x] Spring Testing
     - [x] Rest assured
     - [x] mockito
   - [x] Spring Data JPA
-  - [x] MySQL Driver
+  - [x] PostgreSQL Driver
   - [x] Spring Devtools
 
 Testing

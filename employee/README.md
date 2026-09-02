@@ -18,7 +18,7 @@
 ## Tech Stack
 
 - **Spring Boot 3** + **Java 21** for enterprise-grade APIs
-- **MySQL** + **JPA** for data persistence
+- **PostgreSQL** + **JPA** for data persistence
 - **JUnit 5** + **Mockito** for unit testing
 - **REST Assured** + **H2** for integration testing
 - **Maven** for dependency management
@@ -34,21 +34,21 @@ cd employee
 
 ## Database Setup
 
-### Install MySQL
+### Install PostgreSQL
 
 **macOS:**
 
 ```bash
-brew install mysql
-brew services start mysql
+brew install postgresql
+brew services start postgresql
 ```
 
-**Windows:** Download [MySQL Installer](https://dev.mysql.com/downloads/installer/)
+**Windows:** Download [PostgreSQL](https://www.postgresql.org/download/windows/)
 
 ### Configure Database
 
 ```bash
-mysql -u root -p
+psql -U postgres
 ```
 
 ```sql
@@ -60,9 +60,11 @@ CREATE DATABASE your_database_name;
 Create `.env` file:
 
 ```env
+DB_HOST=localhost
+DB_PORT=5432
 DB_NAME=your_database_name
-MYSQL_USER=your_user_or_root
-MYSQL_PASS=your_password
+POSTGRES_USER=your_user
+POSTGRES_PASSWORD=your_password
 ```
 
 ## Testing
@@ -130,12 +132,12 @@ Deployed on an EC2 instance (Ubuntu), running behind Nginx as a reverse proxy.
 - Packaged as an executable jar, run via `systemd` (`employee-creator.service`)
 - Listens locally on `127.0.0.1:8002`
 - Nginx reverse-proxies `api.employeecreator.site` → the app, with TLS via Let's Encrypt/Certbot
-- Database: MySQL, local to the same instance, using a scoped non-root user (`employee_user`) with access limited to `employee_creator_db`
+- Database: PostgreSQL, local to the same instance, using a scoped non-superuser with access limited to `employee_creator_db`
 
 **Configuration**
 
 - DB credentials and other environment-specific config are injected via a `systemd` `EnvironmentFile` (`.env`), not baked into the jar
-- `application.properties` references these via `${DB_NAME}`, `${MYSQL_USER}`, `${MYSQL_PASS}` placeholders
+- `application.properties` references these via `${DB_HOST}`, `${DB_PORT}`, `${DB_NAME}`, `${POSTGRES_USER}`, and `${POSTGRES_PASSWORD}` placeholders
 
 **CORS**
 
@@ -151,7 +153,7 @@ ssh -i <key.pem> ubuntu@<EC2_IP> "sudo systemctl restart employee-creator"
 
 **Resource notes**
 
-- Runs alongside Nginx and MySQL on a small instance; JVM heap is capped (`-Xmx256m`) and MySQL's buffer pool is trimmed to avoid memory pressure
+- Runs alongside Nginx and PostgreSQL on a small instance; JVM heap is capped (`-Xmx256m`)
 - systemd is configured with `StartLimitIntervalSec`/`StartLimitBurst` to prevent crash-loop restarts from exhausting resources if the app fails to start
 
 ## Database Design
@@ -191,33 +193,33 @@ sequenceDiagram
   actor User
   participant ReactApp as React App
   participant SpringAPI as Spring Boot API
-  participant MySQL as MySQL Database
+  participant PostgreSQL as PostgreSQL Database
   Note over User: View all employees
   User->>ReactApp: Opens Employee List
   ReactApp->>SpringAPI: GET /employees
-  SpringAPI->>MySQL: SELECT * FROM employees
-  MySQL-->>SpringAPI: Rows (employee list)
+  SpringAPI->>PostgreSQL: SELECT * FROM employees
+  PostgreSQL-->>SpringAPI: Rows (employee list)
   SpringAPI-->>ReactApp: JSON response
   ReactApp-->>User: Display list
   Note over User: Add a new employee
   User->>ReactApp: Fills out form
   ReactApp->>SpringAPI: POST /employees (form data)
-  SpringAPI->>MySQL: INSERT INTO employees
-  MySQL-->>SpringAPI: OK
+  SpringAPI->>PostgreSQL: INSERT INTO employees
+  PostgreSQL-->>SpringAPI: OK
   SpringAPI-->>ReactApp: New employee JSON
   ReactApp-->>User: Confirmation
   Note over User: Edit an employee
   User->>ReactApp: Clicks Edit
   ReactApp->>SpringAPI: PUT /employees/:id (updated data)
-  SpringAPI->>MySQL: UPDATE employees WHERE id=...
-  MySQL-->>SpringAPI: OK
+  SpringAPI->>PostgreSQL: UPDATE employees WHERE id=...
+  PostgreSQL-->>SpringAPI: OK
   SpringAPI-->>ReactApp: Updated JSON
   ReactApp-->>User: Show updated data
   Note over User: Delete an employee
   User->>ReactApp: Clicks Delete
   ReactApp->>SpringAPI: DELETE /employees/:id
-  SpringAPI->>MySQL: DELETE FROM employees WHERE id=...
-  MySQL-->>SpringAPI: OK
+  SpringAPI->>PostgreSQL: DELETE FROM employees WHERE id=...
+  PostgreSQL-->>SpringAPI: OK
   SpringAPI-->>ReactApp: 200 OK
   ReactApp-->>User: Item removed
 
