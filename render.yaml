@@ -1,0 +1,65 @@
+# Here's the what this Render YAML workflow does to deploy the live demo (FOR POSTGRES DEMO ONLY):
+
+# 1. **DB spins up first** — Render creates a free Postgres instance (`demo-db`) with a database, user, and password.
+# 2. **Backend builds** — your Dockerfile builds the Spring Boot jar into a container image.
+# 3. **Backend starts** — Render injects the DB connection details as env vars, the container runs, Spring connects to Postgres and creates tables (`ddl-auto=update`).
+# 4. **Frontend builds** — `npm run build` runs, with the backend's URL baked in via `VITE_API_URL`.
+# 5. **Frontend deploys** — static files go up to Render's CDN, with a rewrite rule so client-side routing works.
+# 6. **You get three live pieces**: a public frontend URL, a public backend URL, and a private database — all wired together automatically.
+
+# One gotcha to remember: `VITE_API_URL` resolves to just a hostname, not a full `https://` URL — you'll need to prefix it in your frontend code.
+
+databases:
+  - name: demo-db
+    plan: free
+    databaseName: demo
+    user: demo_user
+
+services:
+  # Spring boot backend (./employee)
+  - type: web
+    name: demo-api
+    runtime: docker
+    dockerfilePath: ./employee/Dockerfile
+    dockerContext: ./employee/
+    plan: free
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: demo-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: demo-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: demo-db
+          property: database
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: demo-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: demo-db
+          property: password
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
+
+  # React frontend (./frontend)
+  - type: web
+    name: demo-frontend
+    runtime: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          name: demo-api
+          type: web
+          property: host
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

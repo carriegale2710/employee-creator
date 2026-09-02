@@ -63,8 +63,8 @@ Create `.env` file:
 DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=your_database_name
-POSTGRES_USER=your_user
-POSTGRES_PASSWORD=your_password
+SPRING_DATASOURCE_USERNAME=your_user
+SPRING_DATASOURCE_PASSWORD=your_password
 ```
 
 ## Testing
@@ -137,7 +137,7 @@ Deployed on an EC2 instance (Ubuntu), running behind Nginx as a reverse proxy.
 **Configuration**
 
 - DB credentials and other environment-specific config are injected via a `systemd` `EnvironmentFile` (`.env`), not baked into the jar
-- `application.properties` references these via `${DB_HOST}`, `${DB_PORT}`, `${DB_NAME}`, `${POSTGRES_USER}`, and `${POSTGRES_PASSWORD}` placeholders
+- `application.properties` references these via `${DB_HOST}`, `${DB_PORT}`, `${DB_NAME}`, `${SPRING_DATASOURCE_USERNAME}`, and `${SPRING_DATASOURCE_PASSWORD}` placeholders
 
 **CORS**
 
