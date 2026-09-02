@@ -55,10 +55,7 @@ services:
     staticPublishPath: ./front-end/dist
     envVars:
       - key: VITE_API_URL
-        fromService:
-          name: demo-api
-          type: web
-          property: host
+        value: https://api.employeecreator.site
     routes:
       - type: rewrite
         source: /*
