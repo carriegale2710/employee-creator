@@ -47,12 +47,12 @@ services:
       - key: SPRING_JPA_HIBERNATE_DDL_AUTO
         value: update
 
-  # React frontend (./frontend)
+  # React frontend (./front-end)
   - type: web
     name: demo-frontend
     runtime: static
-    buildCommand: cd frontend && npm install && npm run build
-    staticPublishPath: ./frontend/dist
+    buildCommand: cd front-end && npm install && npm run build
+    staticPublishPath: ./front-end/dist
     envVars:
       - key: VITE_API_URL
         fromService:
