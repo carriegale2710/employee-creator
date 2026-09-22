@@ -1,5 +1,6 @@
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { apiCall } from "./api";
+import { deleteEmployee } from "./employees";
 
 describe("apiCall", () => {
   const originalFetch = global.fetch;
@@ -81,5 +82,24 @@ describe("apiCall", () => {
         method: "DELETE",
       })
     ).rejects.toThrow("Failed to delete employee (status 500) - Delete failed");
+  });
+
+  it("propagates DELETE service failures instead of returning success", async () => {
+    vi.mocked(global.fetch).mockResolvedValue(
+      new Response("Delete failed", {
+        status: 500,
+        headers: { "Content-Type": "text/plain" },
+      })
+    );
+
+    await expect(deleteEmployee(1)).rejects.toThrow(
+      "Failed to delete employee 1 (status 500) - Delete failed"
+    );
+  });
+
+  it("returns success for DELETE service calls with empty responses", async () => {
+    vi.mocked(global.fetch).mockResolvedValue(new Response(null, { status: 204 }));
+
+    await expect(deleteEmployee(1)).resolves.toBe(true);
   });
 });
