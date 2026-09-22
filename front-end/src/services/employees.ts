@@ -55,9 +55,8 @@ export const updateEmployee = async (id: number, formData: EmployeeDTO) => {
   });
 };
 
-export const deleteEmployee = async (id: number) => {
-  apiCall<void>(`/employees/${id}`, "Failed to delete employee" + id, {
+export const deleteEmployee = async (id: number): Promise<void> => {
+  return apiCall<void>(`/employees/${id}`, "Failed to delete employee" + id, {
     method: "DELETE",
   });
-  return true; //successful deletion
 };
