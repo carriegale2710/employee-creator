@@ -2,11 +2,6 @@ const API_URL = import.meta.env.VITE_API_URL;
 console.debug("Environment mode: " + import.meta.env.MODE);
 console.debug("Using API URL:", API_URL);
 
-type ApiErrorResponse = {
-  message?: string;
-  errors?: Array<{ defaultMessage?: string }>;
-};
-
 const parseResponseContent = async (
   response: Response
 ): Promise<unknown | string | null> => {
@@ -26,14 +21,25 @@ const getErrorDetails = (content: unknown): string[] => {
 
   if (!content || typeof content !== "object") return [];
 
-  const { message, errors } = content as ApiErrorResponse;
+  const { message, errors } = content as {
+    message?: unknown;
+    errors?: unknown;
+  };
+  const details = typeof message === "string" && message ? [message] : [];
 
-  return [
-    ...(message ? [message] : []),
-    ...(errors
-      ?.map((error) => error.defaultMessage)
-      .filter((message): message is string => Boolean(message)) ?? []),
-  ];
+  if (!Array.isArray(errors)) return details;
+
+  return errors.reduce<string[]>((errorDetails, error) => {
+    if (!error || typeof error !== "object") return errorDetails;
+
+    const defaultMessage = (error as { defaultMessage?: unknown })
+      .defaultMessage;
+    if (typeof defaultMessage === "string" && defaultMessage) {
+      errorDetails.push(defaultMessage);
+    }
+
+    return errorDetails;
+  }, details);
 };
 
 export const apiCall = async <T>(

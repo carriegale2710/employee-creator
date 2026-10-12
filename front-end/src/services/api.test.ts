@@ -56,6 +56,37 @@ describe("apiCall", () => {
     );
   });
 
+  it("handles malformed JSON error details without masking the HTTP error", async () => {
+    vi.mocked(global.fetch).mockResolvedValue(
+      new Response(JSON.stringify({ errors: { defaultMessage: "failed" } }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      })
+    );
+
+    await expect(apiCall("/employees", "Failed to save employee")).rejects.toThrow(
+      "Failed to save employee (status 400)"
+    );
+  });
+
+  it("ignores invalid JSON error entries while retaining valid details", async () => {
+    vi.mocked(global.fetch).mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          errors: [null, { defaultMessage: "Email is invalid" }],
+        }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      )
+    );
+
+    await expect(apiCall("/employees", "Failed to save employee")).rejects.toThrow(
+      "Failed to save employee (status 400) - Email is invalid"
+    );
+  });
+
   it("handles plain text error responses without throwing parse errors", async () => {
     vi.mocked(global.fetch).mockResolvedValue(
       new Response("Service unavailable", {
