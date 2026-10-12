@@ -3,12 +3,13 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import EmployeePage from "./EmployeePage";
-import { deleteEmployee, getEmployeeById } from "../services/employees";
+import { getEmployeeById } from "../services/employees";
 
-vi.mock("../services/employees", () => ({
-  getEmployeeById: vi.fn(),
-  deleteEmployee: vi.fn(),
-}));
+vi.mock("../services/employees", async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import("../services/employees")>();
+  return { ...actual, getEmployeeById: vi.fn() };
+});
 
 const mockEmployee = {
   id: 1,
@@ -17,6 +18,7 @@ const mockEmployee = {
   email: "taylor@example.com",
   phone: "123-456-7890",
 };
+const mockFetch = vi.fn();
 
 const renderEmployeePage = () =>
   render(
@@ -31,33 +33,36 @@ const renderEmployeePage = () =>
 describe("EmployeePage delete flow", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.stubGlobal("fetch", mockFetch);
+    mockFetch.mockResolvedValue(new Response(null, { status: 204 }));
     vi.spyOn(window, "confirm").mockReturnValue(true);
     vi.mocked(getEmployeeById).mockResolvedValue(mockEmployee);
   });
 
   it("navigates to the employee list after a successful delete", async () => {
-    vi.mocked(deleteEmployee).mockResolvedValueOnce(undefined);
     const user = userEvent.setup();
 
     renderEmployeePage();
 
     await user.click(await screen.findByRole("button", { name: /delete employee/i }));
 
-    expect(deleteEmployee).toHaveBeenCalledWith(1);
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.stringContaining("/employees/1"),
+      expect.objectContaining({ method: "DELETE" })
+    );
     expect(await screen.findByText("Employees list")).toBeInTheDocument();
   });
 
   it("shows a delete error when the delete request fails", async () => {
-    vi.mocked(deleteEmployee).mockRejectedValueOnce(new Error("delete failed"));
+    mockFetch.mockResolvedValueOnce(new Response(null, { status: 500 }));
     const user = userEvent.setup();
 
     renderEmployeePage();
 
     await user.click(await screen.findByRole("button", { name: /delete employee/i }));
 
-    expect(deleteEmployee).toHaveBeenCalledWith(1);
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "Failed to delete: delete failed"
+      "Failed to delete: Failed to delete employee 1"
     );
   });
 });

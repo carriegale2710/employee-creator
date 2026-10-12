@@ -19,9 +19,9 @@ export const apiCall = async <T>(
 
   // NOTE - Gracefully handle errors
   if (!response.ok) {
-    const errors = `${content?.errors?.map(
+    const errors = content?.errors?.map(
       (error: { defaultMessage: string }) => `${error.defaultMessage} `
-    )}`;
+    ).join("") ?? "";
 
     const errorLogMessage = `API Error: ${userErrorMessage}
     Status ${response.status}
@@ -31,7 +31,7 @@ export const apiCall = async <T>(
 
     if (import.meta.env.MODE === "development") console.error(errorLogMessage);
     throw new Error(
-      `${userErrorMessage} - ${errors}` //display to user
+      errors ? `${userErrorMessage} - ${errors}` : userErrorMessage //display to user
     );
   }
 

@@ -17,7 +17,7 @@ describe("deleteEmployee", () => {
     await expect(deleteEmployee(42)).resolves.toBeUndefined();
     expect(apiCall).toHaveBeenCalledWith(
       "/employees/42",
-      "Failed to delete employee42",
+      "Failed to delete employee 42",
       {
         method: "DELETE",
       }
