@@ -131,6 +131,6 @@ describe("apiCall", () => {
   it("returns success for DELETE service calls with empty responses", async () => {
     vi.mocked(global.fetch).mockResolvedValue(new Response(null, { status: 204 }));
 
-    await expect(deleteEmployee(1)).resolves.toBe(true);
+    await expect(deleteEmployee(1)).resolves.toBeUndefined();
   });
 });
