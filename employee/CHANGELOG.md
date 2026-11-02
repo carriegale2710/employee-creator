@@ -16,7 +16,7 @@
   - MySQLdb creds no longer passed inline (reads from `.env` file).
 
 **Impact:** Backend is now reachable on a stable branded subdomain with HTTPS, and deploys reliably restart the actual production process instead of spawning an untracked one.
-**Related frontend changes:** See [Custom Domain Migration](../front-end/CHANGELOG.md#03082026)
+**Related frontend changes:** See [Custom Domain Migration](Projects/portfolio-projects/EmployeeCreator/employee-creator/front-end/CHANGELOG.md#03082026)
 
 ---
 
@@ -37,7 +37,7 @@
 - improved error handling & logging messages from backend
   **Impact:** More robust input validation and better developer onboarding + debugging experience.
 
-  **Related frontend changes:** See [Validation & UI Improvements](../front-end/CHANGELOG.md#04082025---validation--ui-improvements)
+  **Related frontend changes:** See [Validation & UI Improvements](Projects/portfolio-projects/EmployeeCreator/employee-creator/front-end/CHANGELOG.md#04082025---validation--ui-improvements)
 
 ### Stakeholder Feedback - Code Review
 
@@ -80,7 +80,7 @@ Refactors
 - **Enhanced DTOs:** Improved validation patterns in CreateContractDTO with comprehensive field validation
 
 **Impact:** Reduced codebase size, improved type safety, realistic data for front-end, and better system monitoring.
-**Related frontend changes:** See [Contract System Integration](../front-end/CHANGELOG.md#31072025---contract-system-integration)
+**Related frontend changes:** See [Contract System Integration](Projects/portfolio-projects/EmployeeCreator/employee-creator/front-end/CHANGELOG.md#31072025---contract-system-integration)
 
 ---
 
@@ -89,7 +89,7 @@ Refactors
 - **Configuration Improvements:** Fixes CORS errors for both development and production application build modes. Works with dev, preview and deployed front-ends.
 
 **Impact:** Improved system reliability, enhanced developer experience.
-**Related backend changes:** See [Dev vs Prod. Mode API Configuration](../front-end/CHANGELOG.md#28072025)
+**Related backend changes:** See [Dev vs Prod. Mode API Configuration](Projects/portfolio-projects/EmployeeCreator/employee-creator/front-end/CHANGELOG.md#28072025)
 
 ---
 
@@ -102,7 +102,7 @@ Refactors
 - Added `@Transactional` annotation for safe employee deletion with contracts
 - Updated service unit tests to include contract repository mocking
 
-**Related frontend changes:** See [TypeScript Configuration & Testing Setup](../front-end/CHANGELOG.md#25072025---typescript-configuration--testing-setup)
+**Related frontend changes:** See [TypeScript Configuration & Testing Setup](Projects/portfolio-projects/EmployeeCreator/employee-creator/front-end/CHANGELOG.md#25072025---typescript-configuration--testing-setup)
 
 ---
 
@@ -122,7 +122,7 @@ Refactors
 
 **Impact:** Makes the system more reliable and easier to use when managing employee records.
 
-**Related frontend changes:** See [Form Implementation & Data Handling](../front-end/CHANGELOG.md#24072025---form-implementation--data-handling)
+**Related frontend changes:** See [Form Implementation & Data Handling](Projects/portfolio-projects/EmployeeCreator/employee-creator/front-end/CHANGELOG.md#24072025---form-implementation--data-handling)
 
 ---
 
@@ -176,7 +176,7 @@ Refactors
 
 **Business Impact:** Enables flexible contract management supporting multiple contracts per employee over time, essential for HR tracking and compliance.
 
-**Related frontend changes:** See [User Experience Design](../front-end/CHANGELOG.md#22072025---user-experience-design)
+**Related frontend changes:** See [User Experience Design](Projects/portfolio-projects/EmployeeCreator/employee-creator/front-end/CHANGELOG.md#22072025---user-experience-design)
 
 ---
 
@@ -208,7 +208,7 @@ Refactors
 - Leveraged existing employee architecture patterns for rapid contract feature development
 - Completed end-to-end and service layer tests for contract functionality
 
-**Related frontend changes:** See [Component Architecture & Database Updates](../front-end/CHANGELOG.md#15072025---component-architecture--database-updates)
+**Related frontend changes:** See [Component Architecture & Database Updates](Projects/portfolio-projects/EmployeeCreator/employee-creator/front-end/CHANGELOG.md#15072025---component-architecture--database-updates)
 
 ---
 
@@ -327,7 +327,7 @@ Refactors
 
 **Impact:** Established robust foundation for scalable employee management system with comprehensive testing coverage.
 
-**Related frontend changes:** See [Backend Integration](../front-end/CHANGELOG.md#09072025---frontend-foundation--initial-development)
+**Related frontend changes:** See [Backend Integration](Projects/portfolio-projects/EmployeeCreator/employee-creator/front-end/CHANGELOG.md#09072025---frontend-foundation--initial-development)
 
 ---
 

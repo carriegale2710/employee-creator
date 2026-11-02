@@ -2,7 +2,7 @@
 
 > A production-ready HR management system built with Java Spring Boot and React TypeScript
 
-**Live Demo**: [Employee Creator App](https://employeecreator.site/) | **⚡ API**: [employeecreator.my](https://api.employeecreator.site)
+**Live Demo**: [Employee Creator App](https://employeecreator.site/) | **⚡ API**: [Employee Creator API](https://api.employeecreator.site)
 
 ## [![Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml) [![React Deploy](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -149,8 +149,8 @@ npm run dev
 
 For comprehensive setup instructions including environment configuration, database setup, and deployment:
 
-- [Building Backend API](employee/README.md)
-- [Building Front-end UI](front-end/README.md)
+- [Building Backend API](Projects/portfolio-projects/EmployeeCreator/employee-creator/employee/README.md)
+- [Building Front-end UI](Projects/portfolio-projects/EmployeeCreator/employee-creator/front-end/README.md)
 
 ---
 
@@ -198,7 +198,7 @@ npm run test     # frontend (if added)
 
 Each employee can have multiple contracts over time. Contracts are immutable legal documents.
 
-![diagram of one-to-many class between employee and contracts tables in database](employee/assets/diagrams/erd/erd.png)
+![diagram of one-to-many class between employee and contracts tables in database](erd.png)
 
 ## Sequence Diagram of Core Flow
 
@@ -272,8 +272,8 @@ Features that are buggy / flimsy/not functional yet: -->
 
 > Note: The documentation for this project is split up into backend vs front-end specific locations in the code base. They include more details like build steps, testing and change logs.
 
-See [`employee/README.md`](employee/README.md)
-See [`front-end/README.md`](front-end/README.md)
+See [`employee/README.md`](Projects/portfolio-projects/EmployeeCreator/employee-creator/employee/README.md)
+See [`front-end/README.md`](Projects/portfolio-projects/EmployeeCreator/employee-creator/front-end/README.md)
 
 ```markdown
 📁 employee-creator/

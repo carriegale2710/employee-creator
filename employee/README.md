@@ -167,19 +167,19 @@ ssh -i <key.pem> ubuntu@<EC2_IP> "sudo systemctl restart employee-creator"
 
 Each employee can have multiple contracts over time. Contracts are immutable legal documents.
 
-![diagram of one-to-many class between employee and contracts tables in database](assets/diagrams/erd/erd.png)
+![diagram of one-to-many class between employee and contracts tables in database](erd.png)
 
 ## Related projects, reimplementations, assets
 
-For full project overview, see [main README](../README.md).
+For full project overview, see [main README](Projects/portfolio-projects/EmployeeCreator/employee-creator/README.md).
 
 ### Client App UI
 
-See related documentation for [React Client App](../front-end/README.md).
+See related documentation for [React Client App](Projects/portfolio-projects/EmployeeCreator/employee-creator/front-end/README.md).
 
 ### Change Log
 
-For detailed development history and feature updates, see [CHANGELOG.md](CHANGELOG.md).
+For detailed development history and feature updates, see [CHANGELOG.md](Projects/portfolio-projects/EmployeeCreator/employee-creator/employee/CHANGELOG.md).
 
 ## Sequence Diagram
 

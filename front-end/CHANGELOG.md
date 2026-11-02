@@ -7,7 +7,7 @@
 - **CI/CD:** Updated S3 deploy step to sync the full `dist/` folder on commit. It was syncing only `dist/assets/`, which would silently skip files like `favicon.ico`, `manifest.json`.
 
 **Impact:** Frontend is now served from its own branded domain with working HTTPS and reliable client-side routing on all routes.
-**Related backend changes:** See [Backend Domain Migration & Deploy Fix](../employee/CHANGELOG.md#03082026)
+**Related backend changes:** See [Backend Domain Migration & Deploy Fix](Projects/portfolio-projects/EmployeeCreator/employee-creator/employee/CHANGELOG.md#03082026)
 
 ---
 
@@ -19,7 +19,7 @@
 - **Phone Validation:** Fixed regex patterns to handle international phone formats correctly
 
 **Impact:** Improved user experience with consistent styling and better form validation.
-**Related backend changes:** See [Minor Hotfix + Stakeholder Feedback](../employee/CHANGELOG.md#04082025)
+**Related backend changes:** See [Minor Hotfix + Stakeholder Feedback](Projects/portfolio-projects/EmployeeCreator/employee-creator/employee/CHANGELOG.md#04082025)
 
 ---
 
@@ -31,7 +31,7 @@
 - **API Service:** Enhanced error handling and consistent API communication patterns
 
 **Impact:** Full contract lifecycle management with improved data relationships.
-**Related backend changes:** See [Lombok Integration & Contract System Enhancement](../employee/CHANGELOG.md#31072025---lombok-integration--contract-system-enhancement)
+**Related backend changes:** See [Lombok Integration & Contract System Enhancement](Projects/portfolio-projects/EmployeeCreator/employee-creator/employee/CHANGELOG.md#31072025---lombok-integration--contract-system-enhancement)
 
 ---
 
@@ -40,7 +40,7 @@
 - **Configuration Consistency:** Aligned development logging [(log2j4)](https://www.geeksforgeeks.org/advance-java/how-to-configure-log4j-2-logging-in-spring-boot/) configurations across different environments.
 
 **Impact:** Improved developer experience, better build processes.
-**Related backend changes:** See [Web Configuration](../employee/CHANGELOG.md#28072025)
+**Related backend changes:** See [Web Configuration](Projects/portfolio-projects/EmployeeCreator/employee-creator/employee/CHANGELOG.md#28072025)
 
 ---
 
@@ -53,7 +53,7 @@
 - Configured proper build pipeline for React TypeScript application
 - Updated tsconfig files to properly handle testing environment
 
-**Related backend changes:** See [Service Layer Error Handling](../employee/CHANGELOG.md#25072025---service-layer-error-handling)
+**Related backend changes:** See [Service Layer Error Handling](Projects/portfolio-projects/EmployeeCreator/employee-creator/employee/CHANGELOG.md#25072025---service-layer-error-handling)
 
 ---
 
@@ -84,7 +84,7 @@
 - **Type Safety:** Enhanced TypeScript usage for better error prevention
 - **Service Improvements:** Better error handling in employee and contract services
 
-**Related backend changes:** See [Employee Management & Form Validation](../employee/CHANGELOG.md#24072025)
+**Related backend changes:** See [Employee Management & Form Validation](Projects/portfolio-projects/EmployeeCreator/employee-creator/employee/CHANGELOG.md#24072025)
 
 ---
 
@@ -116,7 +116,7 @@
 - **Data Flow:** Established proper communication between contract forms and employee management
 - **Reusable Components:** Built form components that can be reused across different parts of the app
 
-**Related backend changes:** See [System Architecture & Contract Management](../employee/CHANGELOG.md#23072025---system-architecture--contract-management)
+**Related backend changes:** See [System Architecture & Contract Management](Projects/portfolio-projects/EmployeeCreator/employee-creator/employee/CHANGELOG.md#23072025---system-architecture--contract-management)
 
 ---
 
@@ -148,7 +148,7 @@
 - **Integration Testing:** Tested how contract forms work with the overall employee management system
 - **Data Validation:** Verified that data flows correctly between forms and database
 
-**Related backend changes:** See [Contract Management System](../employee/CHANGELOG.md#22072025---contract-management-system)
+**Related backend changes:** See [Contract Management System](Projects/portfolio-projects/EmployeeCreator/employee-creator/employee/CHANGELOG.md#22072025---contract-management-system)
 
 ---
 
@@ -176,7 +176,7 @@
 - Adapted to new Contract entity structure with start date and department
 - Modified components to handle employees with multiple contracts
 
-**Related backend changes:** See [Employee Entity Enhancement & Testing](../employee/CHANGELOG.md#20072025)
+**Related backend changes:** See [Employee Entity Enhancement & Testing](Projects/portfolio-projects/EmployeeCreator/employee-creator/employee/CHANGELOG.md#20072025)
 
 ---
 
@@ -210,4 +210,4 @@
 - Established data flow: Page → List → Card component architecture
 - Added basic SCSS styling for Card components
 
-**Related backend changes:** See [Core CRUD API & Testing Infrastructure](../employee/CHANGELOG.md#08072025---core-crud-api--testing-infrastructure)
+**Related backend changes:** See [Core CRUD API & Testing Infrastructure](Projects/portfolio-projects/EmployeeCreator/employee-creator/employee/CHANGELOG.md#08072025---core-crud-api--testing-infrastructure)

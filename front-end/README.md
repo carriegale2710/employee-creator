@@ -4,9 +4,9 @@
 
 This is the frontend for the Employee Creator app, built with React and TypeScript. It provides a user interface for managing employee data, including creating, editing, and deleting employee records.
 
-> For detailed development history and feature updates for this front-end, see [CHANGELOG.md](CHANGELOG.md).
+> For detailed development history and feature updates for this front-end, see [CHANGELOG.md](Projects/portfolio-projects/EmployeeCreator/employee-creator/front-end/CHANGELOG.md).
 
-> For full project overview, see [main README](../README.md).
+> For full project overview, see [main README](Projects/portfolio-projects/EmployeeCreator/employee-creator/README.md).
 
 ## Table of Contents
 
