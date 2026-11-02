@@ -84,7 +84,10 @@ const EmployeePage = () => {
       </Header>
       <main>
         {employee ? (
-          <Card employee={employee} />
+          <>
+            {error && <p role="alert">{error}</p>}
+            <Card employee={employee} />
+          </>
         ) : (
           <p>{isLoading ? "Loading employee data..." : error}</p>
         )}
