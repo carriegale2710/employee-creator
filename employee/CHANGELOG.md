@@ -1,5 +1,14 @@
 # Employee Creator Backend - Change Log
 
+## 04/11/2026 - Render Keep-Alive Monitor
+
+- Render free-tier web services spin down after 15 minutes without inbound traffic, causing slow cold starts on the demo API.
+- Added an UptimeRobot HTTP(s) monitor (5 minute interval) that hits `GET /healthcheck` (`HealthCheckController`) to keep the service awake. The endpoint does not touch the database.
+- Chose UptimeRobot over a GitHub Actions cron because scheduled workflows are delayed or dropped under load and are disabled after 60 days of repo inactivity. UptimeRobot also emails on downtime.
+- No code changes. Paid Render instances (Starter) never spin down if the monitor is no longer wanted.
+
+---
+
 ## 03/09/2026 - PostgreSQL Demo Deployment
 
 - Due to limited budget (AWS no longer free tier), the demo deployment is migrating from AWS to Render + Neon (offers Free Tier). Saves more than $22/month.
