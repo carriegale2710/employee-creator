@@ -61,7 +61,7 @@ A deliberately boring, industry-standard enterprise stack: scalable by design, w
 | Styling    | Tailwind / SCSS                                              | Consistent UI, faster styling       |
 | Deployment | Render + Neon (current); AWS EC2, S3 + CloudFront (archived) | Free-tier hosting, zero ops         |
 | CI/CD      | GitHub Actions                                               | Automated checks on every push      |
-| Monitoring | Log24j                                                       | Faster debugging in production      |
+| Monitoring | Log4j2                                                       | Faster debugging in production      |
 
 ---
 
@@ -116,7 +116,7 @@ Each employee can have multiple contracts over time. Contracts are immutable leg
 **Live site safety**
 
 - **Limited database access.** The app reaches only its own data, so damage stays small if something goes wrong.
-- **Own website only.** The backend accepts requests only from our front-end.
+- **Own website only.** The backend accepts requests only from our front-end and requests are restricted to authorized users if server-side authorization is implemented.
 - **Secrets kept out of code.** Passwords and keys are supplied at startup.
 - **Server limits.** Memory is capped and crash retries stop after a few attempts.
 
