@@ -86,20 +86,20 @@ flowchart LR
 
 Each employee can have multiple contracts over time. Contracts are immutable legal documents.
 
-![diagram of one-to-many class between employee and contracts tables in database](erd.png)
+![diagram of one-to-many class between employee and contracts tables in database](employee/assets/diagrams/erd/erd.png)
 
 ### API Overview
 
-| Method       | Path                               | Purpose                         |
-| ------------ | ---------------------------------- | ------------------------------- |
-| GET          | `/employees`                       | List employees                  |
-| GET          | `/employees/{id}`                  | Get one employee                |
-| POST         | `/employees`                       | Create employee                 |
-| PATCH        | `/employees/{id}`                  | Update employee                 |
-| DELETE       | `/employees/{id}`                  | Delete employee                 |
-| GET / POST   | `/contracts`                       | List / create contracts         |
-| GET          | `/contracts/employee/{employeeId}` | List contracts for one employee |
-| GET / DELETE | `/contracts/{id}`                  | Get / delete a contract         |
+| Method       | Path                       | Purpose                         |
+| ------------ | -------------------------- | ------------------------------- |
+| GET          | `/employees`               | List employees                  |
+| GET          | `/employees/{id}`          | Get one employee                |
+| POST         | `/employees`               | Create employee                 |
+| PATCH        | `/employees/{id}`          | Update employee                 |
+| DELETE       | `/employees/{id}`          | Delete employee                 |
+| GET / POST   | `/contracts`               | List / create contracts         |
+| GET          | `/contracts/employee/{id}` | List contracts for one employee |
+| GET / DELETE | `/contracts/{id}`          | Get / delete a contract         |
 
 ---
 
