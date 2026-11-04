@@ -1,6 +1,30 @@
-# Employee Creator Backend - Change Log
+# Employee Creator - Change Log
 
-## 03/08/2026 - Backend Domain Migration & Deploy Fix
+## 04/11/2026
+
+### Backend - Render Keep-Alive Monitor
+
+- Render free-tier web services spin down after 15 minutes without inbound traffic, causing slow cold starts on the demo API.
+- Added an UptimeRobot HTTP(s) monitor (5 minute interval) that hits `GET /healthcheck` (`HealthCheckController`) to keep the service awake. The endpoint does not touch the database.
+- Chose UptimeRobot over a GitHub Actions cron because scheduled workflows are delayed or dropped under load and are disabled after 60 days of repo inactivity. UptimeRobot also emails on downtime.
+- No code changes. Paid Render instances (Starter) never spin down if the monitor is no longer wanted.
+
+---
+
+## 03/09/2026
+
+### Backend - PostgreSQL Demo Deployment
+
+- Due to limited budget (AWS no longer free tier), the demo deployment is migrating from AWS to Render + Neon (offers Free Tier). Saves more than $22/month.
+- Replaced the MySQL runtime driver and datasource configuration with PostgreSQL settings for the demo deployment.
+- Updated setup and deployment documentation accordingly.
+- Outdated AWS files left in ./github/workflows/ as archives only.
+
+---
+
+## 03/08/2026
+
+### Backend - Domain Migration & Deploy Fix
 
 - **Custom Domain:** Migrated backend from Elastic IP/path-based routing to a dedicated subdomain (`api.employeecreator.site`) with its own Nginx server block and Let's Encrypt certificate
 - **CORS:** Updated allowed origins to match the new frontend domain
@@ -10,11 +34,20 @@
   - MySQLdb creds no longer passed inline (reads from `.env` file).
 
 **Impact:** Backend is now reachable on a stable branded subdomain with HTTPS, and deploys reliably restart the actual production process instead of spawning an untracked one.
-**Related frontend changes:** See [Custom Domain Migration](../front-end/CHANGELOG.md#03082026)
+
+### Frontend - Custom Domain Migration for Live Demo
+
+- **Custom Domain:** Migrated frontend from EC2-hosted domain to dedicated custom domain (`employeecreator.site`) served via CloudFront
+- **HTTPS:** Issued and attached new ACM certificate for the new domain
+- **CI/CD:** Updated S3 deploy step to sync the full `dist/` folder on commit. It was syncing only `dist/assets/`, which would silently skip files like `favicon.ico`, `manifest.json`.
+
+**Impact:** Frontend is now served from its own branded domain with working HTTPS and reliable client-side routing on all routes.
 
 ---
 
-## 05/08/2025 - Entity Refactoring
+## 05/08/2025
+
+### Backend - Entity Refactoring
 
 - **Code Quality:** Improved readability of Employee entity class methods and business logic
 - **Architecture:** Enhanced domain model encapsulation and method naming consistency
@@ -22,18 +55,18 @@
 
 ---
 
-## 04/08/2025 - Minor Hotfix + Stakeholder Feedback
+## 04/08/2025
 
-### Bug Fixes + Error handling
+### Backend - Minor Hotfix + Stakeholder Feedback
+
+#### Bug Fixes + Error handling
 
 - Resolved phone regex validations (CreateEmployeeDTO and UpdateEmployeeDTO)
 - Included format edgecases for phone + name fields (punctuation)
 - improved error handling & logging messages from backend
   **Impact:** More robust input validation and better developer onboarding + debugging experience.
 
-  **Related frontend changes:** See [Validation & UI Improvements](../front-end/CHANGELOG.md#04082025---validation--ui-improvements)
-
-### Stakeholder Feedback - Code Review
+#### Stakeholder Feedback - Code Review
 
 Presented full project showcase to team leaders for feedback.
 
@@ -61,7 +94,20 @@ _Performance Optimization Considerations:_
 
 **Impact:** Better maintainability and clearer business logic separation, improving UX of front-end from backend.
 
-## 31/07/2025 - Lombok Integration & Contract System Enhancement
+### Frontend - Validation & UI Improvements
+
+- **Tailwind CSS Integration:** Complete migration from SCSS to Tailwind for consistent styling
+- **Form Validation:** Enhanced useValidation hook with centralized validation rules
+- **UI Components:** Refactored Button, Input, and Card components with Tailwind styling
+- **Phone Validation:** Fixed regex patterns to handle international phone formats correctly
+
+**Impact:** Improved user experience with consistent styling and better form validation.
+
+---
+
+## 31/07/2025
+
+### Backend - Lombok Integration & Contract System Enhancement
 
 - **Data Seeding:** Realistic test data generation for development and testing using Faker library
 - **Health Check:** Enhanced health check log response with more detailed system information
@@ -74,20 +120,37 @@ Refactors
 - **Enhanced DTOs:** Improved validation patterns in CreateContractDTO with comprehensive field validation
 
 **Impact:** Reduced codebase size, improved type safety, realistic data for front-end, and better system monitoring.
-**Related frontend changes:** See [Contract System Integration](../front-end/CHANGELOG.md#31072025---contract-system-integration)
+
+### Frontend - Contract System Integration
+
+- **Contract Management:** Complete contract CRUD functionality with employee integration
+- **Data Seeding:** Realistic test data generation for development and testing
+- **Employee Status:** Dynamic status calculation based on active contracts
+- **API Service:** Enhanced error handling and consistent API communication patterns
+
+**Impact:** Full contract lifecycle management with improved data relationships.
 
 ---
 
-## 28/07/2025 - Web Configuration
+## 28/07/2025
+
+### Backend - Web Configuration
 
 - **Configuration Improvements:** Fixes CORS errors for both development and production application build modes. Works with dev, preview and deployed front-ends.
 
 **Impact:** Improved system reliability, enhanced developer experience.
-**Related backend changes:** See [Dev vs Prod. Mode API Configuration](../front-end/CHANGELOG.md#28072025)
+
+### Frontend - Dev vs Prod. Mode API Configuration
+
+- **Configuration Consistency:** Aligned development logging [(log2j4)](https://www.geeksforgeeks.org/advance-java/how-to-configure-log4j-2-logging-in-spring-boot/) configurations across different environments.
+
+**Impact:** Improved developer experience, better build processes.
 
 ---
 
-## 25/07/2025 - Service Layer Error Handling
+## 25/07/2025
+
+### Backend - Service Layer Error Handling
 
 - Implemented custom exception handling in service layer
 - Created `EmailAlreadyExistsException` for duplicate email validation
@@ -96,19 +159,26 @@ Refactors
 - Added `@Transactional` annotation for safe employee deletion with contracts
 - Updated service unit tests to include contract repository mocking
 
-**Related frontend changes:** See [TypeScript Configuration & Testing Setup](../front-end/CHANGELOG.md#25072025---typescript-configuration--testing-setup)
+### Frontend - TypeScript Configuration & Testing Setup
+
+- Fixed TypeScript project references configuration for Vitest testing
+- Resolved `toBeInTheDocument` matcher issues with proper jest-dom setup
+- Configured proper build pipeline for React TypeScript application
+- Updated tsconfig files to properly handle testing environment
 
 ---
 
-## 24/07/2025 - Employee Management & Form Validation
+## 24/07/2025
 
-### New Features
+### Backend - Employee Management & Form Validation
+
+#### New Features
 
 - **Safe Employee Deletion:** When an employee is removed, all their contracts are automatically deleted too
 - **Better Form Updates:** Improved how employee information is updated with better error checking
 - **Email Validation Fix:** Fixed bug where the system incorrectly said an email was already taken
 
-### Technical Improvements
+#### Technical Improvements
 
 - **Data Safety:** Added safeguards to prevent data corruption during employee deletion
 - **Better Error Messages:** Users now get clearer feedback when something goes wrong
@@ -116,25 +186,52 @@ Refactors
 
 **Impact:** Makes the system more reliable and easier to use when managing employee records.
 
-**Related frontend changes:** See [Form Implementation & Data Handling](../front-end/CHANGELOG.md#24072025---form-implementation--data-handling)
+### Frontend - Form Implementation & User Experience
+
+#### User Interface Improvements
+
+- **Better Forms:** Built comprehensive forms with better organization and error handling
+- **Form Submission:** Added ability to create new records with proper validation
+- **Two-Form System:** Enhanced both Employee and Contract forms to work together smoothly
+- **Error Messages:** Improved feedback when users make mistakes or something goes wrong
+
+#### User Experience Updates
+
+- **Navigation:** Added Cancel buttons and better page navigation
+- **Visual Polish:** Updated app icon and page titles for better branding
+- **Form Flow:** Made form submission smoother with loading indicators and success messages
+
+#### Testing & Quality
+
+- **Form Testing:** Added comprehensive testing for both Contract and Employee forms (95 new tests)
+- **Better Coverage:** Enhanced existing tests to catch more potential issues
+- **Test Data:** Created better mock data for testing contract functionality
+
+#### Technical Updates
+
+- **Advanced Forms:** Integrated React Hook Form for better form handling and validation
+- **Type Safety:** Enhanced TypeScript usage for better error prevention
+- **Service Improvements:** Better error handling in employee and contract services
 
 ---
 
-## 23/07/2025 - System Architecture & Contract Management
+## 23/07/2025
 
-### System Improvements
+### Backend - System Architecture & Contract Management
+
+#### System Improvements
 
 - **Simplified Data Handling:** Moved complex data processing to the server to make the user interface faster and simpler
 - **Better Data Organization:** Improved how employee and contract information is organized and sent to users
 - **Cleaner Code Structure:** Reorganized backend code for easier maintenance and future updates
 
-### Contract Management Features
+#### Contract Management Features
 
 - **Contract System:** Built a complete system for managing employee contracts
 - **Database Updates:** Created proper storage for contract information linked to employees
 - **Testing Framework:** Added automated testing to ensure contract features work correctly
 
-### Goals & Results
+#### Goals & Results
 
 - **Main Goal:** Make the user interface simpler by handling complex tasks on the server
 - **Approach:** Move business logic from the user's browser to our servers
@@ -142,11 +239,41 @@ Refactors
 
 **Related frontend changes:** Frontend simplification reflected in component architecture improvements
 
+### Frontend - Contract Form Development
+
+#### Contract Form Creation
+
+- **New Contract Form:** Built comprehensive contract form with proper validation and error handling
+- **Specialized Inputs:** Created custom input fields specifically designed for contract information
+- **New Pages:** Added dedicated page for creating contracts with proper navigation
+- **Better Organization:** Organized contract form components with consistent styling
+
+#### System Integration
+
+- **Contract Services:** Built complete contract management system with create, read, update, delete capabilities
+- **Server Connection:** Connected contract forms to backend database with proper error handling
+- **Test Data:** Created mock contract data for development and testing purposes
+- **Employee Integration:** Updated employee services to work with the new contract system
+
+#### User Experience Design
+
+- **User Flow Planning:** Created detailed diagrams showing how users navigate between forms
+- **Smooth Interactions:** Designed intuitive navigation between employee and contract management
+- **Form Navigation:** Documented and optimized the user journey through form processes
+
+#### Technical Integration
+
+- **System Connection:** Connected frontend contract forms with backend contract management
+- **Data Flow:** Established proper communication between contract forms and employee management
+- **Reusable Components:** Built form components that can be reused across different parts of the app
+
 ---
 
-## 22/07/2025 - Contract Management System
+## 22/07/2025
 
-### Contract System Development
+### Backend - Contract Management System
+
+#### Contract System Development
 
 **Complete Contract Management:** Built a system to handle employee contracts with proper database relationships
 
@@ -155,14 +282,14 @@ Refactors
 - **Department Integration:** Added department lookup system for consistent job categorization
 - **Data Validation:** Built in checks to ensure contract information is accurate and complete
 
-### User Interface Features
+#### User Interface Features
 
 - **Complete CRUD Operations:** Users can create, view, update, and delete contracts
 - **Business Logic:** Added rules and workflows for contract management
 - **Database Queries:** Created efficient ways to search and retrieve contract information
 - **Data Transfer:** Built secure methods for sending contract data between server and user interface
 
-### Testing & Quality
+#### Testing & Quality
 
 - **Automated Testing:** Created comprehensive tests to ensure contract features work correctly
 - **Data Validation:** Added multiple layers of checking to prevent errors
@@ -170,18 +297,46 @@ Refactors
 
 **Business Impact:** Enables flexible contract management supporting multiple contracts per employee over time, essential for HR tracking and compliance.
 
-**Related frontend changes:** See [User Experience Design](../front-end/CHANGELOG.md#22072025---user-experience-design)
+### Frontend - Advanced Contract Features
+
+#### Contract Form Enhancements
+
+- **Template System:** Added ability to copy previous contracts as templates for new ones
+- **Pre-filled Forms:** Enhanced contract forms to automatically fill in information from existing contracts
+- **Dropdown Selections:** Added dropdown menus for departments and contract types
+- **Real-time Validation:** Forms now check for errors as users type and provide immediate feedback
+
+#### Interface & Navigation Improvements
+
+- **Department Integration:** Connected department dropdown to backend database for consistent options
+- **Contract Types:** Added proper contract type selection with predefined options
+- **Better Navigation:** Added "New Contract" button to employee cards for easier workflow
+- **Visual Improvements:** Applied better styling to make forms more visually appealing
+
+#### System Architecture
+
+- **Modular Design:** Restructured contract forms for better reusability and easier maintenance
+- **Better Data Handling:** Enhanced how contract form data is managed and processed
+- **Error Handling:** Implemented comprehensive error checking and user-friendly error messages
+
+#### Quality Assurance
+
+- **Form Testing:** Added comprehensive testing for form validation and user interactions
+- **Integration Testing:** Tested how contract forms work with the overall employee management system
+- **Data Validation:** Verified that data flows correctly between forms and database
 
 ---
 
-## 20/07/2025 - Employee Entity Enhancement & Testing
+## 20/07/2025
 
-### Database Schema Updates
+### Backend - Employee Entity Enhancement & Testing
+
+#### Database Schema Updates
 
 - **Extended Employee Entity:** Added phone number and address fields for comprehensive employee profiles
 - **Enhanced Data Model:** Improved employee information storage capabilities
 
-### Feature Development
+#### Feature Development
 
 **Employee Update Functionality:**
 
@@ -189,7 +344,7 @@ Refactors
 - Applied Test-Driven Development (TDD) methodology with parallel test and implementation development
 - Resolved end-to-end test issues for employee update operations
 
-### Testing Improvements
+#### Testing Improvements
 
 **Test Suite Enhancements:**
 
@@ -202,13 +357,15 @@ Refactors
 - Leveraged existing employee architecture patterns for rapid contract feature development
 - Completed end-to-end and service layer tests for contract functionality
 
-**Related frontend changes:** See [Component Architecture & Database Updates](../front-end/CHANGELOG.md#15072025---component-architecture--database-updates)
+**Related frontend changes:** See [Component Architecture & Database Updates](#15072025)
 
 ---
 
-## 19/07/2025 - API Error Handling Implementation
+## 19/07/2025
 
-### Error Handling Strategy
+### Backend - API Error Handling Implementation
+
+#### Error Handling Strategy
 
 **Comprehensive Error Response System:**
 
@@ -216,7 +373,7 @@ Refactors
 - Added proper HTTP status code mapping for different error scenarios
 - Enhanced API reliability and developer experience
 
-### Employee Endpoint Improvements
+#### Employee Endpoint Improvements
 
 **Delete Operations:**
 
@@ -232,9 +389,43 @@ Refactors
 
 ---
 
-## 14/07/2025 - Production Logging Infrastructure
+## 16/07/2025
 
-### Logging Strategy Implementation
+### Frontend - Form Features & Testing
+
+#### Form Development
+
+- **Edit Functionality:** Implemented edit feature with prefilled form data from card selection
+- **Form Components:** Created basic form inputs and submit button functionality with proper styling
+- **Component Testing:** Added comprehensive form component tests covering user interactions
+- **UX Patterns:** Enhanced user interaction patterns for better form usability
+
+---
+
+## 15/07/2025
+
+### Frontend - Component Architecture & Database Updates
+
+#### React Components
+
+- Deconstructed React components for List and Form pages
+- Improved component separation and reusability
+
+#### Database Schema Updates
+
+- Updated frontend to handle new schema where Department is no longer stored directly in Employee
+- Adapted to new Contract entity structure with start date and department
+- Modified components to handle employees with multiple contracts
+
+**Related backend changes:** See [Employee Entity Enhancement & Testing](#20072025)
+
+---
+
+## 14/07/2025
+
+### Backend - Production Logging Infrastructure
+
+#### Logging Strategy Implementation
 
 **Enterprise Logging Setup:**
 
@@ -243,7 +434,7 @@ Refactors
 - **Log Configuration:** Implemented `log4j2-spring.xml` with structured formatting and filtering
 - **Application Integration:** Added logging to `EmployeeApplication` controller layer
 
-### Technical Benefits
+#### Technical Benefits
 
 - **Debugging:** Enhanced development experience with structured log output
 - **Monitoring:** Foundation for production monitoring and troubleshooting
@@ -254,15 +445,17 @@ Refactors
 
 ---
 
-## 12/07/2025 - Infrastructure & Deployment Preparation
+## 12/07/2025
 
-### Health Check Implementation
+### Backend - Infrastructure & Deployment Preparation
+
+#### Health Check Implementation
 
 - **Load Balancer Support:** Created dedicated health check controller endpoint
 - **Monitoring Integration:** Enables AWS load balancer health monitoring
 - **Deployment Readiness:** Foundation for production infrastructure
 
-### Domain Configuration (In Progress)
+#### Domain Configuration (In Progress)
 
 - **Custom Domain:** Acquired domain from Porkbun for production deployment
 - **CI/CD Pipeline:** Initiated auto-deployment workflow for Spring Boot EC2 deployment
@@ -272,15 +465,29 @@ Refactors
 
 ---
 
-## 10/07/2025 - AWS Production Deployment
+## 11/07/2025
 
-### Deployment Success
+### Frontend - AWS Deployment
+
+#### Frontend Deployment
+
+- Successfully deployed React frontend as [static app](https://d3bcyx0s1yb5do.cloudfront.net/) in AWS S3 (Simple Storage Service)
+- Created React build, test and deploy [Github workflow](.github/workflows/react-deploy.yml)
+- Configured CloudFront distribution for global content delivery
+
+---
+
+## 10/07/2025
+
+### Backend - AWS Production Deployment
+
+#### Deployment Success
 
 - **Environment Configuration:** Resolved environment variable loading issues in `application.properties`
 - **AWS EC2 Deployment:** Successfully deployed Spring Boot application to production
 - **Public Access:** API now available at `ec2-3-107-209-102.ap-southeast-2.compute.amazonaws.com:8080/employees`
 
-### Technical Achievements
+#### Technical Achievements
 
 - **Infrastructure:** Established production-ready AWS EC2 environment
 - **Configuration Management:** Proper environment variable handling for production deployment
@@ -290,9 +497,37 @@ Refactors
 
 ---
 
-## 08/07/2025 - Core CRUD API & Testing Infrastructure
+## 09/07/2025
 
-### REST API Implementation
+### Frontend - Foundation & Initial Development
+
+#### Project Setup
+
+- Deconstructed UI design mockups provided into React components using Figma
+- Created bonus data flow Mermaid diagrams for documentation
+- Installed Vite + TypeScript + SCSS stack for React frontend development
+
+#### Core Components
+
+- Created `employee-service.ts` to handle data fetching from database
+- Built basic React presentational components: List, Card, Button
+- Implemented employee services: `getAll()`, `getById()`
+
+#### Backend Integration
+
+- Implemented WebConfig for CORS error resolution
+- Established data flow: Page → List → Card component architecture
+- Added basic SCSS styling for Card components
+
+**Related backend changes:** See [Core CRUD API & Testing Infrastructure](#08072025)
+
+---
+
+## 08/07/2025
+
+### Backend - Core CRUD API & Testing Infrastructure
+
+#### REST API Implementation
 
 **Employee Management Endpoints:**
 
@@ -301,7 +536,7 @@ Refactors
 - `POST /employees` - Create new employee record
 - `DELETE /employees/{id}` - Remove employee record
 
-### Testing Infrastructure
+#### Testing Infrastructure
 
 **Automated Testing Pipeline:**
 
@@ -310,7 +545,7 @@ Refactors
 - **Database Testing:** H2 in-memory database configuration for isolated test execution
 - **Architecture:** ModelMapper integration for simplified entity-DTO transformation
 
-### Technical Foundation
+#### Technical Foundation
 
 **Development Tools:**
 
@@ -321,13 +556,15 @@ Refactors
 
 **Impact:** Established robust foundation for scalable employee management system with comprehensive testing coverage.
 
-**Related frontend changes:** See [Backend Integration](../front-end/CHANGELOG.md#09072025---frontend-foundation--initial-development)
+**Related frontend changes:** See [Backend Integration](#09072025)
 
 ---
 
-## 06/07/2025 - 07/07/2025 - API Architecture & Testing Foundation
+## 06/07/2025 - 07/07/2025
 
-### System Architecture Design
+### Backend - API Architecture & Testing Foundation
+
+#### System Architecture Design
 
 **API Planning & Documentation:**
 
@@ -335,7 +572,7 @@ Refactors
 - **System Design:** Created Mermaid diagrams for application layers and user flow visualization
 - **Technical Research:** Test-Driven Development (TDD) framework evaluation and implementation strategy
 
-### Initial Development
+#### Initial Development
 
 **Core Application Structure:**
 
@@ -344,7 +581,7 @@ Refactors
 - **Service Architecture:** Foundation controller, service, and repository classes
 - **Basic Functionality:** Initial GET endpoint implementation and testing
 
-### Testing Infrastructure Foundation
+#### Testing Infrastructure Foundation
 
 **End-to-End Testing Setup:**
 
@@ -354,7 +591,7 @@ Refactors
 - **Test Data:** H2 database seeding with mock data for comprehensive testing scenarios
 - **CI/CD:** GitHub Actions integration with automated test badge reporting
 
-### Documentation & Organization
+#### Documentation & Organization
 
 - **Asset Management:** Organized project documentation and technical specifications
 - **Development Workflow:** Established systematic approach to feature development and testing
@@ -363,9 +600,11 @@ Refactors
 
 ---
 
-## 05/07/2025 - Project Initialization & Database Setup
+## 05/07/2025
 
-### Project Foundation
+### Backend - Project Initialization & Database Setup
+
+#### Project Foundation
 
 **Spring Boot Application Setup:**
 
@@ -373,7 +612,7 @@ Refactors
 - **Database Integration:** MySQL database configuration and connection setup
 - **Environment Configuration:** `application.properties` configuration for development environment
 
-### Database Design
+#### Database Design
 
 **Schema Planning:**
 
@@ -382,7 +621,7 @@ Refactors
 - **Documentation:** Detailed data type specifications in `assets/data/README.md`
 - **Validation:** Database connection testing and table synchronization verification
 
-### Development Infrastructure
+#### Development Infrastructure
 
 - **Development Environment:** Local MySQL database integration
 - **Data Persistence:** JPA/Hibernate configuration for object-relational mapping

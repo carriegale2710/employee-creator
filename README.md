@@ -1,30 +1,28 @@
 # Employee Creator Spring API + React App
 
-> A production-ready HR management system built with Java Spring Boot and React TypeScript
+> A production-ready, full-stack HR management system built with Java Spring Boot and React TypeScript
 
-**Live Demo**: [Employee Creator App](https://employeecreator.site/) | **⚡ API**: [employeecreator.my](https://api.employeecreator.site)
+**Live Demo**: [Employee Creator App](https://employeecreator.site/) | **⚡ API**: [Employee Creator API](https://api.employeecreator.site/employees)
 
-## [![Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml) [![React Deploy](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/react-deploy.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-## Table of Contents
-
-- [Project Overview](#project-overview)
-- [Project Retrospective](#project-retrospective)
-- [Live Demo & API](#live-demo--api)
-- [Quick Start](#quick-start)
-- [Testing](#testing)
-- [Tech Stack](#tech-stack)
-- [Design Decisions](#design-decisions)
-- [Known Issues](#known-issues)
-- [Future Goals](#future-goals)
-- [Project Structure](#project-structure)
-- [Licensing Details](#licensing-details)
+## [![Spring Boot Tests](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml/badge.svg)](https://github.com/carriegale2710/employee-creator/actions/workflows/spring-boot-test.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
 
 ## Project Overview
 
 **Employee Creator** is a full-stack CRUD application for managing employee records and contracts. Built over 4 weeks as a solo project, it demonstrates enterprise-level development practices including comprehensive testing, CI/CD deployment, and scalable architecture.
+
+### Highlights
+
+- ✅ **Full-Stack**: Java Spring Boot API + React TypeScript frontend
+- ✅ **Comprehensive Testing**: 40+ automated tests (Unit, Integration, E2E)
+- ✅ **Production Deployed**: Render + Neon (free tier); originally AWS EC2 + S3/CloudFront
+- ✅ **Enterprise Features**: Employee management, contract tracking, form validation
+- ✅ **Modern Stack**: TypeScript, Tailwind CSS, PostgreSQL, GitHub Actions
+
+---
+
+## Key Features
 
 ### Who this app is for:
 
@@ -34,123 +32,103 @@
 
 3. **For Stakeholders**: Production-ready system with scalable architecture and comprehensive audit trails
 
-### Highlights
+#### :man_office_worker: Employee Recordkeeping
 
-- **Full-Stack**: Java Spring Boot API + React TypeScript frontend
-- **Comprehensive Testing**: 40+ automated tests (Unit, Integration, E2E)
-- **Production Deployed**: AWS infrastructure with automated CI/CD
-- **Enterprise Features**: Employee management, contract tracking, form validation
-- **Modern Stack**: TypeScript, Tailwind CSS, MySQL, GitHub Actions
+- List of all employees at /employees
+- Profile view with personal info and contracts
+- Add (validated form), edit, and delete (with confirmation)
+
+#### 📄 Contracts Recordkeeping
+
+- View all contracts per employee profile page
+- Create contracts linked to an employee
+- Delete contracts (WIP)
+
+> **Note:** An employee can have multiple contracts. Contracts are immutable by design: no update.
 
 ---
 
-## Key Features
+## Tech Stack
 
-#### :man_office_worker: Employee Management
+A deliberately boring, industry-standard enterprise stack: scalable by design, with robust automated testing and safety checks at every layer.
 
-- **View All Employees** - Paginated list with search and filter capabilities
-- **Employee Profiles** - Detailed view showing personal info, contracts, and actions
-- **Add Employee** - Registration form with validation and confirmation
-- **Edit Employee** - Update existing employee information
-- **Delete Employee** - Remove employee with confirmation dialog
+| Layer      | Technology                                                   | Benefit                             |
+| ---------- | ------------------------------------------------------------ | ----------------------------------- |
+| DB         | PostgreSQL, JPA                                              | Relational integrity, portable data |
+| Backend    | Spring Boot, Java, Maven                                     | Industry-standard, scalable APIs    |
+| Frontend   | React, TypeScript, Vite                                      | Fewer runtime bugs, fast builds     |
+| Testing    | JUnit, Mockito, REST Assured, H2, Faker (Data seeding)       | Catches regressions before release  |
+| Styling    | Tailwind / SCSS                                              | Consistent UI, faster styling       |
+| Deployment | Render + Neon (current); AWS EC2, S3 + CloudFront (archived) | Free-tier hosting, zero ops         |
+| CI/CD      | GitHub Actions                                               | Automated checks on every push      |
+| Monitoring | Log4j2                                                       | Faster debugging in production      |
 
-#### 📄 Contract Management
+---
 
-- **View All Contracts** - Paginated list with employee filtering
-- **Create Contract** - Link new contracts to existing employees
-- **Employee Contracts** - View all contracts for a specific employee
-- **Delete Contract** - Remove contracts with proper authorization (WIP)
+## Core Flow
 
-> **Note:** Each employee can have multiple contracts. Contracts are treated as immutable legal documents with no update functionality by design.
+```mermaid
+flowchart LR
+    User --> React["React App"]
+    React -- "GET / POST / PATCH / DELETE /employees" --> API["Spring Boot API"]
+    API -- "SELECT / INSERT / UPDATE / DELETE" --> DB[(PostgreSQL)]
+    DB --> API --> React --> User
+```
+
+## Database Design
+
+- **TDD approach**: Tests written before implementation
+- **Entity separation**: Employees vs Contracts for better organization
+- **One-to-Many relationship**: Supports contract history tracking
+- **Immutable contracts**: No update operations by design
+
+**Employees** (1) → **Contracts** (Many)
+
+Each employee can have multiple contracts over time. Contracts are immutable legal documents.
+
+![diagram of one-to-many class between employee and contracts tables in database](erd.png)
+
+### API Overview
+
+| Method       | Path                               | Purpose                         |
+| ------------ | ---------------------------------- | ------------------------------- |
+| GET          | `/employees`                       | List employees                  |
+| GET          | `/employees/{id}`                  | Get one employee                |
+| POST         | `/employees`                       | Create employee                 |
+| PATCH        | `/employees/{id}`                  | Update employee                 |
+| DELETE       | `/employees/{id}`                  | Delete employee                 |
+| GET / POST   | `/contracts`                       | List / create contracts         |
+| GET          | `/contracts/employee/{employeeId}` | List contracts for one employee |
+| GET / DELETE | `/contracts/{id}`                  | Get / delete a contract         |
 
 ---
 
 ## Design Decisions
 
-### Backend
+### Backend (the behind-the-scenes part)
 
-- Used top-down TDD to define backend features and to run within CI/CD pipeline.
-- Included a contracts with a `one-to-many relationship` for `employees -> contracts`
-- This allows for flexible, quicker UX when updating of DB records via in FE client app with only minor updates eg. salary, contract dates etc.
-- Separated concerns by having a dedicated contracts table, allowing for better organization and management + security of employee contracts.
+- **Contracts stored separately.** One employee can have many contracts over time. Editing a salary or end date touches only that contract.
+- **Status is calculated, not stored.** An employee's status comes from their contracts each time it's read, so it can't go stale when a contract ends. Team leaders called this highly useful for HR workflows in their review.
+- **Delete is all-or-nothing.** An employee and their contracts are deleted in one transaction, so a failure can't leave orphaned contracts.
+- **Saving your own email isn't a conflict.** The duplicate check on update ignores the employee's own record, which fixed a false "email already taken" error.
+- **Known limit: loading contracts for status.** Calculating status needs each employee's contracts, which reviewers flagged as a possible slowdown on larger databases. The plan is to load contracts only on single-employee views, then add pagination long term. Neither is built yet.
 
-### Front-end
+**Live site safety**
 
-- Used React Router for seamless navigation between views.
-- Implemented form validation using React Hook Form for schema validation.
-- Used Vitest for minimal component testing to ensure UI functionality.
-- Implemented a responsive design using Tailwind CSS and SCSS for component-level styling.
+- **Limited database access.** The app reaches only its own data, so damage stays small if something goes wrong.
+- **Own website only.** The backend accepts requests only from our front-end and requests are restricted to authorized users if server-side authorization is implemented.
+- **Secrets kept out of code.** Passwords and keys are supplied at startup.
+- **Server limits.** Memory is capped and crash retries stop after a few attempts.
 
----
+**Hosting on a budget**
 
-## Skills and Lessons Learned
+- **Moved to free hosting for the demo.** Moving from AWS to Render and Neon saves over $22/month. The cost is that the free Render service sleeps after 15 minutes without traffic.
+- **Uptime monitor over a scheduled GitHub job.** UptimeRobot pings a health check every 5 minutes to keep the service awake. Scheduled workflows can be delayed or dropped, and they're disabled after 60 days of repo inactivity. UptimeRobot also emails on downtime, and needed no code changes.
 
-This project was a solo endeavor to build a full-stack web application that simulates real-world business scenarios. It aimed to apply best practices in software development, including:
+### Front-end (what people see and click)
 
-- **Microservices architecture** thinking
-- **Separation of concerns** principle
-- **Production deployment** patterns
-- **Documentation** and changelog management
-
-### Key Challenges of this project
-
-| **Area**                   | **Skills Gained**                                                                     | **Key Challenge**                       | **Solution & Learning**                                                                        |
-| -------------------------- | ------------------------------------------------------------------------------------- | --------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| **Full-Stack Development** | Frontend/backend integration, API design, CORS handling, state management             | AWS backend/frontend integration issues | Resolved with proper CORS configuration and security group adjustments                         |
-| **Testing Strategy**       | TDD methodology, unit/integration testing, balancing coverage with delivery speed     | Balancing TDD with delivery speed       | Hybrid approach: browser testing first, then writing tests worked better for solo projects     |
-| **DevOps & Deployment**    | AWS deployment (EC2, S3, CloudFront), GitHub Actions CI/CD, production configurations | GitHub Actions configuration complexity | Multiple iterations needed - learned to test pipeline changes incrementally                    |
-| **Code Quality**           | Git workflows, branching strategies, code review processes, clean commit histories    | Simulating team development practices   | Used `main` + `dev` branches with feature branching and advanced Git commands (rebase, squash) |
-| **Architecture**           | Microservices thinking, separation of concerns, scalable application structure        | Managing monorepo documentation         | Split by domain (frontend/backend) with regular changelog updates for better maintainability   |
-
----
-
-## Live Demo & API
-
-- **Frontend:** [Live Demo](https://employeecreator.site/)
-- **Backend API:** [Raw API](https://api.employeecreator.site/)
-
-> Live backend API is deployed on AWS EC2. The frontend React app is deployed separately on S3 + CloudFront, and communicates with this backend via HTTPS.
-
-| Layer                 | Service                                     | Domain                     |
-| --------------------- | ------------------------------------------- | -------------------------- |
-| Frontend (React)      | S3 static site behind CloudFront            | `employeecreator.site`     |
-| Backend (Spring Boot) | EC2 (Nginx reverse proxy → systemd service) | `api.employeecreator.site` |
-| Database              | MySQL, local to the EC2 instance            | —                          |
-
----
-
-## Quick Start
-
-### Prerequisites
-
-- Java 17+
-- Node.js 18+
-- MySQL 8.0+
-
-### Backend (Spring Boot)
-
-```bash
-cd employee
-./mvnw clean install
-./mvnw spring-boot:run
-# API available at: http://localhost:8080
-```
-
-### Frontend (React)
-
-```bash
-cd front-end
-npm install
-npm run dev
-# App available at: http://localhost:5173
-```
-
-### Detailed Setup
-
-For comprehensive setup instructions including environment configuration, database setup, and deployment:
-
-- [Building Backend API](employee/README.md)
-- [Building Front-end UI](front-end/README.md)
+- **One form for add and edit.** Less to maintain, consistent for users.
+- **Refresh and bookmarks work.** Deep links no longer show an error.
 
 ---
 
@@ -172,78 +150,137 @@ npm run test     # frontend (if added)
 
 ---
 
-## Tech Stack
+## Quick Start
 
-| Layer      | Technology                                             | Purpose                             |
-| ---------- | ------------------------------------------------------ | ----------------------------------- |
-| DB         | MySQL, JPA                                             | SQL schema control, ORM integration |
-| Backend    | Spring Boot, Java, Maven                               | Production-grade APIs, type safety  |
-| Frontend   | React, TypeScript, Vite                                | SPA structure, compile-time safety  |
-| Testing    | JUnit, Mockito, REST Assured, H2, Faker (Data seeding) | API e2e + unit tests, mock data     |
-| Styling    | Tailwind / SCSS                                        | Component-level styling, responsive |
-| Deployment | AWS EC2 (Backend API) S3 + CloudFront(Front-end UI)    | Easy CI/CD, low costs               |
-| CI/CD      | GitHub Actions                                         | Automated testing and deployment    |
-| Monitoring | Log24j                                                 | Logs, error tracking                |
+### Prerequisites
 
----
+- Java 21+
+- Node.js 18+
+- PostgreSQL 14+
 
-## Database Design
+### Frontend (React)
 
-- **TDD approach**: Tests written before implementation
-- **Entity separation**: Employees vs Contracts for better organization
-- **One-to-Many relationship**: Supports contract history tracking
-- **Immutable contracts**: No update operations by design
-
-**Employees** (1) → **Contracts** (Many)
-
-Each employee can have multiple contracts over time. Contracts are immutable legal documents.
-
-![diagram of one-to-many class between employee and contracts tables in database](employee/assets/diagrams/erd/erd.png)
-
-## Sequence Diagram of Core Flow
-
-```mermaid
----
-
-config:
-theme: redux-dark-color
-
----
-
-sequenceDiagram
-actor User
-participant ReactApp as React App
-participant SpringAPI as Spring Boot API
-participant MySQL as MySQL Database
-Note over User: View all employees
-User->>ReactApp: Opens Employee List
-ReactApp->>SpringAPI: GET /employees
-SpringAPI->>MySQL: SELECT \* FROM employees
-MySQL-->>SpringAPI: Rows (employee list)
-SpringAPI-->>ReactApp: JSON response
-ReactApp-->>User: Display list
-Note over User: Add a new employee
-User->>ReactApp: Fills out form
-ReactApp->>SpringAPI: POST /employees (form data)
-SpringAPI->>MySQL: INSERT INTO employees
-MySQL-->>SpringAPI: OK
-SpringAPI-->>ReactApp: New employee JSON
-ReactApp-->>User: Confirmation
-Note over User: Edit an employee
-User->>ReactApp: Clicks Edit
-ReactApp->>SpringAPI: PUT /employees/:id (updated data)
-SpringAPI->>MySQL: UPDATE employees WHERE id=...
-MySQL-->>SpringAPI: OK
-SpringAPI-->>ReactApp: Updated JSON
-ReactApp-->>User: Show updated data
-Note over User: Delete an employee
-User->>ReactApp: Clicks Delete
-ReactApp->>SpringAPI: DELETE /employees/:id
-SpringAPI->>MySQL: DELETE FROM employees WHERE id=...
-MySQL-->>SpringAPI: OK
-SpringAPI-->>ReactApp: 200 OK
-ReactApp-->>User: Item removed
+```bash
+cd front-end
+npm install
+npm run dev
+# App available at: http://localhost:5173
 ```
+
+### Run Backend (Spring Boot)
+
+```bash
+cd employee
+./mvnw clean install
+./mvnw spring-boot:run
+# API available at: http://localhost:8080
+```
+
+### Database and environment (backend)
+
+Install PostgreSQL (macOS: `brew install postgresql && brew services start postgresql`; Windows: [download](https://www.postgresql.org/download/windows/)), then:
+
+```sql
+CREATE DATABASE your_database_name;
+```
+
+Create `employee/.env`:
+
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=your_database_name
+SPRING_DATASOURCE_USERNAME=your_user
+SPRING_DATASOURCE_PASSWORD=your_password
+```
+
+Create `front-end/.env`:
+
+```env
+VITE_API_URL=http://localhost:8080
+```
+
+Other front-end commands: `npm run build` (production build), `npm run preview` (test the build).
+
+### Request examples
+
+`POST /employees`
+
+```json
+{
+  "firstName": "Timmy",
+  "lastName": "Turner",
+  "email": "timmy.turner@example.com",
+  "phone": "0400000000",
+  "address": "123 Fairy Lane" //opt
+}
+```
+
+`PATCH /employees/{id}` takes the same fields.
+
+`POST /contracts`
+
+```json
+{
+  "employeeId": 15,
+  "department": "SALES",
+  "contractType": "FULL_TIME",
+  "salaryAmount": 80000,
+  "hoursPerWeek": 38,
+  "startDate": "2023-01-10",
+  "endDate": null //opt
+}
+```
+
+### Redeploying (archived AWS setup)
+
+```bash
+# backend
+./mvnw clean package -DskipTests
+scp -i <key.pem> target/employee-creator.jar ubuntu@<EC2_IP>:/home/ubuntu/apps/employee-creator-spring/
+ssh -i <key.pem> ubuntu@<EC2_IP> "sudo systemctl restart employee-creator"
+
+# front-end
+npm run build
+aws s3 sync dist/ s3://<bucket-name> --delete
+aws cloudfront create-invalidation --distribution-id <DIST_ID> --paths "/*"
+```
+
+Archived AWS details: the backend ran as a `systemd` service behind Nginx with Let's Encrypt TLS and a local PostgreSQL. The front-end ACM certificate had to be requested in `us-east-1` (CloudFront requirement).
+
+---
+
+## Deployment (archived AWS setup)
+
+> Backend API is deployed on AWS EC2. The frontend React app is deployed separately on S3 + CloudFront, and communicates with this backend via HTTPS.
+
+| Layer                 | Service                                     | Domain                     |
+| --------------------- | ------------------------------------------- | -------------------------- |
+| Frontend (React)      | S3 static site behind CloudFront            | `employeecreator.site`     |
+| Backend (Spring Boot) | EC2 (Nginx reverse proxy → systemd service) | `api.employeecreator.site` |
+| Database              | PostgreSQL, local to the EC2 instance       | —                          |
+
+> **Note:** Due to AWS costs, the long-term demo deployment has migrated to Render + Neon Postgres (free tier). Config: [render.yaml](render.yaml). The AWS details above are kept for reference and the AWS workflows in `.github/workflows/` are archived (not in use).
+
+---
+
+## Skills and Lessons Learned
+
+I built this employee management app on my own, as a practice run of how real business software gets made. The goal was to work the way a professional team would:
+
+- **Plan for growth = Modularity.** Split the app into clear parts so each can be changed or scaled without disturbing the others. Keep each piece focused on a single responsibility, which makes problems easier to find and fix.
+- **Make it genuinely live.** Put it on the internet the way a real product would be, not just on my own laptop.
+- **Keep good records.** Write documentation and a running log of changes so anyone can see what changed and why.
+
+### Key Challenges of this project
+
+| **Area**                  | **Challenge**                                         | **What I Did**                                                                   |
+| ------------------------- | ----------------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Connecting the pieces** | Frontend and backend wouldn't talk once hosted on AWS | Fixed access rules so only the website could reach the backend                   |
+| **Testing**               | Writing tests first slowed me down                    | Tried the app by hand first, then wrote tests. Better balance for a solo project |
+| **Going live**            | Automated releases were fiddly                        | Changed one small thing at a time and re-tested                                  |
+| **Working like a team**   | Simulating team practice solo                         | Stable `main` plus `dev`, one branch per feature, tidied history before merging  |
+| **Keeping it organised**  | Documenting a two-part project                        | Split front and back end by purpose; kept the change log updated                 |
 
 ---
 
@@ -253,38 +290,20 @@ ReactApp-->>User: Item removed
 
 Features that are buggy / flimsy/not functional yet: -->
 
+- [4/11/26] Employee whose only contract has ended shows as `NEW_HIRE` instead of `INACTIVE` ([#55](https://github.com/carriegale2710/employee-creator/issues/55))
 - [5/08/25] Contract deletion is not fully implemented yet in front-end (WIP)
 - [4/08/25] Pagination needed for employee list to reduce API load times and improve UX
 - [4/08/25] Contract form should not have employee ID field - this is a UX issue (risk of human error)
 - [25/07/25] React unit tests are still WIP
-- [02/08/2026] Employee list does not refresh immediately after deleting an employee (needs a refresh to see changes)
 
 ## Future Goals
 
-- Advanced search and filtering for employee list
-- Contract draft management system
-- Department management module
-- Enhanced form confirmation steps
+Full plan: [docs/roadmap.md](docs/roadmap.md).
 
----
-
-## Project Structure
-
-> Note: The documentation for this project is split up into backend vs front-end specific locations in the code base. They include more details like build steps, testing and change logs.
-
-See [`employee/README.md`](employee/README.md)
-See [`front-end/README.md`](front-end/README.md)
-
-```markdown
-📁 employee-creator/
-├── 📄 README.md (high-level overview) //you are here
-├── 📁 employee/
-│   ├── 📄 README.md (backend-specific)
-│   └── 📄 CHANGELOG.md (backend changes)
-└── 📁 front-end/
-    ├── 📄 README.md (frontend-specific)
-    └── 📄 CHANGELOG.md (frontend changes)
-```
+1. **Foundations:** fix employee status ([#55](https://github.com/carriegale2710/employee-creator/issues/55)), CORS, profile config and seeding bugs
+2. **Performance:** pagination ([#56](https://github.com/carriegale2710/employee-creator/issues/56)), search and filtering, and status computed in SQL, with published before/after query counts
+3. **Auth and roles:** session login, admin and viewer roles, salary hidden from viewers, one-click demo logins
+4. **UI:** admin-only delete on the list, role title on the employee card, consistent states and spacing
 
 ---
 
