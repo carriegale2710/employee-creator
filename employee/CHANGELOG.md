@@ -2,9 +2,10 @@
 
 ## 03/09/2026 - PostgreSQL Demo Deployment
 
-- Due to limited budget (AWS no longer free tier), the demo deployment is migrating from AWS to Render (offers Free Tier). Saves more than $22/month.
+- Due to limited budget (AWS no longer free tier), the demo deployment is migrating from AWS to Render + Neon (offers Free Tier). Saves more than $22/month.
 - Replaced the MySQL runtime driver and datasource configuration with PostgreSQL settings for the demo deployment.
 - Updated setup and deployment documentation accordingly.
+- Outdated AWS files left in ./github/workflows/ as archives only.
 
 ## 03/08/2026 - Backend Domain Migration & Deploy Fix
 

@@ -1,4 +1,4 @@
-name: Deploy React App to AWS S3 and CloudFront
+name: Deploy React App to AWS S3 and CloudFront (Not in Use) # frontend now migrated to Render hosting
 
 on:
   push:

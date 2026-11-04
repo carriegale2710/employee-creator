@@ -2,7 +2,7 @@
 # https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
 # https://www.baeldung.com/ops/github-actions-deploy-ec2
 
-name: Spring App EC2 Deploy
+name: Spring App EC2 Deploy (Not in Use) # backend now migrated to Render + Neon
 
 on:
   push:
