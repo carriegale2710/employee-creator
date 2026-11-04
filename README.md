@@ -90,17 +90,16 @@ Each employee can have multiple contracts over time. Contracts are immutable leg
 
 ### API Overview
 
-| Method       | Path              | Purpose                 |
-| ------------ | ----------------- | ----------------------- |
-| GET          | `/employees`      | List employees          |
-| GET          | `/employees/{id}` | Get one employee        |
-| POST         | `/employees`      | Create employee         |
-| PATCH        | `/employees/{id}` | Update employee         |
-| DELETE       | `/employees/{id}` | Delete employee         |
-| GET / POST   | `/contracts`      | List / create contracts |
-| GET / DELETE | `/contracts/{id}` | Get / delete a contract |
-
-Request body examples: [Setup Reference](#setup-reference).
+| Method       | Path                               | Purpose                         |
+| ------------ | ---------------------------------- | ------------------------------- |
+| GET          | `/employees`                       | List employees                  |
+| GET          | `/employees/{id}`                  | Get one employee                |
+| POST         | `/employees`                       | Create employee                 |
+| PATCH        | `/employees/{id}`                  | Update employee                 |
+| DELETE       | `/employees/{id}`                  | Delete employee                 |
+| GET / POST   | `/contracts`                       | List / create contracts         |
+| GET          | `/contracts/employee/{employeeId}` | List contracts for one employee |
+| GET / DELETE | `/contracts/{id}`                  | Get / delete a contract         |
 
 ---
 
